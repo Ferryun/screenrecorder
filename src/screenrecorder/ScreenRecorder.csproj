@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ED44F4E6-20C0-4825-9FD2-4821E60E57B8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Atf.ScreenRecorder</RootNamespace>
+    <AssemblyName>ScreenRecorder</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Avi\AviException.cs" />
+    <Compile Include="Avi\AviCompressor.cs" />
+    <Compile Include="Avi\Avi32Interop.cs" />
+    <Compile Include="Avi\AviFile.cs" />
+    <Compile Include="Configuration\Configuration.cs" />
+    <Compile Include="Configuration\ConfigurationException.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\View\frmAboutBox.resx">
+      <DependentUpon>frmAboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\View\frmOptions.resx">
+      <DependentUpon>frmOptions.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\View\frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\View\frmSelectBounds.resx">
+      <DependentUpon>frmSelectBounds.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Recording\RecordErrorEventArgs.cs" />
+    <Compile Include="Recording\RecordErrorEventHandler.cs" />
+    <Compile Include="Recording\RecordingState.cs" />
+    <Compile Include="Recording\Recorder.cs" />
+    <Compile Include="Screen\BoundsTracking\BoundsTracker.cs" />
+    <Compile Include="Screen\BoundsTracking\IBoundsTracker.cs" />
+    <Compile Include="Screen\BoundsTracking\TrackingException.cs" />
+    <Compile Include="Screen\BoundsTracking\TrackingType.cs" />
+    <Compile Include="Screen\BoundsTracking\WindowFinder.cs" />
+    <Compile Include="Screen\BoundsTracking\WindowInterop.cs" />
+    <Compile Include="Screen\Screenshot\Screenshot.cs" />
+    <Compile Include="Screen\Screenshot\ScreenshotException.cs" />
+    <Compile Include="Screen\Screenshot\ScreenshotInterop.cs" />
+    <Compile Include="UI\Presentation\Options\OptionsPresenter.cs" />
+    <Compile Include="UI\Presentation\IAboutView.cs" />
+    <Compile Include="UI\Presentation\Options\IOptionsView.cs" />
+    <Compile Include="UI\Presentation\ISelectBoundsView.cs" />
+    <Compile Include="UI\Presentation\IView.cs" />
+    <Compile Include="UI\Presentation\Main\TrackerChangedEventArgs.cs" />
+    <Compile Include="UI\Presentation\Main\TrackerChangedEventHandler.cs" />
+    <Compile Include="UI\ViewFactory.cs" />
+    <Compile Include="UI\View\frmAboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\View\frmAboutBox.Designer.cs">
+      <DependentUpon>frmAboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\View\frmOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\View\frmOptions.Designer.cs">
+      <DependentUpon>frmOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\View\frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\View\frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Presentation\Main\IMainView.cs" />
+    <Compile Include="UI\Presentation\Main\MainPresenter.cs" />
+    <Compile Include="UI\View\frmSelectBounds.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\View\frmSelectBounds.Designer.cs">
+      <DependentUpon>frmSelectBounds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\View\HotKeyInput.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Util\IOUtil.cs" />
+    <Compile Include="Util\HotKeyManager.cs" />
+    <Compile Include="Util\HotKeyInterop.cs" />
+    <Compile Include="Util\SingleInstanceController.cs" />
+    <Compile Include="Util\SingleInstanceInterop.cs" />
+    <Compile Include="Util\Window.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dimensions.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Origin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\empty.png" />
+    <Content Include="Resources\file-directory.png" />
+    <Content Include="Resources\FullScreen.png" />
+    <Content Include="Resources\icon-16.ico" />
+    <Content Include="Resources\icon-paused.ico" />
+    <Content Include="Resources\icon-rec.ico" />
+    <Content Include="Resources\icon.ico" />
+    <Content Include="Resources\icon.png" />
+    <Content Include="Resources\Partial.png" />
+    <Content Include="Resources\playback-pause.png" />
+    <Content Include="Resources\playback-play.png" />
+    <Content Include="Resources\primitive-dot-red.png" />
+    <Content Include="Resources\primitive-dot.png" />
+    <Content Include="Resources\primitive-square.png" />
+    <Content Include="Resources\question.png" />
+    <Content Include="Resources\restore.png" />
+    <Content Include="Resources\settings.png" />
+    <Content Include="Resources\Timer.png" />
+    <Content Include="Resources\Window.png" />
+    <Content Include="Resources\x.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
