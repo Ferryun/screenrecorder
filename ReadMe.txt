@@ -14,4 +14,5 @@ System Requirements:
     Windows XP, Vista, 7, 8, 8.1 or 10
     Microsoft .NET Framework 2.0 SP2
 
-Setup files, screenshots and more are available in: https://sourceforge.net/projects/screenrecorder-x
+Setup files, screenshots and more are available in:
+https://sourceforge.net/projects/screenrecorder-x
