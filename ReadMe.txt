@@ -5,7 +5,7 @@ Features:
         Full Screen
         Fixed part of the screen
         Window region.
-    User-spefified video compressor and fps (frames per second)
+    User-specified video compressor and fps (frames per second)
     Show/Hide mouse cursor in the recorded video.
     Customizable hot keys for the recording operations
     Easy to use and friendly user interface
