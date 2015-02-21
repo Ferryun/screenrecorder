@@ -24,7 +24,6 @@ namespace Atf.ScreenRecorder.UI.View {
    using Atf.ScreenRecorder.Recording;
    using Atf.ScreenRecorder.Screen;
    using Atf.ScreenRecorder.UI.Presentation;
-   using Atf.ScreenRecorder.Util;
 
    using System;
    using System.Collections.Generic;
@@ -35,12 +34,14 @@ namespace Atf.ScreenRecorder.UI.View {
 
    public partial class frmMain : Form, IMainView {
       #region Fields
-      private static readonly string cancelMessage = "Are you sure to want to cancel recording?";
+      private static readonly string cancelMessage = "Recording is in progress. Are you sure to want to cancel it?";
       private static readonly string errorMessageTitle = "Error";
       private static readonly string hotKeyWarningMessage = "Failed to register one or more hot keys.";
       private static readonly int notifyErrorDelay = 20000;
       private static readonly int notifyWarningDelay = 10000;
+      private static readonly string noUpdateMessage = "Current version is the lastest available version.";
       private static readonly string stopMessage = "Are you sure to want to stop recording?";
+      private static readonly string updateCheckErrorMessage = "Failed to check for updates.";
       private static readonly string warningMessageTitle = "Warning";
 
       private bool isSelectingTracker;
@@ -134,7 +135,12 @@ namespace Atf.ScreenRecorder.UI.View {
          if (this.Cancel != null) {
             this.Cancel(this, e);
          }
-      }     
+      }
+      private void OnCheckForUpdates(EventArgs e) {
+         if (this.CheckForUpdates != null) {
+            this.CheckForUpdates(this, e);
+         }
+      }
       private void OnExit() {
          this.Close();
       }
@@ -166,6 +172,10 @@ namespace Atf.ScreenRecorder.UI.View {
       private void OnRestore() {
          this.Show();
          this.WindowState = FormWindowState.Normal;
+      }
+      private void OnSendFeedBack(EventArgs eventArgs) {
+         frmFeedback frmFeedback = new frmFeedback();
+         frmFeedback.ShowDialog(this);
       }
       private void OnStop(EventArgs e) {
          if (this.Stop != null) {
@@ -255,6 +265,9 @@ namespace Atf.ScreenRecorder.UI.View {
       private void tsmiCancel_Click(object sender, EventArgs e) {
          this.OnCancel(EventArgs.Empty);
       }
+      private void tsmiCheckForUpdates_Click(object sender, EventArgs e) {
+         this.OnCheckForUpdates(EventArgs.Empty);
+      }
       private void tsmiExit_Click(object sender, EventArgs e) {
          this.OnExit();
       }
@@ -270,6 +283,9 @@ namespace Atf.ScreenRecorder.UI.View {
       private void tsmiRecord_Click(object sender, EventArgs e) {
          this.OnRecord(EventArgs.Empty);
       }
+      private void tsmiSendFeedback_Click(object sender, EventArgs e) {
+         this.OnSendFeedBack(EventArgs.Empty);
+      }
       private void tsmiStop_Click(object sender, EventArgs e) {
          this.OnStop(EventArgs.Empty);
       }
@@ -277,6 +293,7 @@ namespace Atf.ScreenRecorder.UI.View {
 
       #region IMainView Members
       public event EventHandler Cancel;
+      public event EventHandler CheckForUpdates;
       public event EventHandler Options;
       public event EventHandler OpenFolder;
       public event EventHandler Pause;
@@ -392,14 +409,19 @@ namespace Atf.ScreenRecorder.UI.View {
                   statusImage = null;
                   break;
             }
-            string status = value.ToString();
+            string status = value.ToString();           
+            string duration = string.Empty;
+            if (value == RecordingState.Recording) {
+               duration = string.Format("{0}{1:00}:{2:00}:{3:00}", Environment.NewLine, this.recordingDuration.Hours,
+                                        this.recordingDuration.Minutes, this.recordingDuration.Seconds);
+            }
+            string notifyText = string.Format("{0} ({1}){2}", this.AssemblyProduct, status, duration);
+            if (!string.Equals(this.notifyIcon.Text, notifyText)) {
+               this.notifyIcon.Text = notifyText;
+            }
             this.lblStatus.Image = statusImage;
             this.lblStatus.Text = status;
             this.notifyIcon.Icon = notifyIconIcon;
-            string notifyText = string.Format("{0} ({0})", this.AssemblyProduct, status);
-            if (!string.Equals(this.notifyIcon.Text, notifyText)) {
-               this.notifyIcon.Text = string.Format("{0} ({0})", status);
-            }
          }
       }
       public TimeSpan RecordDuration {
@@ -483,12 +505,23 @@ namespace Atf.ScreenRecorder.UI.View {
       }
       public void ShowHotKeyRegisterWarning() {
          if (this.Visible) {
-            MessageBox.Show(this, hotKeyWarningMessage, errorMessageTitle, MessageBoxButtons.OK,
+            MessageBox.Show(this, hotKeyWarningMessage, warningMessageTitle, MessageBoxButtons.OK,
                             MessageBoxIcon.Exclamation);
          }
          else {
-            this.notifyIcon.ShowBalloonTip(notifyWarningDelay, errorMessageTitle, warningMessageTitle,
+            this.notifyIcon.ShowBalloonTip(notifyWarningDelay, warningMessageTitle, hotKeyWarningMessage,
                                            ToolTipIcon.Warning);
+
+         }
+      }
+      public void ShowNoUpdate() {
+         if (this.Visible) {
+            MessageBox.Show(this, noUpdateMessage, this.ProductName, MessageBoxButtons.OK,
+                            MessageBoxIcon.None);
+         }
+         else {
+            this.notifyIcon.ShowBalloonTip(notifyWarningDelay, this.ProductName, noUpdateMessage,
+                                           ToolTipIcon.None);
 
          }
       }
@@ -501,17 +534,24 @@ namespace Atf.ScreenRecorder.UI.View {
                                                MessageBoxIcon.None, MessageBoxDefaultButton.Button2);
          return (result == DialogResult.Yes);
       }
-      //public void ShowWindowInaccessibleWarning() {
-      //   if (this.Visible) {
-      //      MessageBox.Show(this, windowInaccessibleMessage, warningMessageTitle,
-      //                      MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-      //   }
-      //   else {
-      //      this.notifyIcon.ShowBalloonTip(notifyWarningDelay, warningMessageTitle, windowInaccessibleMessage,
-      //                                     ToolTipIcon.Warning);
-      //   }
-      //}
+      public void ShowUpdateCheckError() {
+         if (this.Visible) {
+            MessageBox.Show(this, updateCheckErrorMessage, this.ProductName, MessageBoxButtons.OK,
+                            MessageBoxIcon.None);
+         }
+         else {
+            this.notifyIcon.ShowBalloonTip(notifyWarningDelay, this.ProductName, updateCheckErrorMessage,
+                                           ToolTipIcon.None);
 
+         }
+      }
+      public bool ShowUpdateMessage(string message) {
+          if (!this.Visible) {
+            this.OnRestore();
+         }
+         DialogResult result = MessageBox.Show(this, message, this.ProductName, MessageBoxButtons.YesNo);
+         return result == DialogResult.Yes;  
+      }
       #endregion
 
       #region IView Members

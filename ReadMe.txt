@@ -1,4 +1,4 @@
-# screenrecorder
+Screen Recorder
 Records user specified part of Windows desktop screen as an AVI file. The project is released under the MIT License and version 1.2-beta is available for download.
 Features:
     User-specified capture region in three ways:

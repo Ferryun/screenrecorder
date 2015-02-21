@@ -52,7 +52,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -74,12 +76,16 @@
       <DependentUpon>frmAboutBox.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\View\frmOptions.resx">
-      <DependentUpon>frmOptions.cs</DependentUpon>
+    <EmbeddedResource Include="UI\View\frmFeedback.resx">
+      <DependentUpon>frmFeedback.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\View\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\View\frmOptions.resx">
+      <DependentUpon>frmOptions.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\View\frmSelectBounds.resx">
@@ -114,6 +120,8 @@
     <Compile Include="Screen\Screenshot\Screenshot.cs" />
     <Compile Include="Screen\Screenshot\ScreenshotException.cs" />
     <Compile Include="Screen\Screenshot\ScreenshotInterop.cs" />
+    <Compile Include="UI\Presentation\Feedback\FeedbackPresenter.cs" />
+    <Compile Include="UI\Presentation\Feedback\IFeedbackView.cs" />
     <Compile Include="UI\Presentation\Options\OptionsPresenter.cs" />
     <Compile Include="UI\Presentation\IAboutView.cs" />
     <Compile Include="UI\Presentation\Options\IOptionsView.cs" />
@@ -127,6 +135,12 @@
     </Compile>
     <Compile Include="UI\View\frmAboutBox.Designer.cs">
       <DependentUpon>frmAboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\View\frmFeedback.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\View\frmFeedback.Designer.cs">
+      <DependentUpon>frmFeedback.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\View\frmOptions.cs">
       <SubType>Form</SubType>
@@ -151,11 +165,13 @@
     <Compile Include="UI\View\HotKeyInput.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Util\Feedback.cs" />
     <Compile Include="Util\IOUtil.cs" />
     <Compile Include="Util\HotKeyManager.cs" />
     <Compile Include="Util\HotKeyInterop.cs" />
     <Compile Include="Util\SingleInstanceController.cs" />
     <Compile Include="Util\SingleInstanceInterop.cs" />
+    <Compile Include="Util\UpdateCheck.cs" />
     <Compile Include="Util\Window.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +181,7 @@
     <None Include="Resources\Origin.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\comment.png" />
     <Content Include="Resources\empty.png" />
     <Content Include="Resources\file-directory.png" />
     <Content Include="Resources\FullScreen.png" />
@@ -179,9 +196,7 @@
     <Content Include="Resources\primitive-dot-red.png" />
     <Content Include="Resources\primitive-dot.png" />
     <Content Include="Resources\primitive-square.png" />
-    <Content Include="Resources\question.png" />
     <Content Include="Resources\restore.png" />
-    <Content Include="Resources\settings.png" />
     <Content Include="Resources\Timer.png" />
     <Content Include="Resources\Window.png" />
     <Content Include="Resources\x.png" />

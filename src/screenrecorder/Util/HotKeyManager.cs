@@ -108,17 +108,17 @@ namespace Atf.ScreenRecorder.Util {
       /// Registers a hot key in the system.
       /// </summary>
       /// <param name="keys">The keys that are associated with the hot key.</param>
-      public void RegisterHotKey(Keys keys) {
+      public void RegisterHotKey(Keys hotKey) {
          lock (syncRoot) {
-            if (this.registredKeys.ContainsKey(keys)) {
-               throw new ArgumentException("Specified keys are already registered.");
+            if (this.registredKeys.ContainsKey(hotKey)) {
+               throw new ArgumentException("Specified hot key already registered.");
             }
             this.currentId++;
-            this.registredKeys.Add(keys, this.currentId);
+            this.registredKeys.Add(hotKey, this.currentId);
             // register the hot key.
             ModifierKeys modifiers;
             Keys extractedKeys;
-            ExtractKeys(keys, out modifiers, out extractedKeys);
+            ExtractKeys(hotKey, out modifiers, out extractedKeys);
             if (!HotKeyInterop.RegisterHotKey(window.Handle, this.currentId, (uint)modifiers, (uint)extractedKeys)) {
                throw new InvalidOperationException("Couldn’t register the hot key.", new Win32Exception());
             }
@@ -128,14 +128,14 @@ namespace Atf.ScreenRecorder.Util {
       /// Unregisters a hot key from the system.
       /// </summary>
       /// <param name="keys">The keys that are associated with the hot key.</param>
-      public void UnregisterHotKey(Keys keys) {
+      public void UnregisterHotKey(Keys hotKey) {
          lock (syncRoot) {
-            if (!this.registredKeys.ContainsKey(keys)) {
-               throw new ArgumentException("Specified keys are not registered.");
+            if (!this.registredKeys.ContainsKey(hotKey)) {
+               throw new ArgumentException("Specified hot key is not registered.");
             }
-            int id = this.registredKeys[keys];
+            int id = this.registredKeys[hotKey];
             HotKeyInterop.UnregisterHotKey(window.Handle, id);
-            this.registredKeys.Remove(keys);
+            this.registredKeys.Remove(hotKey);
          }
       }
       #endregion
@@ -184,7 +184,7 @@ namespace Atf.ScreenRecorder.Util {
          }
          #endregion
 
-         #region Methods        
+         #region Methods
          /// <summary>
          /// Overridden to get the notifications.
          /// </summary>

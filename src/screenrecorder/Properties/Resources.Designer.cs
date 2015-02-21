@@ -67,13 +67,6 @@ namespace Atf.ScreenRecorder.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap empty {
-            get {
-                object obj = ResourceManager.GetObject("empty", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap file_directory {
             get {
                 object obj = ResourceManager.GetObject("file_directory", resourceCulture);
@@ -172,23 +165,9 @@ namespace Atf.ScreenRecorder.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap question {
-            get {
-                object obj = ResourceManager.GetObject("question", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap restore {
             get {
                 object obj = ResourceManager.GetObject("restore", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap settings {
-            get {
-                object obj = ResourceManager.GetObject("settings", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

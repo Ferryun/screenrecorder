@@ -53,7 +53,7 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,2,0,1
+ FILEVERSION 1,2,1,0
  PRODUCTVERSION 1,2,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
@@ -71,7 +71,7 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Mehrzad Chehraz (mehrzady@gmail.com)"
             VALUE "FileDescription", "Screenshot library for Screen Recorder"
-            VALUE "FileVersion", "1, 2, 0, 1"
+            VALUE "FileVersion", "1, 2, 1, 0"
             VALUE "InternalName", "screenshot"
             VALUE "LegalCopyright", "Copyright (C) 2015 Mehrzad Chehraz"
             VALUE "OriginalFilename", "screenshot.dll"

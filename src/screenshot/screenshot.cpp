@@ -111,7 +111,15 @@ extern "C" {
 		DWORD flags = DDBLTFAST_NOCOLORKEY|DDBLTFAST_WAIT;
 		HRESULT hr = ps->lpTempSurface->BltFast(0, 0, ps->lpPrimarySurface, &finalRect, flags);			
 		if (hr != S_OK) {
-			return hr;
+			if (hr == DDERR_SURFACELOST) {					// In case of UAC, Logon screen, etc. 																
+				hr = ps->lpPrimarySurface->Restore();		// Result will be a black screenshot
+				if (hr == S_OK) {
+					hr = ps->lpTempSurface->BltFast(0, 0, ps->lpPrimarySurface, &finalRect, flags);	
+				}
+			}
+			if (hr != S_OK) {
+				return hr;
+			}
 		}
 		// Fill DDSURFACEDESC Structure
 		DDSURFACEDESC	ddsd;

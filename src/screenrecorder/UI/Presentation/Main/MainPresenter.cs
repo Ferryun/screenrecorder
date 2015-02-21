@@ -30,6 +30,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
    using System.Collections.Generic;
    using System.Diagnostics;
    using System.Drawing;
+   using System.Reflection;
    using System.Windows.Forms;
    public class MainPresenter {
       #region enums
@@ -42,6 +43,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
       #endregion
 
       #region Fields
+      private static readonly string updateCheckAddress = "http://chehraz.ir/projects/screenrecorder/updateCheck.php";
       private bool anyRecord = false;
       private bool autoMinimized;
       private Configuration configuration;
@@ -136,6 +138,31 @@ namespace Atf.ScreenRecorder.UI.Presentation {
          this.recorder.Tracker = tracker;
          this.configuration.Tracking.Tracker = tracker;
       }
+      private void CheckForUpdates() {
+         Version currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+         UpdateInfo updateInfo = UpdateCheck.Check(new Uri(updateCheckAddress), currentVersion.ToString());
+         if (updateInfo != null) {
+            switch (updateInfo.Action) {
+               case UpdateAction.NoAction:
+                  this.view.ShowNoUpdate();
+                  break;
+               case UpdateAction.DownloadCopy:
+               case UpdateAction.DownloadInstall:
+               case UpdateAction.Visit:
+                  bool update = this.view.ShowUpdateMessage(updateInfo.Message);
+                  if (update) {
+                     IOUtil.LaunchUrl(updateInfo.Uri.ToString());
+                  }
+                  break;
+               default:
+                  this.view.ShowUpdateCheckError();
+                  break;
+            }
+         }
+         else {
+            this.view.ShowUpdateCheckError();
+         }
+      }
       private bool Close() {
          RecordingState state = this.recorder.State;
          bool result = false;
@@ -202,6 +229,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
       private void InitializeView() {
          // Event Handlers
          this.view.Cancel += new EventHandler(view_Cancel);
+         this.view.CheckForUpdates += new EventHandler(view_CheckForUpdates);
          this.view.OpenFolder += new EventHandler(view_OpenFolder);
          this.view.Options += new EventHandler(view_Options);
          this.view.Pause += new EventHandler(view_Pause);
@@ -350,7 +378,12 @@ namespace Atf.ScreenRecorder.UI.Presentation {
                try {
                   this.hotKeyManager.RegisterHotKey(newHotKey);
                }
-               catch (InvalidOperationException) {
+               catch (ArgumentException e) {
+                  Trace.TraceWarning(e.ToString());
+                  allSucceed = false;
+               }
+               catch (InvalidOperationException e) {
+                  Trace.TraceWarning(e.ToString());
                   allSucceed = false;
                }
             }
@@ -427,7 +460,10 @@ namespace Atf.ScreenRecorder.UI.Presentation {
       }
       private void view_Cancel(object sender, EventArgs e) {
          this.Cancel();
-      }      
+      }
+      private void view_CheckForUpdates(object sender, EventArgs e) {
+         this.CheckForUpdates();
+      }  
       private void view_OpenFolder(object sender, EventArgs e) {
          this.OpenFolder();
       }

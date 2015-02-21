@@ -81,6 +81,13 @@ namespace Atf.ScreenRecorder.Util {
          proc.StartInfo.Arguments = fullPath;
          proc.Start();
       }
+      public static void LaunchUrl(string url) {
+         Process proc = new Process();
+         proc.EnableRaisingEvents = false;
+         proc.StartInfo.FileName = "iexplore.exe";
+         proc.StartInfo.Arguments = url;
+         proc.Start();
+      }
       public static bool OpenFolder(string fullPath) {
          if (!Directory.Exists(fullPath)) {
             return false;

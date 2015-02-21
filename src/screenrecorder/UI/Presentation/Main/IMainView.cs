@@ -29,6 +29,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
    using System.Windows.Forms;
    public interface IMainView : IView {
       event EventHandler Cancel;
+      event EventHandler CheckForUpdates;
       event EventHandler OpenFolder;
       event EventHandler Options;
       event EventHandler Pause;
@@ -93,7 +94,9 @@ namespace Atf.ScreenRecorder.UI.Presentation {
       bool ShowCancelMessage();
       void ShowError(string message);
       void ShowHotKeyRegisterWarning();
+      void ShowNoUpdate();
       bool ShowStopMessage();
-      // void ShowWindowInaccessibleWarning();
+      void ShowUpdateCheckError();
+      bool ShowUpdateMessage(string p);
    }
 }

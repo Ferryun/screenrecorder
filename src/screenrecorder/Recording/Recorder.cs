@@ -40,10 +40,10 @@ namespace Atf.ScreenRecorder.Recording {
       #endregion
 
       #region Fields
-      private static readonly int pauseDelay = 10; // ms
       private static readonly int defaultFps = 15;
       private static readonly string errorMessage = "Recording interrupted: {0}";
       private static readonly int maxFps = 120;
+      private static readonly int pauseDelay = 10; // ms
       private static readonly object syncRoot = new object();
       private AviCompressor compressor;
       private TimeSpan duration;
@@ -95,8 +95,8 @@ namespace Atf.ScreenRecorder.Recording {
          set {
             if (this.fps != value) {
                if (value <= 0 || value > maxFps) {
-                  throw new ArgumentOutOfRangeException("Fps",
-                                                        string.Format("Fps must be between {0} and {1}", 0, maxFps));
+                  throw new ArgumentOutOfRangeException("Fps", string.Format("Fps must be between {0} and {1}", 
+                                                                              0, maxFps));
                }
                if (this.state != RecordingState.Idle) {
                   throw new InvalidOperationException();
@@ -143,10 +143,7 @@ namespace Atf.ScreenRecorder.Recording {
       }
       #endregion
 
-      #region Methods
-      private static Exception MakeRecordError(Exception e) {
-         return new Exception(string.Format(errorMessage, e.Message));
-      }
+      #region Methods      
       private void OnError(RecordErrorEventArgs e) {
          if (this.Error != null) {
             this.Error(this, e);
@@ -161,6 +158,11 @@ namespace Atf.ScreenRecorder.Recording {
             state = RecordingState.Paused;
             this.stateTransition.WaitOne();
          }
+      }
+      private void RaiseError(Exception e) {
+         Exception exception = new Exception(string.Format(errorMessage, e.Message));
+         RecordErrorEventArgs ea = new RecordErrorEventArgs(exception);
+         this.OnError(ea);
       }
       public void Record() {
          if (this.fileName == null) {
@@ -192,17 +194,17 @@ namespace Atf.ScreenRecorder.Recording {
             catch (AviException ae) {
                this.state = RecordingState.Idle;
                this.stateTransition.Set();
-               this.OnError(new RecordErrorEventArgs(MakeRecordError(ae)));
+               this.RaiseError(ae);
             }
             catch (ScreenshotException se) {
                this.state = RecordingState.Idle;
                this.stateTransition.Set();
-               this.OnError(new RecordErrorEventArgs(MakeRecordError(se)));
+               this.RaiseError(se);               
             }
             catch (TrackingException te) {
                this.state = RecordingState.Idle;
                this.stateTransition.Set();
-               this.OnError(new RecordErrorEventArgs(MakeRecordError(te)));
+               this.RaiseError(te);               
             }
          }
       }

@@ -34,7 +34,7 @@ namespace Atf.ScreenRecorder.Avi {
       private IntPtr pAviCompressedStream;
       #endregion
 
-      #region Methods      
+      #region Methods
       public void AddFrame(int index, IntPtr buffer, int length) {
          if (!this.opened) {
             throw new InvalidOperationException();
@@ -80,7 +80,7 @@ namespace Atf.ScreenRecorder.Avi {
          }
          Marshal.Copy(bytes, 0, par, size);
       }
-      public void Open(string fileName, int width, int height, int colorDepth, int fps, AviCompressor compressor) {         
+      public void Open(string fileName, int width, int height, int colorDepth, int fps, AviCompressor compressor) {
          if (string.IsNullOrEmpty(fileName)) {
             throw new ArgumentNullException("fileName");
          }
