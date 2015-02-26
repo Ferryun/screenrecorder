@@ -17,13 +17,15 @@
           this.tsmiRecord = new System.Windows.Forms.ToolStripMenuItem();
           this.tsmiPause = new System.Windows.Forms.ToolStripMenuItem();
           this.tsmiStop = new System.Windows.Forms.ToolStripMenuItem();
-          this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
           this.tsmiCancel = new System.Windows.Forms.ToolStripMenuItem();
+          this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
           this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
           this.tsmiOptions = new System.Windows.Forms.ToolStripMenuItem();
           this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
           this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
           this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+          this.tsmiHelpTopics = new System.Windows.Forms.ToolStripMenuItem();
+          this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
           this.tsmiCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
           this.tsmiSendFeedback = new System.Windows.Forms.ToolStripMenuItem();
           this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
@@ -52,16 +54,17 @@
           this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
           this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
           this.ctsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
+          this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+          this.ctmsiHelpTopics = new System.Windows.Forms.ToolStripMenuItem();
           this.ctsmiCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
           this.ctsmiSendFeedback = new System.Windows.Forms.ToolStripMenuItem();
-          this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-          this.ctsmiRestore = new System.Windows.Forms.ToolStripMenuItem();
           this.ctssRestore = new System.Windows.Forms.ToolStripSeparator();
+          this.ctsmiRestore = new System.Windows.Forms.ToolStripMenuItem();
           this.ctsmiRecord = new System.Windows.Forms.ToolStripMenuItem();
           this.ctsmiPause = new System.Windows.Forms.ToolStripMenuItem();
           this.ctsmiStop = new System.Windows.Forms.ToolStripMenuItem();
-          this.ctsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
           this.ctsmiCancel = new System.Windows.Forms.ToolStripMenuItem();
+          this.ctsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
           this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
           this.ctsmiOptions = new System.Windows.Forms.ToolStripMenuItem();
           this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -128,15 +131,6 @@
           this.tsmiStop.Text = "&Stop";
           this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
           // 
-          // tsmiPlay
-          // 
-          this.tsmiPlay.Image = global::Atf.ScreenRecorder.Properties.Resources.playback_play;
-          this.tsmiPlay.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-          this.tsmiPlay.Name = "tsmiPlay";
-          this.tsmiPlay.Size = new System.Drawing.Size(116, 22);
-          this.tsmiPlay.Text = "Play";
-          this.tsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
-          // 
           // tsmiCancel
           // 
           this.tsmiCancel.Image = global::Atf.ScreenRecorder.Properties.Resources.x;
@@ -145,6 +139,15 @@
           this.tsmiCancel.Size = new System.Drawing.Size(116, 22);
           this.tsmiCancel.Text = "&Cancel";
           this.tsmiCancel.Click += new System.EventHandler(this.tsmiCancel_Click);
+          // 
+          // tsmiPlay
+          // 
+          this.tsmiPlay.Image = global::Atf.ScreenRecorder.Properties.Resources.playback_play;
+          this.tsmiPlay.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+          this.tsmiPlay.Name = "tsmiPlay";
+          this.tsmiPlay.Size = new System.Drawing.Size(116, 22);
+          this.tsmiPlay.Text = "Play";
+          this.tsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
           // 
           // toolStripMenuItem2
           // 
@@ -173,6 +176,8 @@
           // helpToolStripMenuItem
           // 
           this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiHelpTopics,
+            this.toolStripSeparator4,
             this.tsmiCheckForUpdates,
             this.tsmiSendFeedback,
             this.toolStripMenuItem3,
@@ -181,18 +186,31 @@
           this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
           this.helpToolStripMenuItem.Text = "&Help";
           // 
+          // tsmiHelpTopics
+          // 
+          this.tsmiHelpTopics.Name = "tsmiHelpTopics";
+          this.tsmiHelpTopics.ShortcutKeys = System.Windows.Forms.Keys.F1;
+          this.tsmiHelpTopics.Size = new System.Drawing.Size(179, 22);
+          this.tsmiHelpTopics.Text = "&Help Topics";
+          this.tsmiHelpTopics.Click += new System.EventHandler(this.tsmiHelpTopics_Click);
+          // 
+          // toolStripSeparator4
+          // 
+          this.toolStripSeparator4.Name = "toolStripSeparator4";
+          this.toolStripSeparator4.Size = new System.Drawing.Size(176, 6);
+          // 
           // tsmiCheckForUpdates
           // 
           this.tsmiCheckForUpdates.Name = "tsmiCheckForUpdates";
           this.tsmiCheckForUpdates.Size = new System.Drawing.Size(179, 22);
-          this.tsmiCheckForUpdates.Text = "Check for updates...";
+          this.tsmiCheckForUpdates.Text = "Check for &updates...";
           this.tsmiCheckForUpdates.Click += new System.EventHandler(this.tsmiCheckForUpdates_Click);
           // 
           // tsmiSendFeedback
           // 
           this.tsmiSendFeedback.Name = "tsmiSendFeedback";
           this.tsmiSendFeedback.Size = new System.Drawing.Size(179, 22);
-          this.tsmiSendFeedback.Text = "Send feedback...";
+          this.tsmiSendFeedback.Text = "Send &feedback...";
           this.tsmiSendFeedback.Click += new System.EventHandler(this.tsmiSendFeedback_Click);
           // 
           // toolStripMenuItem3
@@ -429,6 +447,7 @@
           this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ctsmiAbout,
             this.toolStripSeparator3,
+            this.ctmsiHelpTopics,
             this.ctsmiCheckForUpdates,
             this.ctsmiSendFeedback,
             this.ctssRestore,
@@ -444,7 +463,7 @@
             this.ctsmiExit});
           this.contextMenuStrip.Name = "contextMenuStrip";
           this.contextMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-          this.contextMenuStrip.Size = new System.Drawing.Size(180, 270);
+          this.contextMenuStrip.Size = new System.Drawing.Size(180, 320);
           // 
           // ctsmiAbout
           // 
@@ -453,24 +472,36 @@
           this.ctsmiAbout.Text = "&About";
           this.ctsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
           // 
+          // toolStripSeparator3
+          // 
+          this.toolStripSeparator3.Name = "toolStripSeparator3";
+          this.toolStripSeparator3.Size = new System.Drawing.Size(176, 6);
+          // 
+          // ctmsiHelpTopics
+          // 
+          this.ctmsiHelpTopics.Name = "ctmsiHelpTopics";
+          this.ctmsiHelpTopics.Size = new System.Drawing.Size(179, 22);
+          this.ctmsiHelpTopics.Text = "&Help Topics";
+          this.ctmsiHelpTopics.Click += new System.EventHandler(this.tsmiHelpTopics_Click);
+          // 
           // ctsmiCheckForUpdates
           // 
           this.ctsmiCheckForUpdates.Name = "ctsmiCheckForUpdates";
           this.ctsmiCheckForUpdates.Size = new System.Drawing.Size(179, 22);
-          this.ctsmiCheckForUpdates.Text = "Check for updates...";
+          this.ctsmiCheckForUpdates.Text = "Check for &updates...";
           this.ctsmiCheckForUpdates.Click += new System.EventHandler(this.tsmiCheckForUpdates_Click);
           // 
           // ctsmiSendFeedback
           // 
           this.ctsmiSendFeedback.Name = "ctsmiSendFeedback";
           this.ctsmiSendFeedback.Size = new System.Drawing.Size(179, 22);
-          this.ctsmiSendFeedback.Text = "Send feedback...";
+          this.ctsmiSendFeedback.Text = "&Send feedback...";
           this.ctsmiSendFeedback.Click += new System.EventHandler(this.tsmiSendFeedback_Click);
           // 
-          // toolStripSeparator3
+          // ctssRestore
           // 
-          this.toolStripSeparator3.Name = "toolStripSeparator3";
-          this.toolStripSeparator3.Size = new System.Drawing.Size(176, 6);
+          this.ctssRestore.Name = "ctssRestore";
+          this.ctssRestore.Size = new System.Drawing.Size(176, 6);
           // 
           // ctsmiRestore
           // 
@@ -479,11 +510,6 @@
           this.ctsmiRestore.Size = new System.Drawing.Size(179, 22);
           this.ctsmiRestore.Text = "Res&tore";
           this.ctsmiRestore.Click += new System.EventHandler(this.ctsmiRestore_Click);
-          // 
-          // ctssRestore
-          // 
-          this.ctssRestore.Name = "ctssRestore";
-          this.ctssRestore.Size = new System.Drawing.Size(176, 6);
           // 
           // ctsmiRecord
           // 
@@ -509,14 +535,6 @@
           this.ctsmiStop.Text = "&Stop";
           this.ctsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
           // 
-          // ctsmiPlay
-          // 
-          this.ctsmiPlay.Image = global::Atf.ScreenRecorder.Properties.Resources.playback_play;
-          this.ctsmiPlay.Name = "ctsmiPlay";
-          this.ctsmiPlay.Size = new System.Drawing.Size(179, 22);
-          this.ctsmiPlay.Text = "Play";
-          this.ctsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
-          // 
           // ctsmiCancel
           // 
           this.ctsmiCancel.Image = global::Atf.ScreenRecorder.Properties.Resources.x;
@@ -524,6 +542,14 @@
           this.ctsmiCancel.Size = new System.Drawing.Size(179, 22);
           this.ctsmiCancel.Text = "&Cancel";
           this.ctsmiCancel.Click += new System.EventHandler(this.tsmiCancel_Click);
+          // 
+          // ctsmiPlay
+          // 
+          this.ctsmiPlay.Image = global::Atf.ScreenRecorder.Properties.Resources.playback_play;
+          this.ctsmiPlay.Name = "ctsmiPlay";
+          this.ctsmiPlay.Size = new System.Drawing.Size(179, 22);
+          this.ctsmiPlay.Text = "Play";
+          this.ctsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
           // 
           // toolStripSeparator1
           // 
@@ -642,5 +668,8 @@
        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
        private System.Windows.Forms.ToolStripMenuItem ctsmiExit;
        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+       private System.Windows.Forms.ToolStripMenuItem tsmiHelpTopics;
+       private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+       private System.Windows.Forms.ToolStripMenuItem ctmsiHelpTopics;
     }
  }

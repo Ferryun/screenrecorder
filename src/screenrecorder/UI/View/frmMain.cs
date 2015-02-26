@@ -144,6 +144,11 @@ namespace Atf.ScreenRecorder.UI.View {
       private void OnExit() {
          this.Close();
       }
+      private void OnHelpTopics(EventArgs e) {
+         if (this.HelpTopics != null) {
+            this.HelpTopics(this, e);
+         }
+      }
       private void OnOpenFolder(EventArgs e) {
          if (this.OpenFolder != null) {
             this.OpenFolder(this, e);
@@ -271,6 +276,9 @@ namespace Atf.ScreenRecorder.UI.View {
       private void tsmiExit_Click(object sender, EventArgs e) {
          this.OnExit();
       }
+      private void tsmiHelpTopics_Click(object sender, EventArgs e) {
+         this.OnHelpTopics(EventArgs.Empty);
+      }
       private void tsmiOptions_Click(object sender, EventArgs e) {
          this.OnOptions();
       }
@@ -294,6 +302,7 @@ namespace Atf.ScreenRecorder.UI.View {
       #region IMainView Members
       public event EventHandler Cancel;
       public event EventHandler CheckForUpdates;
+      public event EventHandler HelpTopics;
       public event EventHandler Options;
       public event EventHandler OpenFolder;
       public event EventHandler Pause;

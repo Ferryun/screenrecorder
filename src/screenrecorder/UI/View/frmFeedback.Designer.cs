@@ -103,7 +103,7 @@
          this.txtName.MaxLength = 64;
          this.txtName.Name = "txtName";
          this.txtName.Size = new System.Drawing.Size(216, 20);
-         this.txtName.TabIndex = 2;
+         this.txtName.TabIndex = 0;
          // 
          // chkSendReport
          // 
@@ -112,7 +112,7 @@
          this.chkSendReport.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
          this.chkSendReport.Name = "chkSendReport";
          this.chkSendReport.Size = new System.Drawing.Size(105, 17);
-         this.chkSendReport.TabIndex = 1;
+         this.chkSendReport.TabIndex = 4;
          this.chkSendReport.Text = "Send error report";
          this.chkSendReport.UseVisualStyleBackColor = true;
          // 
@@ -125,7 +125,7 @@
          this.txtMessage.Name = "txtMessage";
          this.txtMessage.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
          this.txtMessage.Size = new System.Drawing.Size(273, 105);
-         this.txtMessage.TabIndex = 0;
+         this.txtMessage.TabIndex = 3;
          // 
          // txtSubject
          // 
@@ -134,7 +134,7 @@
          this.txtSubject.MaxLength = 128;
          this.txtSubject.Name = "txtSubject";
          this.txtSubject.Size = new System.Drawing.Size(273, 20);
-         this.txtSubject.TabIndex = 4;
+         this.txtSubject.TabIndex = 2;
          this.txtSubject.Text = "Feedback";
          // 
          // label5
@@ -153,7 +153,7 @@
          this.txtEMail.MaxLength = 64;
          this.txtEMail.Name = "txtEMail";
          this.txtEMail.Size = new System.Drawing.Size(216, 20);
-         this.txtEMail.TabIndex = 3;
+         this.txtEMail.TabIndex = 1;
          // 
          // label4
          // 
@@ -205,6 +205,7 @@
          this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
          this.Text = "Send your feedback";
          this.Load += new System.EventHandler(this.frmFeedback_Load);
+         this.Shown += new System.EventHandler(this.frmFeedback_Shown);
          this.tableLayoutPanel1.ResumeLayout(false);
          this.tableLayoutPanel1.PerformLayout();
          this.ResumeLayout(false);

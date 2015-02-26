@@ -30,6 +30,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
    public interface IMainView : IView {
       event EventHandler Cancel;
       event EventHandler CheckForUpdates;
+      event EventHandler HelpTopics;
       event EventHandler OpenFolder;
       event EventHandler Options;
       event EventHandler Pause;

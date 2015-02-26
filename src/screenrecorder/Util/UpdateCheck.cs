@@ -35,18 +35,19 @@ namespace Atf.ScreenRecorder.Util {
 
       #region Methods
       public static UpdateInfo Check(Uri uri, string version) {
+         NameValueCollection data = new NameValueCollection();
+         data.Add(osField, Environment.OSVersion.VersionString);
+         data.Add(versionField, version);
+         byte[] output = null;
          try {
-            NameValueCollection data = new NameValueCollection();
-            data.Add(osField, Environment.OSVersion.VersionString);
-            data.Add(versionField, version);
             WebClientEx webClient = new WebClientEx();
-            byte[] output = webClient.UploadValues(uri, data);
-            return UpdateInfo.TryParse(output);
+            output = webClient.UploadValues(uri, data);
          }
          catch (WebException e) {
-            Trace.WriteLine(e.ToString());
+            Trace.TraceWarning(e.ToString());
             return null;
          }
+         return UpdateInfo.TryParse(output);
       }
       #endregion
       class WebClientEx : WebClient {
@@ -67,6 +68,8 @@ namespace Atf.ScreenRecorder.Util {
    }
    public class UpdateInfo {
       #region Fields
+      // Example of an update response from web helper:
+      // UPDATECHECK:action=Visit|version=1.2.0.0|date=2015/02/05|msg=Do you want to update?|url=[encodedurl]";
       private static readonly string expected = "UPDATECHECK:";
       private static readonly string infoAction = "action";
       private static readonly string infoDate = "date";
@@ -178,7 +181,7 @@ namespace Atf.ScreenRecorder.Util {
          catch (FormatException) {
          }
          catch (OverflowException) {
-         }         
+         }
          return updateInfo;
       }
       #endregion

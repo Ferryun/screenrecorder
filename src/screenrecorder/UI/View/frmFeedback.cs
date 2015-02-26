@@ -74,6 +74,9 @@ namespace Atf.ScreenRecorder.UI.View {
                                        (screenBounds.Height - this.Height) / 2);
          }
       }
+      private void frmFeedback_Shown(object sender, EventArgs e) {
+         this.txtMessage.Focus();
+      }
       #endregion
 
       #region IFeedbackView Members
@@ -133,6 +136,6 @@ namespace Atf.ScreenRecorder.UI.View {
          this.Result = this.DialogResult == DialogResult.OK;
          return this.Result;
       }
-      #endregion 
+      #endregion
    }
 }

@@ -59,7 +59,7 @@ namespace Atf.ScreenRecorder.Util {
       }
       private void webClient_UploadValuesCompleted(object sender, UploadValuesCompletedEventArgs e) {
          if (e.Error != null) {
-            Trace.WriteLine(e.Error.ToString());
+            Trace.TraceWarning(e.Error.ToString());
          }
          else {
             string result = System.Text.Encoding.UTF8.GetString(e.Result);

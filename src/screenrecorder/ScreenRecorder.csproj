@@ -181,7 +181,6 @@
     <None Include="Resources\Origin.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\comment.png" />
     <Content Include="Resources\empty.png" />
     <Content Include="Resources\file-directory.png" />
     <Content Include="Resources\FullScreen.png" />

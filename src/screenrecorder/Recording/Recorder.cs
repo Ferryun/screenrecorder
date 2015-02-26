@@ -156,7 +156,7 @@ namespace Atf.ScreenRecorder.Recording {
                throw new InvalidOperationException("Invalid state.");
             }
             state = RecordingState.Paused;
-            this.stateTransition.WaitOne();
+            this.stateTransition.WaitOne(); // Wait for the record thread to signal
          }
       }
       private void RaiseError(Exception e) {
@@ -183,28 +183,28 @@ namespace Atf.ScreenRecorder.Recording {
          }
          record = new RecordDelegate(this.RecordPrivate);
          AsyncCallback callback = new AsyncCallback(this.RecordCallBack);
-         record.BeginInvoke(callback, null);
+         record.BeginInvoke(callback, null); // Start a new thread for recording
       }
       private void RecordCallBack(IAsyncResult result) {
          if (result.IsCompleted) {
             try {
                this.record.EndInvoke(result);
-               this.stateTransition.Set();
+               this.stateTransition.Set(); // Let the executing thread of Stop() know that recording is stopped
             }
             catch (AviException ae) {
                this.state = RecordingState.Idle;
-               this.stateTransition.Set();
+               this.stateTransition.Set(); // Let the executing thread of Stop() know that recording is stopped
                this.RaiseError(ae);
             }
             catch (ScreenshotException se) {
                this.state = RecordingState.Idle;
-               this.stateTransition.Set();
-               this.RaiseError(se);               
+               this.stateTransition.Set(); // Let the executing thread of Stop() know that recording is stopped
+               this.RaiseError(se);
             }
             catch (TrackingException te) {
                this.state = RecordingState.Idle;
-               this.stateTransition.Set();
-               this.RaiseError(te);               
+               this.stateTransition.Set(); // Let the executing thread of Stop() know that recording is stopped
+               this.RaiseError(te);
             }
          }
       }
@@ -234,11 +234,14 @@ namespace Atf.ScreenRecorder.Recording {
                do {
                   // Check if paused
                   if (this.state == RecordingState.Paused) {
-                     this.stateTransition.Set();
+                     this.stateTransition.Set(); // Let the thread executing Pause() know that pause is done
                      while (this.state == RecordingState.Paused) {
-                        Thread.Sleep(pauseDelay);
+                        Thread.Sleep(pauseDelay);  // Sleep recording thread while paused
                      }
-                     this.stateTransition.Set();
+                     if (this.state == RecordingState.Idle) {
+                        return; // Stop() is called. Signal will be done in the RecordCallBack()
+                     }
+                     this.stateTransition.Set(); // Resume() is called, let that executing thread known resume is done
                      startingFrameIndex = frameIndex;
                      startTime = DateTime.Now.Ticks;
                   }
@@ -302,7 +305,7 @@ namespace Atf.ScreenRecorder.Recording {
                throw new InvalidOperationException("Invalid state.");
             }
             state = RecordingState.Recording;
-            this.stateTransition.WaitOne();
+            this.stateTransition.WaitOne(); // Wait for recording thread to signal
          }
       }
       public void Stop() {
@@ -311,7 +314,7 @@ namespace Atf.ScreenRecorder.Recording {
                throw new InvalidOperationException("Invalid state.");
             }
             state = RecordingState.Idle;
-            this.stateTransition.WaitOne();
+            this.stateTransition.WaitOne(); // Wait for recording thread to signal
          }
       }
       #endregion

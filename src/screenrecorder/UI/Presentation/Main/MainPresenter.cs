@@ -43,6 +43,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
       #endregion
 
       #region Fields
+      private static readonly string helpFileName = "Help.chm";
       private static readonly string updateCheckAddress = "http://chehraz.ir/projects/screenrecorder/updateCheck.php";
       private bool anyRecord = false;
       private bool autoMinimized;
@@ -208,7 +209,10 @@ namespace Atf.ScreenRecorder.UI.Presentation {
             default:
                throw new InvalidOperationException();
          }
-      } 
+      }
+      private void HelpTopics() {
+         Help.ShowHelp(this.view.Minimized ? null : (Control)this.view, helpFileName);
+      }
       private void hotKeyManager_HotKey(object sender, KeyEventArgs e) {
          Keys keyValue = e.KeyData;
          HotKeysConfig hotKeysConfig = this.configuration.HotKeys;
@@ -230,6 +234,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
          // Event Handlers
          this.view.Cancel += new EventHandler(view_Cancel);
          this.view.CheckForUpdates += new EventHandler(view_CheckForUpdates);
+         this.view.HelpTopics += new EventHandler(view_HelpTopics);
          this.view.OpenFolder += new EventHandler(view_OpenFolder);
          this.view.Options += new EventHandler(view_Options);
          this.view.Pause += new EventHandler(view_Pause);
@@ -463,7 +468,10 @@ namespace Atf.ScreenRecorder.UI.Presentation {
       }
       private void view_CheckForUpdates(object sender, EventArgs e) {
          this.CheckForUpdates();
-      }  
+      }
+      private void view_HelpTopics(object sender, EventArgs e) {
+         this.HelpTopics();
+      }
       private void view_OpenFolder(object sender, EventArgs e) {
          this.OpenFolder();
       }

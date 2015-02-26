@@ -30,7 +30,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mehrzad Chehraz (mehrzady@gmail.com)")]
-[assembly: AssemblyProduct("Screen Recorder 1.2 beta2")]
+[assembly: AssemblyProduct("Screen Recorder 1.2")]
 [assembly: AssemblyCopyright("Copyright ©  2015 Mehrzad Chehraz")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
