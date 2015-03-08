@@ -44,7 +44,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
 
       #region Fields
       private static readonly string helpFileName = "Help.chm";
-      private static readonly string updateCheckAddress = "http://chehraz.ir/projects/screenrecorder/updateCheck.php";
+      private static readonly string updateCheckAddress = "http://youraddress/updateCheck.php";
       private bool anyRecord = false;
       private bool autoMinimized;
       private Configuration configuration;

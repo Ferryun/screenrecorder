@@ -31,7 +31,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
    using System.Security;
    class FeedbackPresenter {
       private static readonly string defaultLogFileName = "application.log"; // Thats enough for now
-      private static readonly string feedbackAddress = "http://chehraz.ir/projects/screenrecorder/feedback.php";
+      private static readonly string feedbackAddress = "http://youraddress/feedback.php";
 
       private IFeedbackView view;
       public FeedbackPresenter(IFeedbackView view) {
