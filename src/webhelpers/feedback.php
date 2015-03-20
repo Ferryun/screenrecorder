@@ -49,7 +49,7 @@ if (isset($_POST["submit"]))  {
                    else {
                         unset($report);
                    }
-	     $to = "******************";
+	     $to = "mehrzady@gmail.com";
                    $message = "<body style=\"font-family:verdana, Sans serif;\">" .
                                       "<h3>Info</h3>" .
                                            "<table style=\"font-family:verdana, Sans serif;\">" . 
@@ -70,10 +70,10 @@ if (isset($_POST["submit"]))  {
 	     $mail->SMTPDebug  = 0; 
 	     $mail->SMTPAuth   = true;
 	     $mail->SMTPSecure = "tls";
-	     $mail->Host       = "******************";
+	     $mail->Host       = "smtp.gmail.com";
 	     $mail->Port       = 25;
-	     $mail->Username   = "******************";
-	     $mail->Password   = "******************";
+	     $mail->Username   = "mchehraz";
+	     $mail->Password   = "1asdfghj";
                    if (!empty($report)) {
                       $mail->AddStringAttachment($report, 'report.txt', 'base64', 'text/plain');
                    }

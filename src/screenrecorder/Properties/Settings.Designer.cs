@@ -38,12 +38,12 @@ namespace Atf.ScreenRecorder.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool General_RecordCursor {
+        public bool General_HideFromTaskbarIfMinimized {
             get {
-                return ((bool)(this["General_RecordCursor"]));
+                return ((bool)(this["General_HideFromTaskbarIfMinimized"]));
             }
             set {
-                this["General_RecordCursor"] = value;
+                this["General_HideFromTaskbarIfMinimized"] = value;
             }
         }
         
@@ -121,6 +121,77 @@ namespace Atf.ScreenRecorder.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Mouse_RecordCursor {
+            get {
+                return ((bool)(this["Mouse_RecordCursor"]));
+            }
+            set {
+                this["Mouse_RecordCursor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Mouse_HighlightCursor {
+            get {
+                return ((bool)(this["Mouse_HighlightCursor"]));
+            }
+            set {
+                this["Mouse_HighlightCursor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255, 255, 128")]
+        public global::System.Drawing.Color Mouse_HighlightCursorColor {
+            get {
+                return ((global::System.Drawing.Color)(this["Mouse_HighlightCursorColor"]));
+            }
+            set {
+                this["Mouse_HighlightCursorColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int Mouse_HighlightCursorRadious {
+            get {
+                return ((int)(this["Mouse_HighlightCursorRadious"]));
+            }
+            set {
+                this["Mouse_HighlightCursorRadious"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Sound_DeviceId {
+            get {
+                return ((string)(this["Sound_DeviceId"]));
+            }
+            set {
+                this["Sound_DeviceId"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::Atf.ScreenRecorder.Sound.SoundFormat Sound_Format {
+            get {
+                return ((global::Atf.ScreenRecorder.Sound.SoundFormat)(this["Sound_Format"]));
+            }
+            set {
+                this["Sound_Format"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0, 0, 0, 0")]
         public global::System.Drawing.Rectangle Tracking_Bounds {
             get {
@@ -176,6 +247,114 @@ namespace Atf.ScreenRecorder.Properties {
             }
             set {
                 this["Video_Quality"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("BottomLeft")]
+        public global::System.Drawing.ContentAlignment Watermark_Alignment {
+            get {
+                return ((global::System.Drawing.ContentAlignment)(this["Watermark_Alignment"]));
+            }
+            set {
+                this["Watermark_Alignment"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DarkGreen")]
+        public global::System.Drawing.Color Watermark_Color {
+            get {
+                return ((global::System.Drawing.Color)(this["Watermark_Color"]));
+            }
+            set {
+                this["Watermark_Color"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Watermark_Display {
+            get {
+                return ((bool)(this["Watermark_Display"]));
+            }
+            set {
+                this["Watermark_Display"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Microsoft Sans Serif, 10pt")]
+        public global::System.Drawing.Font Watermark_Font {
+            get {
+                return ((global::System.Drawing.Font)(this["Watermark_Font"]));
+            }
+            set {
+                this["Watermark_Font"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6, 6, 6, 6")]
+        public global::Atf.ScreenRecorder.Screen.Margins Watermark_Margin {
+            get {
+                return ((global::Atf.ScreenRecorder.Screen.Margins)(this["Watermark_Margin"]));
+            }
+            set {
+                this["Watermark_Margin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Watermark_Outline {
+            get {
+                return ((bool)(this["Watermark_Outline"]));
+            }
+            set {
+                this["Watermark_Outline"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Lime")]
+        public global::System.Drawing.Color Watermark_OutlineColor {
+            get {
+                return ((global::System.Drawing.Color)(this["Watermark_OutlineColor"]));
+            }
+            set {
+                this["Watermark_OutlineColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Watermark_RightToLeft {
+            get {
+                return ((bool)(this["Watermark_RightToLeft"]));
+            }
+            set {
+                this["Watermark_RightToLeft"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Recorded by Screen Recorder 1.3")]
+        public string Watermark_Text {
+            get {
+                return ((string)(this["Watermark_Text"]));
+            }
+            set {
+                this["Watermark_Text"] = value;
             }
         }
     }

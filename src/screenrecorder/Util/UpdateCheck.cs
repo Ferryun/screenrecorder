@@ -29,17 +29,22 @@ namespace Atf.ScreenRecorder.Util {
    using System.Text.RegularExpressions;
    static class UpdateCheck {
       #region Fields
+      private static readonly string defaultCheckAddress = "http://chehraz.ir/projects/screenrecorder/updateCheck.php";
+
       private static readonly string osField = "os";
       private static readonly string versionField = "version";
       #endregion
 
       #region Methods
+      public static UpdateInfo Check(string version) {
+         return Check(new Uri(defaultCheckAddress), version);
+      }
       public static UpdateInfo Check(Uri uri, string version) {
          NameValueCollection data = new NameValueCollection();
          data.Add(osField, Environment.OSVersion.VersionString);
          data.Add(versionField, version);
          byte[] output = null;
-         try {
+         try {          
             WebClientEx webClient = new WebClientEx();
             output = webClient.UploadValues(uri, data);
          }
@@ -66,7 +71,7 @@ namespace Atf.ScreenRecorder.Util {
       NoAction,
       Visit,
    }
-   public class UpdateInfo {
+   class UpdateInfo {
       #region Fields
       // Example of an update response from web helper:
       // UPDATECHECK:action=Visit|version=1.2.0.0|date=2015/02/05|msg=Do you want to update?|url=[encodedurl]";
@@ -181,7 +186,7 @@ namespace Atf.ScreenRecorder.Util {
          catch (FormatException) {
          }
          catch (OverflowException) {
-         }
+         }         
          return updateInfo;
       }
       #endregion

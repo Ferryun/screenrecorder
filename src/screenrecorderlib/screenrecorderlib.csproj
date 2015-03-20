@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{89E794F8-44B6-4ECF-9CE0-DE96A55F07D0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Atf.ScreenRecorder</RootNamespace>
+    <AssemblyName>screenrecorderlib</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Avi\Avi32Interop.cs" />
+    <Compile Include="Avi\AviException.cs" />
+    <Compile Include="Avi\AviFile.cs" />
+    <Compile Include="Avi\VideoCompressor.cs" />
+    <Compile Include="Recording\Recorder.cs" />
+    <Compile Include="Recording\RecordErrorEventArgs.cs" />
+    <Compile Include="Recording\RecordErrorEventHandler.cs" />
+    <Compile Include="Recording\RecordingState.cs" />
+    <Compile Include="Recording\VideoSettings.cs" />
+    <Compile Include="Screen\DisplayElements\Margins.cs" />
+    <Compile Include="Screen\DisplayElements\MarginsConverter.cs" />
+    <Compile Include="Screen\DisplayElements\MouseCursor.cs" />
+    <Compile Include="Screen\DisplayElements\MouseSettings.cs" />
+    <Compile Include="Screen\DisplayElements\Screenshot\Screenshot.cs" />
+    <Compile Include="Screen\DisplayElements\Screenshot\ScreenshotInterop.cs" />
+    <Compile Include="Screen\DisplayElements\WaterMark.cs" />
+    <Compile Include="Screen\DisplayElements\WatermarkSettings.cs" />
+    <Compile Include="Screen\DisplayFormat.cs" />
+    <Compile Include="Screen\DisplayProvider.cs" />
+    <Compile Include="Screen\DisplaySettings.cs" />
+    <Compile Include="Screen\Gdi32Interop.cs" />
+    <Compile Include="Screen\IDisplayElement.cs" />
+    <Compile Include="Screen\RenderingContext.cs" />
+    <Compile Include="Screen\ScreenException.cs" />
+    <Compile Include="Screen\Tracking\BoundsTracker.cs" />
+    <Compile Include="Screen\Tracking\TrackingException.cs" />
+    <Compile Include="Screen\Tracking\TrackingSettings.cs" />
+    <Compile Include="Screen\Tracking\TrackingType.cs" />
+    <Compile Include="Screen\User32Interop.cs" />
+    <Compile Include="Screen\Tracking\WindowInterop.cs" />
+    <Compile Include="Sound\Acm\AcmConvertFlags.cs" />
+    <Compile Include="Sound\Acm\AcmEncoder.cs" />
+    <Compile Include="Sound\Acm\AcmInterop.cs" />
+    <Compile Include="Sound\Acm\AcmConvertionMap.cs" />
+    <Compile Include="Sound\ISoundWrapper.cs" />
+    <Compile Include="Sound\KernelInterop.cs" />
+    <Compile Include="Sound\SoundDevice.cs" />
+    <Compile Include="Sound\SoundException.cs" />
+    <Compile Include="Sound\SoundFormat.cs" />
+    <Compile Include="Sound\SoundFormatConverter.cs" />
+    <Compile Include="Sound\SoundFormatTag.cs" />
+    <Compile Include="Sound\SoundProvider.cs" />
+    <Compile Include="Sound\SoundReadFlags.cs" />
+    <Compile Include="Sound\SoundSettings.cs" />
+    <Compile Include="Sound\SoundWrapperFactory.cs" />
+    <Compile Include="Sound\Util.cs" />
+    <Compile Include="Sound\WASAPI\WASAPISound.cs" />
+    <Compile Include="Sound\WASAPI\WSSoundInterop.cs" />
+    <Compile Include="Sound\WinMM\MMInterop.cs" />
+    <Compile Include="Sound\WinMM\MMSound.cs" />
+    <Compile Include="SRException.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

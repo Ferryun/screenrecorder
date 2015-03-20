@@ -29,44 +29,50 @@ namespace Atf.ScreenRecorder.Util {
       public static string CreateNewFile(string directory, string extension) {
          short number = 1;
          string fileName;
+         string path = null;
          for (; number < short.MaxValue; number++) {
-            fileName = string.Format("{0:yyyy}-{0:MM}-{0:dd}_{1:0000}.{2}", DateTime.Now, number, extension);
+            fileName = string.Format("{0:yy}-{0:MM}-{0:dd}_{0:HH}-{0:mm}_{1:0000}.{2}", DateTime.Now, number,
+                                     extension);
             string fullPath = Path.Combine(directory, fileName);
             if (!File.Exists(fullPath)) {
-               try {
-                  using (FileStream fs = new FileStream(fullPath, FileMode.CreateNew, FileAccess.Write)) {
-                     return fullPath;
-                  }
-               }               
-               catch (NotSupportedException e) {
-                  string message = string.Format("Failed to create ouput file in '{0}': {1}", fullPath, e.Message);
-                  throw new InvalidOperationException(message, e);
-               }
-               catch (DirectoryNotFoundException e) {
-                  string message = string.Format(
-                                    "Failed to create ouput file '{0}': Specified directory was not found.", fullPath);
-                  throw new InvalidOperationException(message, e);
-               }
-               catch (SecurityException e) {
-                  string message = string.Format("Failed to create ouput file '{0}': Access denied.", fullPath);
-                  throw new InvalidOperationException(message, e);
-               }
-               catch (UnauthorizedAccessException e) {
-                  string message = string.Format("Failed to create ouput file '{0}': Access denied.", fullPath);
-                  throw new InvalidOperationException(message, e);
-               }
-               catch (IOException e) {
-                  string message = string.Format("Failed to create ouput file '{0}': I/O Error: {1}", fullPath, 
-                                                 e.Message);
-                  throw new InvalidOperationException(message, e);
-               }
-               catch (ArgumentException e) {
-                  string message = string.Format("Failed to create ouput file '{0}': {1}", fullPath, e.Message);
-                  throw new InvalidOperationException(message, e);
-               }
+               path = fullPath;
+               break;
             }            
          }
-         throw new InvalidOperationException("Failed to create ouput file.");
+         if (string.IsNullOrEmpty(path)) {
+            throw new InvalidOperationException("Failed to create ouput file.");
+         }
+         try {
+            using (FileStream fs = new FileStream(path, FileMode.CreateNew, FileAccess.Write)) {
+               return path;
+            }
+         }
+         catch (NotSupportedException e) {
+            string message = string.Format("Failed to create ouput file in '{0}': {1}", path, e.Message);
+            throw new InvalidOperationException(message, e);
+         }
+         catch (DirectoryNotFoundException e) {
+            string message = string.Format("Failed to create ouput file '{0}': Specified directory was not found.",
+                                           path);
+            throw new InvalidOperationException(message, e);
+         }
+         catch (SecurityException e) {
+            string message = string.Format("Failed to create ouput file '{0}': Access denied.", path);
+            throw new InvalidOperationException(message, e);
+         }
+         catch (UnauthorizedAccessException e) {
+            string message = string.Format("Failed to create ouput file '{0}': Access denied.", path);
+            throw new InvalidOperationException(message, e);
+         }
+         catch (IOException e) {
+            string message = string.Format("Failed to create ouput file '{0}': I/O Error: {1}", path,
+                                           e.Message);
+            throw new InvalidOperationException(message, e);
+         }
+         catch (ArgumentException e) {
+            string message = string.Format("Failed to create ouput file '{0}': {1}", path, e.Message);
+            throw new InvalidOperationException(message, e);
+         }
       }
       public static void DeleteFile(string fullPath) {
          File.Delete(fullPath);

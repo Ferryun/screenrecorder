@@ -24,6 +24,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
    using Atf.ScreenRecorder.Configuration;
    using Atf.ScreenRecorder.Recording;
    using Atf.ScreenRecorder.Screen;
+   using Atf.ScreenRecorder.Sound;
    using Atf.ScreenRecorder.Util;
 
    using System;
@@ -32,7 +33,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
    using System.Drawing;
    using System.Reflection;
    using System.Windows.Forms;
-   public class MainPresenter {
+   class MainPresenter {
       #region enums
       enum HotKeyType {
          Cancel,
@@ -43,13 +44,15 @@ namespace Atf.ScreenRecorder.UI.Presentation {
       #endregion
 
       #region Fields
-      private static readonly string helpFileName = "Help.chm";
-      private static readonly string updateCheckAddress = "http://youraddress/updateCheck.php";
       private bool anyRecord = false;
       private bool autoMinimized;
       private Configuration configuration;
+      private DisplayProvider displayProvider;
+      private DisplaySettings displaySettings;
       private HotKeyManager hotKeyManager;
       private Recorder recorder;
+      private SoundProvider soundProvider;
+      private SoundSettings soundSettings;
       private IMainView view;
       #endregion
 
@@ -61,8 +64,20 @@ namespace Atf.ScreenRecorder.UI.Presentation {
          // Load configuration
          this.configuration = Configuration.Load();
          // Initialize recorder
+         this.displayProvider = new DisplayProvider();
+         this.displaySettings = new DisplaySettings() {
+            Mouse = this.displayProvider.MouseSettings,
+            Tracking = this.displayProvider.TrackingSettings,
+            Watermark = this.displayProvider.WatermarkSettings,
+         };
+         this.soundProvider = new SoundProvider();
+         this.soundSettings = new SoundSettings() {
+            DeviceId = this.soundProvider.DeviceId,
+            Format = this.soundProvider.Format,
+         };
          this.recorder = new Recorder();
          this.recorder.Error += new RecordErrorEventHandler(recorder_Error);
+
          // Initialize view
          this.view = view;
          this.InitializeView();
@@ -76,46 +91,72 @@ namespace Atf.ScreenRecorder.UI.Presentation {
       }
       #endregion
 
+      #region Properties
+      private DisplaySettings DisplaySettings {
+         get {
+            return this.displaySettings;
+         }
+         set {
+            this.displaySettings = value;
+            this.displayProvider.MouseSettings = value.Mouse;
+            this.displayProvider.TrackingSettings = value.Tracking;
+            this.displayProvider.WatermarkSettings = value.Watermark;
+         }
+      }
+      private SoundSettings SoundSettings {
+         get {
+            return this.soundSettings;
+         }
+         set {
+            this.soundSettings = value;
+            this.soundProvider.DeviceId = value.DeviceId;
+            this.soundProvider.Format = value.Format;
+         }
+      }
+      #endregion
+
       #region Methods
       private void ApplyConfiguration(Configuration oldConfiguration) {
          // General
-         GeneralConfig generalConfig = this.configuration.General;
-         this.recorder.RecordCursor = generalConfig.RecordCursor;
+         GeneralSettings general = this.configuration.General;
+         this.view.HideFromTaskbar = general.HideFromTaskbar;
+         // Display (Mouse, Tracking and Watermark)
+         this.DisplaySettings = new DisplaySettings() {
+            Mouse = configuration.Mouse,
+            Tracking = configuration.Tracking,
+            Watermark = configuration.Watermark,
+         };
+         this.view.TrackingSettings = configuration.Tracking;
          // Hot Keys
-         HotKeysConfig hotKeyConfig = this.configuration.HotKeys;
-         this.view.CancelHotKey = hotKeyConfig.Cancel;
-         this.view.PauseHotKey = hotKeyConfig.Pause;
-         this.view.RecordHotKey = hotKeyConfig.Record;
-         this.view.StopHotKey = hotKeyConfig.Stop;
+         HotKeySettings hotKey = this.configuration.HotKeys;
+         this.view.CancelHotKey = hotKey.Cancel;
+         this.view.PauseHotKey = hotKey.Pause;
+         this.view.RecordHotKey = hotKey.Record;
+         this.view.StopHotKey = hotKey.Stop;
          this.UpdateHotKeys(oldConfiguration != null ? oldConfiguration.HotKeys : null);
-         // Tracking
-         TrackingConfig trackingConfig = this.configuration.Tracking;
-         BoundsTracker tracker = trackingConfig.Tracker;
-         this.recorder.Tracker = tracker;
-         this.view.TrackingBounds = tracker.Bounds;
-         this.view.TrackingType = tracker.Type;
+         // Sound
+         SoundSettings sound = this.configuration.Sound;
+         SoundDevice[] soundDevices = SoundProvider.GetDevices();
+         this.view.SoundDevices = soundDevices;
+         string soundDeviceId = sound.DeviceId;
+         SoundDevice soundDevice = null;
+         if (!string.IsNullOrEmpty(soundDeviceId)) {
+            soundDevice = SoundProvider.GetDeviceOrDefault(soundDeviceId);
+            if (soundDevice != null) {
+               // Update configuration if device id is invalid
+               sound.DeviceId = soundDevice.Id;
+            }
+         }
+         this.view.SoundDevice = soundDevice;
+         this.SoundSettings = this.configuration.Sound;
+         // Get updated (valid) configuration from recorder
+         this.configuration.Sound = this.SoundSettings;
          // Video
-         VideoConfig videoConfig = this.configuration.Video;
-         // Create AVI compressor
-         string compressorFcc = videoConfig.Compressor;
-         uint compressorQuality = (uint)videoConfig.Quality * 100;
-         // Try create specified compressor
-         Avi.AviCompressor aviCompressor = Avi.AviCompressor.CreateOrDefault(compressorFcc);
-         if (aviCompressor != null) {
-            aviCompressor.Quality = compressorQuality;
-            videoConfig.Compressor = aviCompressor.FccHandlerString;
-         }
-         else {
-            videoConfig.Compressor = string.Empty;
-         }
-         recorder.Compressor = aviCompressor;
-         // Fps
-         int fps = videoConfig.Fps;
-         if (fps > 0) {
-            this.recorder.Fps = fps;
-         }
+         this.recorder.VideoSettings = this.configuration.Video;
+         // Get updated (valid) configuration from recorder
+         this.configuration.Video = this.recorder.VideoSettings;
          this.UpdateView();
-      }    
+      }   
       private void Cancel() {
          // Check recording state
          RecordingState state = this.recorder.State;
@@ -128,24 +169,47 @@ namespace Atf.ScreenRecorder.UI.Presentation {
             IOUtil.DeleteFile(this.recorder.FileName);
             this.UpdateView();
          }
-      }    
-      private void ChangeTracker(BoundsTracker tracker) {
+      }
+      private void ChangeSoundDevice(SoundDevice soundDevice) {
          // Check recording state
          RecordingState state = this.recorder.State;
          // Debug.Assert(state == RecordingState.Idle);
          if (state != RecordingState.Idle) {
             return;
          }
-         this.recorder.Tracker = tracker;
-         this.configuration.Tracking.Tracker = tracker;
+         SoundSettings soundSettings = this.SoundSettings;
+         if (soundDevice != null) {
+            soundSettings.DeviceId = soundDevice.Id;
+            if (soundSettings.Format == null) {
+               soundSettings.Format = SoundProvider.SuggestFormat(soundDevice.Id, null, null, null);
+               this.configuration.Sound.DeviceId = soundDevice.Id;
+            }
+         }
+         else {
+            soundSettings.DeviceId = null;
+            this.configuration.Sound = soundSettings;
+         }
+         this.SoundSettings = soundSettings;
+      }
+      private void ChangeTracker(TrackingSettings trackerSettings) {
+         // Check recording state
+         RecordingState state = this.recorder.State;
+         // Debug.Assert(state == RecordingState.Idle);
+         if (state != RecordingState.Idle) {
+            return;
+         }
+         DisplaySettings displaySettings = this.DisplaySettings;
+         displaySettings.Tracking = trackerSettings;
+         this.DisplaySettings = displaySettings;
+         this.configuration.Tracking = trackerSettings;
       }
       private void CheckForUpdates() {
          Version currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
-         UpdateInfo updateInfo = UpdateCheck.Check(new Uri(updateCheckAddress), currentVersion.ToString());
+         UpdateInfo updateInfo = UpdateCheck.Check(currentVersion.ToString());
          if (updateInfo != null) {
             switch (updateInfo.Action) {
                case UpdateAction.NoAction:
-                  this.view.ShowNoUpdate();
+                  this.view.ShowNoUpdateMessage();
                   break;
                case UpdateAction.DownloadCopy:
                case UpdateAction.DownloadInstall:
@@ -171,7 +235,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
             case RecordingState.Idle:
                result = true;
                break;
-            case RecordingState.Initializing:
+            case RecordingState.Preparing:
                break;
             case RecordingState.Paused:
             case RecordingState.Recording:
@@ -195,8 +259,8 @@ namespace Atf.ScreenRecorder.UI.Presentation {
             }
          }
          return result;
-      }      
-      private static Keys GetHotKeyFromConfig(HotKeysConfig hotKeysConfig, HotKeyType type) {
+      }
+      private static Keys GetHotKeyFromConfig(HotKeySettings hotKeysConfig, HotKeyType type) {
          switch (type) {
             case HotKeyType.Cancel:
                return hotKeysConfig.Cancel;
@@ -211,11 +275,11 @@ namespace Atf.ScreenRecorder.UI.Presentation {
          }
       }
       private void HelpTopics() {
-         Help.ShowHelp(this.view.Minimized ? null : (Control)this.view, helpFileName);
+         HelpUtil.ShowHelp(this.view.Minimized ? null : (Control)this.view);
       }
       private void hotKeyManager_HotKey(object sender, KeyEventArgs e) {
          Keys keyValue = e.KeyData;
-         HotKeysConfig hotKeysConfig = this.configuration.HotKeys;
+         HotKeySettings hotKeysConfig = this.configuration.HotKeys;
          Debug.Assert(hotKeysConfig.Global);
          if (keyValue == hotKeysConfig.Cancel) {
             this.Cancel();
@@ -240,10 +304,11 @@ namespace Atf.ScreenRecorder.UI.Presentation {
          this.view.Pause += new EventHandler(view_Pause);
          this.view.Play += new EventHandler(view_Play);
          this.view.Record += new EventHandler(view_Record);
+         this.view.SoundDeviceChanged += new EventHandler(view_SoundDeviceChanged);
          this.view.Stop += new EventHandler(view_Stop);
          this.view.TrackerChanged += new TrackerChangedEventHandler(view_TrackerChanged);
          this.view.Update += new EventHandler(view_Update);
-         this.view.ViewClosing += new System.ComponentModel.CancelEventHandler(view_ViewClosing);         
+         this.view.ViewClosing += new System.ComponentModel.CancelEventHandler(view_ViewClosing);    
       }
       private void OpenFolder() {
          if (anyRecord) {
@@ -290,17 +355,31 @@ namespace Atf.ScreenRecorder.UI.Presentation {
          }
       }
       private void ResetTracker() {
-         BoundsTracker newTracker = new BoundsTracker();
-         this.configuration.Tracking.Tracker = newTracker;
-         this.recorder.Tracker = newTracker;         
+         TrackingSettings trackingSettings = new TrackingSettings() {
+            Type = TrackingType.Full,
+         };
+         this.configuration.Tracking = trackingSettings;
+         DisplaySettings displaySettings = this.DisplaySettings;
+         displaySettings.Tracking = trackingSettings;
+         this.DisplaySettings = displaySettings;
+         this.configuration.Tracking = trackingSettings;
       }
       private void Record() {
          // Check recording state
          RecordingState state = this.recorder.State;
          Debug.Assert(state == RecordingState.Idle || state == RecordingState.Paused);
+         // Record display if tracking type is set
+         bool recordDisplay = this.configuration.Tracking.Type != TrackingType.None;
+         // Record sound if device id is set
+         bool recordSound = !string.IsNullOrEmpty(this.soundProvider.DeviceId);
+         if (!recordDisplay && !recordSound) {
+            this.view.ShowNothingToRecordMessage();
+            return;
+         }
          if (state == RecordingState.Idle) {
             try {
-               this.recorder.FileName = Util.IOUtil.CreateNewFile(configuration.General.OutputDirectory, "avi");
+               this.recorder.FileName = ScreenRecorder.Util.IOUtil.CreateNewFile(configuration.General.OutputDirectory,
+                                                                                 "avi");
             }
             catch (InvalidOperationException e) {
                Trace.TraceError(e.ToString());
@@ -313,7 +392,8 @@ namespace Atf.ScreenRecorder.UI.Presentation {
                this.autoMinimized = true;
                this.view.Minimized = true;
             }
-            this.recorder.Record();
+            
+            this.recorder.Record(recordDisplay ? this.displayProvider : null, recordSound ? this.soundProvider : null);
             this.UpdateView();
          }
          else if (state == RecordingState.Paused) {
@@ -344,8 +424,8 @@ namespace Atf.ScreenRecorder.UI.Presentation {
             this.UpdateView();
          }
       }
-      private void UpdateHotKeys(HotKeysConfig oldConfig) {
-         HotKeysConfig hotKeysConfig = this.configuration.HotKeys;
+      private void UpdateHotKeys(HotKeySettings oldConfig) {
+         HotKeySettings hotKeysConfig = this.configuration.HotKeys;
          if (hotKeysConfig.Global) {
             List<HotKeyType> hotKeyTypesToRegister = new List<HotKeyType>(new HotKeyType[] {
                HotKeyType.Cancel,
@@ -408,9 +488,11 @@ namespace Atf.ScreenRecorder.UI.Presentation {
          this.view.RecordingState = this.recorder.State;
          // Update tracking info
          this.view.AllowChangeTrackingType = state == RecordingState.Idle;
-         BoundsTracker tracker = (BoundsTracker)this.recorder.Tracker;
-         try {           
-            this.view.TrackingBounds = tracker.Bounds;
+         // Update sound recording info
+         this.view.AllowChangeSoundDevice = state == RecordingState.Idle && this.view.SoundDevices.Length > 0;
+                
+         try {
+            this.view.TrackingSettings = this.displayProvider.TrackingSettings;
          }
          catch (TrackingException e) { // This usually happens if specified window get closed
             Trace.TraceWarning(e.ToString());
@@ -419,7 +501,6 @@ namespace Atf.ScreenRecorder.UI.Presentation {
                // this.view.ShowWindowInaccessibleWarning();
             }           
          }
-         this.view.TrackingType = tracker.Type;
          // Update duration
          if (state == RecordingState.Recording || state == RecordingState.Paused || this.anyRecord) {
             this.view.RecordDuration = this.recorder.Duration;
@@ -437,7 +518,7 @@ namespace Atf.ScreenRecorder.UI.Presentation {
                this.view.AllowRecord = true;
                this.view.AllowStop = false;
                break;
-            case RecordingState.Initializing:
+            case RecordingState.Preparing:
                this.view.AllowCancel = false;
                this.view.AllowOptions = false;
                this.view.AllowPause = false;
@@ -487,11 +568,14 @@ namespace Atf.ScreenRecorder.UI.Presentation {
       private void view_Record(object sender, EventArgs e) {
          this.Record();
       }
+      private void view_SoundDeviceChanged(object sender, EventArgs e) {
+         this.ChangeSoundDevice(this.view.SoundDevice);
+      }
       private void view_Stop(object sender, EventArgs e) {
          this.Stop();
       }
       private void view_TrackerChanged(object sender, TrackerChangedEventArgs e) {
-         this.ChangeTracker(e.BoundsTracker);
+         this.ChangeTracker(e.TrackingSettings);
       }  
       private void view_Update(object sender, EventArgs e) {
          this.UpdateView();

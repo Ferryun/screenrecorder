@@ -22,5 +22,5 @@
  */
 namespace Atf.ScreenRecorder.UI.Presentation {
    using System;
-   public delegate void TrackerChangedEventHandler(object sender, TrackerChangedEventArgs e);
+   delegate void TrackerChangedEventHandler(object sender, TrackerChangedEventArgs e);
 }

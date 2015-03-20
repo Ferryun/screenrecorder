@@ -119,7 +119,7 @@ namespace Atf.ScreenRecorder.Util {
             ModifierKeys modifiers;
             Keys extractedKeys;
             ExtractKeys(hotKey, out modifiers, out extractedKeys);
-            if (!HotKeyInterop.RegisterHotKey(window.Handle, this.currentId, (uint)modifiers, (uint)extractedKeys)) {
+            if (!User32Interop.RegisterHotKey(window.Handle, this.currentId, (uint)modifiers, (uint)extractedKeys)) {
                throw new InvalidOperationException("Couldn’t register the hot key.", new Win32Exception());
             }
          }
@@ -134,7 +134,7 @@ namespace Atf.ScreenRecorder.Util {
                throw new ArgumentException("Specified hot key is not registered.");
             }
             int id = this.registredKeys[hotKey];
-            HotKeyInterop.UnregisterHotKey(window.Handle, id);
+            User32Interop.UnregisterHotKey(window.Handle, id);
             this.registredKeys.Remove(hotKey);
          }
       }
@@ -158,7 +158,7 @@ namespace Atf.ScreenRecorder.Util {
             if (disposing) {
                // unregister all the registered hot keys.
                foreach (var item in this.registredKeys) {
-                  HotKeyInterop.UnregisterHotKey(window.Handle, item.Value);
+                  User32Interop.UnregisterHotKey(window.Handle, item.Value);
                }
                this.registredKeys.Clear();
                // dispose the inner native window.
@@ -192,7 +192,7 @@ namespace Atf.ScreenRecorder.Util {
          protected override void WndProc(ref Message m) {
             base.WndProc(ref m);
             // check if we got a hot key pressed.
-            if (m.Msg == HotKeyInterop.WM_HOTKEY) {
+            if (m.Msg == User32Interop.WM_HOTKEY) {
                // get the keys.
                Keys keys = (Keys)(((int)m.LParam >> 16) & 0xFFFF);
                ModifierKeys modifiers = (ModifierKeys)((int)m.LParam & 0xFFFF);

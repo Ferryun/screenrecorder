@@ -23,9 +23,21 @@
 namespace Atf.ScreenRecorder.UI.Presentation {
    using Atf.ScreenRecorder.Avi;
    using Atf.ScreenRecorder.Configuration;
+   using Atf.ScreenRecorder.Recording;
+   using Atf.ScreenRecorder.Screen;
+   using Atf.ScreenRecorder.Sound;
+
    using System;
+   using System.Collections.Generic;
    class OptionsPresenter {
+      #region Fields
+      private static readonly string helpContextId = "106";
+
+      private List<SoundFormat> formatList;
       private IOptionsView view;
+      #endregion
+
+      #region Constructors
       public OptionsPresenter(IOptionsView view) {
          if (view == null) {
             throw new ArgumentNullException("view");
@@ -33,13 +45,30 @@ namespace Atf.ScreenRecorder.UI.Presentation {
          this.view = view;
          this.view.AboutVideCompressor += new EventHandler(view_AboutVideCompressor);
          this.view.Cancel += new EventHandler(view_Cancel);
+         this.view.CompressorChanged += new EventHandler(view_CompressorChanged);
          this.view.ConfigureVideoCompressor += new EventHandler(view_ConfigureVideoCompressor);
+         this.view.HelpRequest += new EventHandler(view_HelpRequested);
          this.view.Load += new EventHandler(view_Load);
          this.view.OK += new EventHandler(view_OK);
-         this.view.VideoCompressorChanged += new EventHandler(view_VideoCompressorChanged);
+         this.view.SoundDeviceChanged += new EventHandler(view_SoundDeviceChanged);
+         this.view.SoundFormatTagChanged += new EventHandler(view_SoundFormatTagChanged);
+      }
+      #endregion
+
+      #region Methods
+      private static bool FormatListContainsFormatTag(IList<SoundFormat> formats, SoundFormatTag tag) {
+         foreach (var format in formats) {
+            if (format.Tag == tag) {
+               return true;
+            }
+         }
+         return false;
+      }
+      private static int SoundFormatComparer(SoundFormat a, SoundFormat b) {
+         return a.AverageBytesPerSecond.CompareTo(b.AverageBytesPerSecond);
       }
       private void view_AboutVideCompressor(object sender, EventArgs e) {
-         AviCompressor compressor = this.view.SelectedVideoCompressor as AviCompressor;
+         VideoCompressor compressor = this.view.VideoCompressor as VideoCompressor;
          if (compressor != null) {
             compressor.About(this.view.Handle);
          }
@@ -48,44 +77,58 @@ namespace Atf.ScreenRecorder.UI.Presentation {
          this.view.Result = false;
          this.view.Close();
       }
+      private void view_CompressorChanged(object sender, EventArgs e) {
+         VideoCompressor comressor = this.view.VideoCompressor;
+         if (comressor != null) {
+            this.view.VideoCompressorQualitySupport = comressor.SupportsQuality;
+            if (this.view.VideoQuality <= 0) {
+               this.view.VideoQuality = (int)comressor.Quality / 100;
+            }
+         }
+         else {
+            this.view.VideoCompressorQualitySupport = false;
+            this.view.VideoQuality = 0;
+         }
+      }
       private void view_ConfigureVideoCompressor(object sender, EventArgs e) {
-         AviCompressor compressor = this.view.SelectedVideoCompressor as AviCompressor;
+         VideoCompressor compressor = this.view.VideoCompressor as VideoCompressor;
          if (compressor != null) {
             compressor.Configure(this.view.Handle);
          }
       }
+      private void view_HelpRequested(object sender, EventArgs e) {
+         ScreenRecorder.Util.HelpUtil.ShowHelpTopic((System.Windows.Forms.Control)this.view, helpContextId);
+      }
       private void view_Load(object sender, EventArgs e) {
+         // TODO: Display screen bit depth (16, 24 and 32 is currently supported)
          // Read config
          Configuration config = this.view.Configuration;
          if (config == null) {
             return;
+         }   
+         // Get list of sound devices
+         SoundDevice[] soundDevices = SoundProvider.GetDevices();
+         this.view.SoundDevices = soundDevices;
+         string soundDeviceId = config.Sound.DeviceId;
+         if (!string.IsNullOrEmpty(soundDeviceId)) {
+            foreach (var soundDevice in soundDevices) {
+               if (soundDevice.Id.Equals(soundDeviceId)) {
+                  this.view.SoundDevice = soundDevice;
+                  break;
+               }
+            }
          }
-         GeneralConfig generalConfig = config.General; 
-         HotKeysConfig hotKeysConfig = config.HotKeys;
-         TrackingConfig trackingConfig = config.Tracking;
-         VideoConfig videoConfig = config.Video;
-         this.view.BoundsTracker = trackingConfig.Tracker;
-         this.view.CancelHotKey = hotKeysConfig.Cancel;
-         this.view.GlobalHotKeys = hotKeysConfig.Global;
-         this.view.MinimuzeOnRecord = generalConfig.MinimizeOnRecord;
-         this.view.OutputDirectory = generalConfig.OutputDirectory;
-         this.view.PauseHotKey = hotKeysConfig.Pause;
-         this.view.RecordCursor = generalConfig.RecordCursor;
-         this.view.RecordHotKey = hotKeysConfig.Record;
-         this.view.StopHotKey = hotKeysConfig.Stop;
-         this.view.VideoCompressor = videoConfig.Compressor;
-         this.view.VideoFps = videoConfig.Fps;
-         this.view.VideoQuality = videoConfig.Quality;
-
-         AviCompressor[] compressors = AviCompressor.GetAll();
-         this.view.VideoCompressors = compressors;
-         string compressorFCC = this.view.VideoCompressor;
+         // Get list of video compressors
+         var compressors = new List<VideoCompressor>(VideoCompressor.GetAll());
+         compressors.Add(VideoCompressor.None);
+         this.view.VideoCompressors = compressors.ToArray();
+         string compressorFCC = this.view.Configuration.Video.Compressor;
          // Find video compressor using it's ffc handler string
          if (!string.IsNullOrEmpty(compressorFCC)) {
             foreach (var compressor in compressors) {
-               uint fccHandler = AviCompressor.FccHandlerFromString(compressorFCC);
+               uint fccHandler = VideoCompressor.FccHandlerFromString(compressorFCC);
                if (compressor.FccHandler == fccHandler) {
-                  this.view.SelectedVideoCompressor = compressor;
+                  this.view.VideoCompressor = compressor;
                   break;
                }
             }
@@ -95,32 +138,82 @@ namespace Atf.ScreenRecorder.UI.Presentation {
          Configuration config = this.view.Configuration;
          if (config == null) {
             return;
-         }
-         GeneralConfig generalConfig = config.General;
-         HotKeysConfig hotKeysConfig = config.HotKeys;
-         TrackingConfig trackingConfig = config.Tracking;
-         VideoConfig videoConfig = config.Video;
-         generalConfig.MinimizeOnRecord = this.view.MinimuzeOnRecord;
-         generalConfig.OutputDirectory = this.view.OutputDirectory;
-         generalConfig.RecordCursor = this.view.RecordCursor;
-         hotKeysConfig.Cancel = this.view.CancelHotKey;
-         hotKeysConfig.Global = this.view.GlobalHotKeys;
-         hotKeysConfig.Pause = this.view.PauseHotKey;
-         hotKeysConfig.Record = this.view.RecordHotKey;
-         hotKeysConfig.Stop = this.view.StopHotKey;
-         trackingConfig.Tracker = this.view.BoundsTracker;
-         videoConfig.Compressor = this.view.VideoCompressor;
-         videoConfig.Fps = this.view.VideoFps;
-         videoConfig.Quality = this.view.VideoQuality;  
+         }        
          this.view.Result = true;
          this.view.Close();
       }
-      private void view_VideoCompressorChanged(object sender, EventArgs e) {
-         AviCompressor compressor = this.view.SelectedVideoCompressor as AviCompressor;
-         if (compressor != null) {
-            this.view.VideoCompressorQualitySupport = compressor.SupportsQuality;
-            this.view.VideoCompressor = compressor.FccHandlerString;
+      private void view_SoundDeviceChanged(object sender, EventArgs e) {
+         SoundDevice device = this.view.SoundDevice;
+         if (device != null && !string.IsNullOrEmpty(device.Id)) {            
+            SoundFormat[] formats = null;
+            try {
+               formats = SoundProvider.GetFormats(device.Id, true);
+            }
+            catch (SoundException) {
+               this.view.SoundDevice = null;
+               this.view.SoundFormats = null;
+               this.view.SoundFormatTags = null;
+               this.view.AllowSelectSoundFormat = false;
+               this.view.AllowSelectSoundFormatTag = false;
+               return;
+            }
+            this.view.AllowSelectSoundFormat = true;
+            this.view.AllowSelectSoundFormatTag = true;
+
+            this.formatList = new List<SoundFormat>(formats);
+            this.formatList.Sort(SoundFormatComparer);
+            List<SoundFormatTag> distinctTags = new List<SoundFormatTag>(formatList.Count);
+            foreach (var format in formats) {
+               if (!distinctTags.Contains(format.Tag)) {
+                  distinctTags.Add(format.Tag);
+               }
+            }
+            SoundFormat currentFormat = this.view.SoundFormat;
+            this.view.SoundFormatTags = distinctTags.ToArray();
+            SoundFormatTag? preferredTag = null;
+            int? preferredChannels = null;
+            int? preferredSampleRate = null;
+            if (currentFormat != null) {
+               preferredTag = currentFormat.Tag;
+               preferredSampleRate = currentFormat.SamplesPerSecond;
+               preferredChannels = currentFormat.Channels;
+            }
+            SoundFormat suggestedFormat = SoundProvider.SuggestFormat(device.Id, preferredTag, preferredSampleRate,
+                                                                       preferredChannels);
+            this.view.SoundFormatTag = suggestedFormat.Tag;
+            this.view.SoundFormat = suggestedFormat;
+         }
+         else {
+            this.view.AllowSelectSoundFormat = false;
+            this.view.AllowSelectSoundFormatTag = false;
          }
       }
+      private void view_SoundFormatTagChanged(object sender, EventArgs e) {
+         SoundFormatTag? viewFormatTag = this.view.SoundFormatTag;
+         if (viewFormatTag.HasValue) {
+            List<SoundFormat> soundFormatList = new List<SoundFormat>();
+            foreach (var format in this.formatList) {
+               if (format.Tag == viewFormatTag) {
+                  soundFormatList.Add(format);
+               }
+            }
+            SoundFormat currentFormat = this.view.SoundFormat;
+            SoundFormatTag? preferredTag = viewFormatTag;
+            int? preferredSampleRate = null;
+            int? preferredChannels = null;
+            if (currentFormat != null) {
+               preferredSampleRate = currentFormat.SamplesPerSecond;
+               preferredChannels = currentFormat.Channels;
+            }
+            this.view.SoundFormats = soundFormatList.ToArray();
+            SoundFormat suggestedFormat = SoundProvider.SuggestFormat(this.view.SoundDevice.Id, viewFormatTag,
+                                                                      preferredSampleRate, preferredChannels);
+             this.view.SoundFormat = suggestedFormat;
+         }
+         else {
+            this.view.SoundFormats = null;
+         }
+      }
+      #endregion
    }
 }

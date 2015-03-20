@@ -26,7 +26,7 @@ namespace Atf.ScreenRecorder.UI.View {
    using System.Drawing;
    using System.Reflection;
    using System.Windows.Forms;
-   public partial class frmFeedback : Form, IFeedbackView {
+   partial class frmFeedback : Form, IFeedbackView {
       #region Fields
       private static readonly string info = "Thank you for using {0}! Please send your feedback in order to " +
                                             "help improve this product.";
@@ -39,20 +39,7 @@ namespace Atf.ScreenRecorder.UI.View {
       public frmFeedback() {
          InitializeComponent();
          this.presenter = new FeedbackPresenter(this);
-         this.lblInfo.Text = string.Format(info, AssemblyProduct);
-      }
-      #endregion
-
-      #region Properties
-      public string AssemblyProduct {
-         get {
-            object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute),
-                                                                                      false);
-            if (attributes.Length == 0) {
-               return string.Empty;
-            }
-            return ((AssemblyProductAttribute)attributes[0]).Product;
-         }
+         this.lblInfo.Text = string.Format(info, Application.ProductName);
       }
       #endregion
 
@@ -67,7 +54,7 @@ namespace Atf.ScreenRecorder.UI.View {
       }
       private void frmFeedback_Load(object sender, EventArgs e) {
          if (this.Owner != null && !this.Owner.Visible) {
-            // In case of activated from notify icon
+            // In case of opening from notify icon
             // this.StartPosition = FormStartPosition.CenterScreen;
             Rectangle screenBounds = Screen.PrimaryScreen.WorkingArea;
             this.Location = new Point((screenBounds.Width - this.Width) / 2,
@@ -108,16 +95,17 @@ namespace Atf.ScreenRecorder.UI.View {
          }
       }
       public void ShowEmptyMessageError() {
-         MessageBox.Show(this, messageEmptyMessage, this.AssemblyProduct, MessageBoxButtons.OK);
+         MessageBox.Show(this, messageEmptyMessage, Application.ProductName, MessageBoxButtons.OK);
          this.txtMessage.Focus();
       }
       public void ShowEmptySubjectError() {
-         MessageBox.Show(this, subjectEmptyMessage, this.AssemblyProduct, MessageBoxButtons.OK);
+         MessageBox.Show(this, subjectEmptyMessage, Application.ProductName, MessageBoxButtons.OK);
          this.txtSubject.Focus();
       }
       public void ShowThankYou() {
          this.Hide();
-         MessageBox.Show(this, thankyouMessage, this.AssemblyProduct, MessageBoxButtons.OK, MessageBoxIcon.Information);
+         MessageBox.Show(this, thankyouMessage, Application.ProductName, MessageBoxButtons.OK,
+                         MessageBoxIcon.Information);
       }
       #endregion
 

@@ -22,6 +22,7 @@
  */
 namespace Atf.ScreenRecorder.UI.View {
    using Atf.ScreenRecorder.Recording;
+   using Atf.ScreenRecorder.Sound;
    using Atf.ScreenRecorder.Screen;
    using Atf.ScreenRecorder.UI.Presentation;
 
@@ -32,7 +33,7 @@ namespace Atf.ScreenRecorder.UI.View {
    using System.Reflection;
    using System.Windows.Forms;
 
-   public partial class frmMain : Form, IMainView {
+   partial class frmMain : Form, IMainView {
       #region Fields
       private static readonly string cancelMessage = "Recording is in progress. Are you sure to want to cancel it?";
       private static readonly string errorMessageTitle = "Error";
@@ -40,39 +41,24 @@ namespace Atf.ScreenRecorder.UI.View {
       private static readonly int notifyErrorDelay = 20000;
       private static readonly int notifyWarningDelay = 10000;
       private static readonly string noUpdateMessage = "Current version is the lastest available version.";
+      private static readonly string nothingToRecord =
+         "Cannot start recoding, both display and sound recording are " +
+         "disabled. Please enable at least one of them and try again.";
       private static readonly string stopMessage = "Are you sure to want to stop recording?";
       private static readonly string updateCheckErrorMessage = "Failed to check for updates.";
       private static readonly string warningMessageTitle = "Warning";
 
-      private bool isSelectingTracker;
+      private bool hideFromTaskbar;
       private MainPresenter presenter;
-      private TrackingType prevTrackingType;
       private TimeSpan recordingDuration;
-      private TrackingType trackingType;
-      private WindowFinder windowFinder;
-      #endregion
-
-      #region Properties
-      public string AssemblyProduct {
-         get {
-            object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute),
-                                                                                      false);
-            if (attributes.Length == 0) {
-               return string.Empty;
-            }
-            return ((AssemblyProductAttribute)attributes[0]).Product;
-         }
-      }
       #endregion
 
       #region Constructors
       public frmMain() {
          InitializeComponent();
-         this.notifyIcon.Text = this.AssemblyProduct;
-         this.Text = this.AssemblyProduct;
-         this.presenter = new MainPresenter(this);
-         this.windowFinder = new WindowFinder();
-
+         this.notifyIcon.Text = Application.ProductName;
+         this.Text = Application.ProductName;
+         this.presenter = new MainPresenter(this);        
       }
       #endregion
 
@@ -94,17 +80,13 @@ namespace Atf.ScreenRecorder.UI.View {
       }
       private void btnStop_Click(object sender, EventArgs e) {
          this.OnStop(EventArgs.Empty);
-      }     
+      }
+      private void ctsmiOpenFolder_Click(object sender, EventArgs e) {
+         this.OnOpenFolder(EventArgs.Empty);
+      }
       private void ctsmiRestore_Click(object sender, EventArgs e) {
          this.OnRestore();
-      }
-      protected override void Dispose(bool disposing) {
-         if (disposing && (components != null)) {
-            components.Dispose();            
-            this.windowFinder.Dispose();
-         }
-         base.Dispose(disposing);
-      }
+      }     
       private void frmMain_FormClosing(object sender, FormClosingEventArgs e) {
          CancelEventArgs ea = new CancelEventArgs(e.Cancel);
          this.OnViewClosing(ea);
@@ -112,7 +94,9 @@ namespace Atf.ScreenRecorder.UI.View {
       }
       private void frmMain_Resize(object sender, EventArgs e) {
          if (this.WindowState == FormWindowState.Minimized) {
-            this.Hide();
+            if (this.hideFromTaskbar) {
+               this.Hide();
+            }
             this.notifyIcon.Visible = true;
          }
          else {
@@ -182,15 +166,19 @@ namespace Atf.ScreenRecorder.UI.View {
          frmFeedback frmFeedback = new frmFeedback();
          frmFeedback.ShowDialog(this);
       }
+      private void OnSoundDeviceChanged(EventArgs ea) {         
+         if (this.SoundDeviceChanged != null) {
+            this.SoundDeviceChanged(this, ea);
+         }
+      }
       private void OnStop(EventArgs e) {
          if (this.Stop != null) {
             this.Stop(this, e);
          }
       }
       private void OnTrackerChanged(TrackerChangedEventArgs ea) {
-         BoundsTracker tracker = ea.BoundsTracker;
-         this.TrackingBounds = tracker.Bounds;
-         this.TrackingType = tracker.Type;   
+         TrackingSettings trackingSettings = ea.TrackingSettings;
+         this.TrackingSettings = trackingSettings;
          if (this.TrackerChanged != null) {
             this.TrackerChanged(this, ea);
          }
@@ -210,56 +198,11 @@ namespace Atf.ScreenRecorder.UI.View {
             this.ViewClosing(this, ea);
          }
       }
-      private void rdoFixed_Click(object sender, EventArgs e) {
-         frmSelectBounds selectBoundsView = new frmSelectBounds();
-         this.isSelectingTracker = true;
-         if (selectBoundsView.ShowDialog()) {
-            this.isSelectingTracker = false;
-            BoundsTracker tracker = new BoundsTracker(selectBoundsView.SelectedBounds);
-            TrackerChangedEventArgs ea = new TrackerChangedEventArgs(tracker);
-            this.OnTrackerChanged(ea);
-         }
+      private void soundDeviceSelector_SoundDeviceChanged(object sender, EventArgs e) {
+         this.OnSoundDeviceChanged(e);
       }
-      private void rdoFull_Click(object sender, EventArgs e) {
-         BoundsTracker tracker = new BoundsTracker();
-         TrackerChangedEventArgs ea = new TrackerChangedEventArgs(tracker);
-         this.OnTrackerChanged(ea);
-      }
-      private void rdoWindow_MouseDown(object sender, MouseEventArgs e) {
-         if (!this.windowFinder.IsFinding && e.Button == MouseButtons.Left) {
-            this.windowFinder.BeginFind();
-            // Keep current tracking type in case of cancellation.
-            this.prevTrackingType = this.TrackingType;
-            // Update radio buttons state
-            this.TrackingType = TrackingType.Window;
-            // Change cursor
-            this.Cursor = Cursors.Cross;
-         }
-      }
-      private void rdoWindow_MouseMove(object sender, MouseEventArgs e) {
-         if ((e.Button & MouseButtons.Left) == MouseButtons.Left &&
-             this.windowFinder.IsFinding) {
-            this.windowFinder.Find();
-         }
-      }
-      private void rdoWindow_MouseUp(object sender, MouseEventArgs e) {
-         if (this.windowFinder.IsFinding) {
-            this.Cursor = Cursors.Default;
-            IntPtr hWnd = this.windowFinder.EndFind();
-            if (e.Button == MouseButtons.Left) {
-               if (hWnd != IntPtr.Zero) {
-                  BoundsTracker tracker = new BoundsTracker(hWnd);
-                  TrackerChangedEventArgs ea = new TrackerChangedEventArgs(tracker);
-                  this.OnTrackerChanged(ea);
-               }
-               else {                  
-                  this.TrackingType = this.prevTrackingType;
-               }
-            }
-            else {               
-               this.TrackingType = this.prevTrackingType;
-            }
-         }
+      private void trackerSelector_TrackerChanged(object sender, TrackerChangedEventArgs e) {
+         this.OnTrackerChanged(e);
       }
       private void tmrUpdate_Tick(object sender, EventArgs e) {
          this.OnUpdate(EventArgs.Empty);
@@ -296,7 +239,7 @@ namespace Atf.ScreenRecorder.UI.View {
       }
       private void tsmiStop_Click(object sender, EventArgs e) {
          this.OnStop(EventArgs.Empty);
-      }
+      }   
       #endregion
 
       #region IMainView Members
@@ -308,6 +251,7 @@ namespace Atf.ScreenRecorder.UI.View {
       public event EventHandler Pause;
       public event EventHandler Play;
       public event EventHandler Record;
+      public event EventHandler SoundDeviceChanged;
       public event EventHandler Stop;
       public event TrackerChangedEventHandler TrackerChanged;
       public new event EventHandler Update;
@@ -329,7 +273,12 @@ namespace Atf.ScreenRecorder.UI.View {
       }
       public bool AllowChangeTrackingType {
          set {
-            this.pnlTrackingType.Enabled = value;
+            this.trackerSelector.Enabled = value;
+         }
+      }
+      public bool AllowChangeSoundDevice {
+         set {
+            this.soundDeviceSelector.Enabled = value;
          }
       }
       public bool AllowPause {
@@ -368,6 +317,14 @@ namespace Atf.ScreenRecorder.UI.View {
       public Keys CancelHotKey {
          set {
             this.tsmiCancel.ShortcutKeys = value;
+         }
+      }
+      public bool HideFromTaskbar {
+         get {
+            return this.hideFromTaskbar;
+         }
+         set {
+            this.hideFromTaskbar = value;
          }
       }
       public bool Minimized {
@@ -424,7 +381,7 @@ namespace Atf.ScreenRecorder.UI.View {
                duration = string.Format("{0}{1:00}:{2:00}:{3:00}", Environment.NewLine, this.recordingDuration.Hours,
                                         this.recordingDuration.Minutes, this.recordingDuration.Seconds);
             }
-            string notifyText = string.Format("{0} ({1}){2}", this.AssemblyProduct, status, duration);
+            string notifyText = string.Format("{0} ({1}){2}", Application.ProductName, status, duration);
             if (!string.Equals(this.notifyIcon.Text, notifyText)) {
                this.notifyIcon.Text = notifyText;
             }
@@ -446,53 +403,41 @@ namespace Atf.ScreenRecorder.UI.View {
             this.recordingDuration = value;
          }
       }
+      public SoundDevice SoundDevice {
+         get {
+            return this.soundDeviceSelector.SoundDevice;
+         }
+         set {
+            this.soundDeviceSelector.SoundDevice = value;
+         }
+      }
+      public SoundDevice[] SoundDevices {
+         get {
+            return this.soundDeviceSelector.SoundDevices;
+         }
+         set {
+            this.soundDeviceSelector.SoundDevices = value;
+         }
+      }
       public Keys StopHotKey {
          set {
             this.tsmiStop.ShortcutKeys = value;                          
          }
       }
-      public Rectangle TrackingBounds {
+      public TrackingSettings TrackingSettings {
          set {
-            if (!this.isSelectingTracker) {
-               this.lblCaptureOrigin.Text = string.Format("({0}, {1})", value.Left, value.Top);
-               this.lblCaptureSize.Text = string.Format("{0}x{1}", value.Width, value.Height);
-            }
-         }
-      }
-      public TrackingType TrackingType {
-         get {
-            return this.trackingType;
-         }
-         set {
-            if (!this.isSelectingTracker) {
-               this.trackingType = value;
-               switch (value) {
-                  case TrackingType.Full:
-                     rdoFull.Checked = true;
-                     rdoPartial.Checked = false;
-                     rdoWindow.Checked = false;
-                     break;
-                  case TrackingType.Fixed:
-                     rdoFull.Checked = false;
-                     rdoPartial.Checked = true;
-                     rdoWindow.Checked = false;
-                     break;
-                  case TrackingType.Window:
-                     rdoFull.Checked = false;
-                     rdoPartial.Checked = false;
-                     rdoWindow.Checked = true;
-                     break;
-               }
-            }
+            this.trackerSelector.TrackingSettings = value;
+            this.lblCaptureOrigin.Text = string.Format("({0}, {1})", value.Bounds.Left, value.Bounds.Top);
+            this.lblCaptureSize.Text = string.Format("{0}x{1}", value.Bounds.Width, value.Bounds.Height);
          }
       }
       public bool ShowCancelMessage() {
          if (!this.Visible) {
             this.OnRestore();
          }
-         DialogResult result = MessageBox.Show(this, cancelMessage, this.AssemblyProduct,
+         DialogResult result = MessageBox.Show(this, cancelMessage, Application.ProductName,
                                                MessageBoxButtons.YesNo,
-                                               MessageBoxIcon.None, MessageBoxDefaultButton.Button2);
+                                               MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
          return (result == DialogResult.Yes);
       }
       public void ShowError(string message) {
@@ -523,7 +468,7 @@ namespace Atf.ScreenRecorder.UI.View {
 
          }
       }
-      public void ShowNoUpdate() {
+      public void ShowNoUpdateMessage() {
          if (this.Visible) {
             MessageBox.Show(this, noUpdateMessage, this.ProductName, MessageBoxButtons.OK,
                             MessageBoxIcon.None);
@@ -534,11 +479,22 @@ namespace Atf.ScreenRecorder.UI.View {
 
          }
       }
+      public void ShowNothingToRecordMessage() {
+         if (this.Visible) {
+            MessageBox.Show(this, nothingToRecord, this.ProductName, MessageBoxButtons.OK,
+                            MessageBoxIcon.None);
+         }
+         else {
+            this.notifyIcon.ShowBalloonTip(notifyWarningDelay, this.ProductName, nothingToRecord,
+                                           ToolTipIcon.None);
+
+         }
+      }
       public bool ShowStopMessage() {
          if (!this.Visible) {
             this.OnRestore();
          }
-         DialogResult result = MessageBox.Show(this, stopMessage, this.AssemblyProduct,
+         DialogResult result = MessageBox.Show(this, stopMessage, Application.ProductName,
                                                MessageBoxButtons.YesNo,
                                                MessageBoxIcon.None, MessageBoxDefaultButton.Button2);
          return (result == DialogResult.Yes);
@@ -576,6 +532,6 @@ namespace Atf.ScreenRecorder.UI.View {
          base.ShowDialog((IWin32Window)owner);
          return this.Result;
       }
-      #endregion
+      #endregion          
    }
 }

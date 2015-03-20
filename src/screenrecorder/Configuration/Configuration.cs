@@ -1,34 +1,76 @@
-﻿namespace Atf.ScreenRecorder.Configuration {
+﻿/*
+ * Copyright (c) 2015 Mehrzad Chehraz (mehrzady@gmail.com)
+ * Released under the MIT License
+ * http://chehraz.ir/mit_license
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+namespace Atf.ScreenRecorder.Configuration {
    using Atf.ScreenRecorder.Screen;
+   using Atf.ScreenRecorder.Sound;
+   using Atf.ScreenRecorder.Recording;
+   using Atf.ScreenRecorder.UI.Presentation;
+
    using System;
    using System.Drawing;
-   using System.Windows.Forms;
    using System.Configuration;
-using System.Reflection;
-using System.IO;
-   public class Configuration {
+   using System.IO;
+   using System.Reflection;
+   using System.Windows.Forms;
+
+   class Configuration {
       private static readonly string outputDirInMyDocs = "Screen Recorder";
-      public GeneralConfig General {
+      public GeneralSettings General {
          get;
-         private set;
+         set;
       }
-      public HotKeysConfig HotKeys {
+      public HotKeySettings HotKeys {
          get;
-         private set;
+         set;
       }
-      public TrackingConfig Tracking {
+      public MouseSettings Mouse {
          get;
-         private set;
+         set;
       }
-      public VideoConfig Video {
+      public SoundSettings Sound {
          get;
-         private set;
+         set;
+      }
+      public TrackingSettings Tracking {
+         get;
+         set;
+      }
+      public VideoSettings Video {
+         get;
+         set;
+      }
+      public WatermarkSettings Watermark {
+         get;
+         set;
       }
       private Configuration(Configuration copy) {
          this.General = copy.General.Clone();
          this.HotKeys = copy.HotKeys.Clone();
+         this.Mouse = copy.Mouse.Clone();
+         this.Sound = copy.Sound.Clone();
          this.Tracking = copy.Tracking.Clone();
          this.Video = copy.Video.Clone();
+         this.Watermark = copy.Watermark.Clone();
       }
       private Configuration() {
          var properties = Properties.Settings.Default;
@@ -44,41 +86,55 @@ using System.IO;
                outputDir = myDocuments;
             }
          }
-         GeneralConfig general = new GeneralConfig();
+         GeneralSettings general = new GeneralSettings();
          general.MinimizeOnRecord = properties.General_MinimizeOnRecord;
+         general.HideFromTaskbar = properties.General_HideFromTaskbarIfMinimized;
          general.OutputDirectory = outputDir;
-         general.RecordCursor = properties.General_RecordCursor;
          // Hot Keys
-         HotKeysConfig hotKeys = new HotKeysConfig();
+         HotKeySettings hotKeys = new HotKeySettings();
          hotKeys.Cancel = properties.HotKeys_Cancel;
          hotKeys.Global = properties.HotKeys_Global;
          hotKeys.Pause = properties.HotKeys_Pause;
          hotKeys.Record = properties.HotKeys_Record;
          hotKeys.Stop = properties.HotKeys_Stop;
+         // Mouse
+         MouseSettings mouse = new MouseSettings();
+         mouse.HighlightCursor = properties.Mouse_HighlightCursor;
+         mouse.HighlightCursorColor = properties.Mouse_HighlightCursorColor;
+         mouse.HighlightCursorRadious = properties.Mouse_HighlightCursorRadious;
+         mouse.RecordCursor = properties.Mouse_RecordCursor;
+         // Sound
+         SoundSettings sound = new SoundSettings();
+         sound.DeviceId = properties.Sound_DeviceId;
+         sound.Format = properties.Sound_Format;
          // Tracking
-         TrackingConfig tracking = new TrackingConfig();
-         TrackingType trackingType = properties.Tracking_Type;
-         switch (trackingType) {
-            case TrackingType.Fixed:
-               tracking.Tracker = new BoundsTracker(properties.Tracking_Bounds);
-               break;
-            case TrackingType.Full:
-            case TrackingType.Window:  // NOTE: Window Tracking won't be saved.
-               tracking.Tracker = new BoundsTracker();
-               break;
-            default:
-               throw new InvalidOperationException();
-         }
+         TrackingSettings tracking = new TrackingSettings();
+         tracking.Bounds = properties.Tracking_Bounds;
+         tracking.Type = properties.Tracking_Type;         
          // Video
-         VideoConfig video = new VideoConfig();
+         VideoSettings video = new VideoSettings();
          video.Compressor = properties.Video_Compressor;
          video.Fps = properties.Video_Fps;
          video.Quality = properties.Video_Quality;
+         // Watermark
+         WatermarkSettings waterMark = new WatermarkSettings();
+         waterMark.Alignment = properties.Watermark_Alignment;
+         waterMark.Color = properties.Watermark_Color;
+         waterMark.Display = properties.Watermark_Display;
+         waterMark.Font = properties.Watermark_Font;
+         waterMark.Margin = properties.Watermark_Margin;
+         waterMark.Outline = properties.Watermark_Outline;
+         waterMark.OutlineColor = properties.Watermark_OutlineColor;
+         waterMark.RightToLeft = properties.Watermark_RightToLeft;
+         waterMark.Text = properties.Watermark_Text;
          // Set properties
          this.General = general;
          this.HotKeys = hotKeys;
+         this.Mouse = mouse;
+         this.Sound = sound;
          this.Tracking = tracking;
          this.Video = video;
+         this.Watermark = waterMark;
       }
       public Configuration Clone() {
          return new Configuration(this);
@@ -92,105 +148,44 @@ using System.IO;
          // General
          properties.General_OutputDirectory = this.General.OutputDirectory;
          properties.General_MinimizeOnRecord = this.General.MinimizeOnRecord;
-         properties.General_RecordCursor = this.General.RecordCursor;
+         properties.General_HideFromTaskbarIfMinimized = this.General.HideFromTaskbar;
          // Hot Keys
          properties.HotKeys_Cancel = this.HotKeys.Cancel;
          properties.HotKeys_Global = this.HotKeys.Global;
          properties.HotKeys_Record = this.HotKeys.Record;
          properties.HotKeys_Stop = this.HotKeys.Stop;
+         // Mouse
+         properties.Mouse_HighlightCursor = this.Mouse.HighlightCursor;
+         properties.Mouse_HighlightCursorColor = this.Mouse.HighlightCursorColor;
+         properties.Mouse_HighlightCursorRadious = this.Mouse.HighlightCursorRadious;
+         properties.Mouse_RecordCursor = this.Mouse.RecordCursor;
+         // Sound
+         properties.Sound_DeviceId = this.Sound.DeviceId;
+         properties.Sound_Format = this.Sound.Format;
          // Tracking
-         BoundsTracker tracker = this.Tracking.Tracker;
-         if (tracker != null) {
-            switch (tracker.Type) {
-               case TrackingType.Fixed:
-                  properties.Tracking_Bounds = tracker.Bounds;
-                  properties.Tracking_Type = tracker.Type;
-                  break;
-               case TrackingType.Full:
-                  properties.Tracking_Bounds = Rectangle.Empty;
-                  properties.Tracking_Type = tracker.Type;
-                  break;
-               case TrackingType.Window:
-                  // NOTE: Window Tracking won't be saved in configuration file
-                  break;
-            }
+         if (this.Tracking.Type != TrackingType.Window) {
+            properties.Tracking_Bounds = this.Tracking.Bounds;
+            properties.Tracking_Type = this.Tracking.Type;
+         }
+         else {
+            properties.Tracking_Type = TrackingType.Full; // Window Tracking Type doest get saved
          }
          // Video
          properties.Video_Compressor = this.Video.Compressor;
          properties.Video_Fps = this.Video.Fps;
          properties.Video_Quality = this.Video.Quality;
+         // Watermark
+         properties.Watermark_Alignment = this.Watermark.Alignment;
+         properties.Watermark_Color = this.Watermark.Color;
+         properties.Watermark_Display = this.Watermark.Display;
+         properties.Watermark_Font = this.Watermark.Font;
+         properties.Watermark_Margin = this.Watermark.Margin;
+         properties.Watermark_Outline = this.Watermark.Outline;
+         properties.Watermark_OutlineColor = this.Watermark.OutlineColor;
+         properties.Watermark_RightToLeft = this.Watermark.RightToLeft;
+         properties.Watermark_Text = this.Watermark.Text;
          // Save
          properties.Save();
       }
-   }
-   public class GeneralConfig {
-      public bool MinimizeOnRecord {
-         get;
-         set;
-      }
-      public string OutputDirectory {
-         get;
-         set;
-      }
-      public bool RecordCursor {
-         get;
-         set;
-      }
-      public GeneralConfig Clone() {
-         return (GeneralConfig)this.MemberwiseClone();
-      }
-   }
-   public class HotKeysConfig {
-      public Keys Cancel {
-         get;
-         set;
-      }
-      public bool Global {
-         get;
-         set;
-      }
-      public Keys Pause {
-         get;
-         set;
-      }
-      public Keys Record {
-         get;
-         set;
-      }
-      public Keys Stop {
-         get;
-         set;
-      }
-      public HotKeysConfig Clone() {
-         return (HotKeysConfig)this.MemberwiseClone();
-      }
-   }
-   public class TrackingConfig {
-      public BoundsTracker Tracker {
-         get;
-         set;
-      }
-      public TrackingConfig Clone() {
-         return new TrackingConfig() {
-            Tracker = this.Tracker.Clone(),
-         };
-      }
-   }
-   public class VideoConfig {
-      public string Compressor {
-         get;
-         set;
-      }
-      public int Fps {
-         get;
-         set;
-      }
-      public int Quality {
-         get;
-         set;
-      }
-      public VideoConfig Clone() {
-         return (VideoConfig)this.MemberwiseClone();
-      }
-   }
+   }   
 }

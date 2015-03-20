@@ -21,77 +21,66 @@
  * THE SOFTWARE.
  */
 namespace Atf.ScreenRecorder.UI.Presentation {
+   using Atf.ScreenRecorder.Avi;
    using Atf.ScreenRecorder.Configuration;
-   using Atf.ScreenRecorder.Screen;
+   using Atf.ScreenRecorder.Sound;
+
    using System;
    using System.Drawing;
    using System.Windows.Forms;
    interface IOptionsView : IView {
       event EventHandler Cancel;
       event EventHandler AboutVideCompressor;
+      event EventHandler CompressorChanged;
       event EventHandler ConfigureVideoCompressor;
+      event EventHandler HelpRequest;
       event EventHandler Load;
       event EventHandler OK;
-      event EventHandler VideoCompressorChanged;
-      BoundsTracker BoundsTracker {
-         get;
+      event EventHandler SoundDeviceChanged;
+      event EventHandler SoundFormatTagChanged;
+      bool AllowSelectSoundFormatTag {
          set;
       }
-      Keys CancelHotKey {
-         get;
+      bool AllowSelectSoundFormat {
          set;
       }
       Configuration Configuration {
          get;
          set;
-      } 
+      }
       IntPtr Handle {
          get;
       }
-      bool GlobalHotKeys {
+
+      SoundDevice SoundDevice {
          get;
          set;
       }
-      bool MinimuzeOnRecord {
+      SoundDevice[] SoundDevices {
+         set;
+      }
+      SoundFormat[] SoundFormats {
+         set;
+      }
+      SoundFormat SoundFormat {
          get;
          set;
       }
-      string OutputDirectory {
+      SoundFormatTag? SoundFormatTag {
          get;
          set;
       }
-      Keys PauseHotKey {
-         get;
+      SoundFormatTag[] SoundFormatTags {
          set;
       }
-      bool RecordCursor {
-         get;
-         set;
-      }
-      Keys RecordHotKey {
-         get;
-         set;
-      }
-      object SelectedVideoCompressor {
-         get;
-         set;
-      }
-      Keys StopHotKey {
+      VideoCompressor VideoCompressor {
          get;
          set;
       }
       bool VideoCompressorQualitySupport {
          set;
       }
-      string VideoCompressor {
-         get;
-         set;
-      }
-      object[] VideoCompressors {
-         set;
-      }
-      int VideoFps {
-         get;
+      VideoCompressor[] VideoCompressors {
          set;
       }
       int VideoQuality {

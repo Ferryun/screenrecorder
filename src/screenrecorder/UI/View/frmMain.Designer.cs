@@ -30,10 +30,6 @@
           this.tsmiSendFeedback = new System.Windows.Forms.ToolStripMenuItem();
           this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
           this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
-          this.pnlTrackingType = new System.Windows.Forms.Panel();
-          this.rdoWindow = new System.Windows.Forms.RadioButton();
-          this.rdoPartial = new System.Windows.Forms.RadioButton();
-          this.rdoFull = new System.Windows.Forms.RadioButton();
           this.statusStrip = new System.Windows.Forms.StatusStrip();
           this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
           this.lblDuration = new System.Windows.Forms.ToolStripStatusLabel();
@@ -58,6 +54,7 @@
           this.ctmsiHelpTopics = new System.Windows.Forms.ToolStripMenuItem();
           this.ctsmiCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
           this.ctsmiSendFeedback = new System.Windows.Forms.ToolStripMenuItem();
+          this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
           this.ctssRestore = new System.Windows.Forms.ToolStripSeparator();
           this.ctsmiRestore = new System.Windows.Forms.ToolStripMenuItem();
           this.ctsmiRecord = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,8 +67,10 @@
           this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
           this.ctsmiExit = new System.Windows.Forms.ToolStripMenuItem();
           this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+          this.soundDeviceSelector = new Atf.ScreenRecorder.UI.View.SoundDeviceSelector();
+          this.trackerSelector = new Atf.ScreenRecorder.UI.View.TrackerSelector();
+          this.ctsmiOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
           this.menuStrip.SuspendLayout();
-          this.pnlTrackingType.SuspendLayout();
           this.statusStrip.SuspendLayout();
           this.contextMenuStrip.SuspendLayout();
           this.SuspendLayout();
@@ -84,7 +83,7 @@
           this.menuStrip.Location = new System.Drawing.Point(0, 0);
           this.menuStrip.Name = "menuStrip";
           this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-          this.menuStrip.Size = new System.Drawing.Size(454, 24);
+          this.menuStrip.Size = new System.Drawing.Size(380, 24);
           this.menuStrip.TabIndex = 0;
           this.menuStrip.Text = "menuStrip1";
           // 
@@ -101,7 +100,7 @@
             this.toolStripMenuItem1,
             this.tsmiExit});
           this.recordingToolStripMenuItem.Name = "recordingToolStripMenuItem";
-          this.recordingToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
+          this.recordingToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
           this.recordingToolStripMenuItem.Text = "&Recording";
           // 
           // tsmiRecord
@@ -109,7 +108,7 @@
           this.tsmiRecord.Image = global::Atf.ScreenRecorder.Properties.Resources.primitive_dot;
           this.tsmiRecord.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
           this.tsmiRecord.Name = "tsmiRecord";
-          this.tsmiRecord.Size = new System.Drawing.Size(116, 22);
+          this.tsmiRecord.Size = new System.Drawing.Size(152, 22);
           this.tsmiRecord.Text = "&Record";
           this.tsmiRecord.Click += new System.EventHandler(this.tsmiRecord_Click);
           // 
@@ -118,7 +117,7 @@
           this.tsmiPause.Image = global::Atf.ScreenRecorder.Properties.Resources.playback_pause;
           this.tsmiPause.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
           this.tsmiPause.Name = "tsmiPause";
-          this.tsmiPause.Size = new System.Drawing.Size(116, 22);
+          this.tsmiPause.Size = new System.Drawing.Size(152, 22);
           this.tsmiPause.Text = "&Pause";
           this.tsmiPause.Click += new System.EventHandler(this.tsmiPause_Click);
           // 
@@ -127,7 +126,7 @@
           this.tsmiStop.Image = global::Atf.ScreenRecorder.Properties.Resources.primitive_square;
           this.tsmiStop.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
           this.tsmiStop.Name = "tsmiStop";
-          this.tsmiStop.Size = new System.Drawing.Size(116, 22);
+          this.tsmiStop.Size = new System.Drawing.Size(152, 22);
           this.tsmiStop.Text = "&Stop";
           this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
           // 
@@ -136,7 +135,7 @@
           this.tsmiCancel.Image = global::Atf.ScreenRecorder.Properties.Resources.x;
           this.tsmiCancel.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
           this.tsmiCancel.Name = "tsmiCancel";
-          this.tsmiCancel.Size = new System.Drawing.Size(116, 22);
+          this.tsmiCancel.Size = new System.Drawing.Size(152, 22);
           this.tsmiCancel.Text = "&Cancel";
           this.tsmiCancel.Click += new System.EventHandler(this.tsmiCancel_Click);
           // 
@@ -145,31 +144,31 @@
           this.tsmiPlay.Image = global::Atf.ScreenRecorder.Properties.Resources.playback_play;
           this.tsmiPlay.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
           this.tsmiPlay.Name = "tsmiPlay";
-          this.tsmiPlay.Size = new System.Drawing.Size(116, 22);
+          this.tsmiPlay.Size = new System.Drawing.Size(152, 22);
           this.tsmiPlay.Text = "Play";
           this.tsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
           // 
           // toolStripMenuItem2
           // 
           this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-          this.toolStripMenuItem2.Size = new System.Drawing.Size(113, 6);
+          this.toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
           // 
           // tsmiOptions
           // 
           this.tsmiOptions.Name = "tsmiOptions";
-          this.tsmiOptions.Size = new System.Drawing.Size(116, 22);
+          this.tsmiOptions.Size = new System.Drawing.Size(152, 22);
           this.tsmiOptions.Text = "&Options";
           this.tsmiOptions.Click += new System.EventHandler(this.tsmiOptions_Click);
           // 
           // toolStripMenuItem1
           // 
           this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-          this.toolStripMenuItem1.Size = new System.Drawing.Size(113, 6);
+          this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
           // 
           // tsmiExit
           // 
           this.tsmiExit.Name = "tsmiExit";
-          this.tsmiExit.Size = new System.Drawing.Size(116, 22);
+          this.tsmiExit.Size = new System.Drawing.Size(152, 22);
           this.tsmiExit.Text = "E&xit";
           this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
           // 
@@ -183,104 +182,47 @@
             this.toolStripMenuItem3,
             this.tsmiAbout});
           this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-          this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+          this.helpToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
           this.helpToolStripMenuItem.Text = "&Help";
           // 
           // tsmiHelpTopics
           // 
           this.tsmiHelpTopics.Name = "tsmiHelpTopics";
           this.tsmiHelpTopics.ShortcutKeys = System.Windows.Forms.Keys.F1;
-          this.tsmiHelpTopics.Size = new System.Drawing.Size(179, 22);
+          this.tsmiHelpTopics.Size = new System.Drawing.Size(174, 22);
           this.tsmiHelpTopics.Text = "&Help Topics";
           this.tsmiHelpTopics.Click += new System.EventHandler(this.tsmiHelpTopics_Click);
           // 
           // toolStripSeparator4
           // 
           this.toolStripSeparator4.Name = "toolStripSeparator4";
-          this.toolStripSeparator4.Size = new System.Drawing.Size(176, 6);
+          this.toolStripSeparator4.Size = new System.Drawing.Size(171, 6);
           // 
           // tsmiCheckForUpdates
           // 
           this.tsmiCheckForUpdates.Name = "tsmiCheckForUpdates";
-          this.tsmiCheckForUpdates.Size = new System.Drawing.Size(179, 22);
+          this.tsmiCheckForUpdates.Size = new System.Drawing.Size(174, 22);
           this.tsmiCheckForUpdates.Text = "Check for &updates...";
           this.tsmiCheckForUpdates.Click += new System.EventHandler(this.tsmiCheckForUpdates_Click);
           // 
           // tsmiSendFeedback
           // 
           this.tsmiSendFeedback.Name = "tsmiSendFeedback";
-          this.tsmiSendFeedback.Size = new System.Drawing.Size(179, 22);
+          this.tsmiSendFeedback.Size = new System.Drawing.Size(174, 22);
           this.tsmiSendFeedback.Text = "Send &feedback...";
           this.tsmiSendFeedback.Click += new System.EventHandler(this.tsmiSendFeedback_Click);
           // 
           // toolStripMenuItem3
           // 
           this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-          this.toolStripMenuItem3.Size = new System.Drawing.Size(176, 6);
+          this.toolStripMenuItem3.Size = new System.Drawing.Size(171, 6);
           // 
           // tsmiAbout
           // 
           this.tsmiAbout.Name = "tsmiAbout";
-          this.tsmiAbout.Size = new System.Drawing.Size(179, 22);
+          this.tsmiAbout.Size = new System.Drawing.Size(174, 22);
           this.tsmiAbout.Text = "&About";
           this.tsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
-          // 
-          // pnlTrackingType
-          // 
-          this.pnlTrackingType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-          this.pnlTrackingType.AutoSize = true;
-          this.pnlTrackingType.Controls.Add(this.rdoWindow);
-          this.pnlTrackingType.Controls.Add(this.rdoPartial);
-          this.pnlTrackingType.Controls.Add(this.rdoFull);
-          this.pnlTrackingType.Location = new System.Drawing.Point(330, 37);
-          this.pnlTrackingType.Margin = new System.Windows.Forms.Padding(0);
-          this.pnlTrackingType.Name = "pnlTrackingType";
-          this.pnlTrackingType.Size = new System.Drawing.Size(115, 35);
-          this.pnlTrackingType.TabIndex = 6;
-          // 
-          // rdoWindow
-          // 
-          this.rdoWindow.Appearance = System.Windows.Forms.Appearance.Button;
-          this.rdoWindow.AutoCheck = false;
-          this.rdoWindow.Image = global::Atf.ScreenRecorder.Properties.Resources.Window;
-          this.rdoWindow.Location = new System.Drawing.Point(41, 0);
-          this.rdoWindow.Name = "rdoWindow";
-          this.rdoWindow.Size = new System.Drawing.Size(32, 32);
-          this.rdoWindow.TabIndex = 1;
-          this.rdoWindow.TabStop = true;
-          this.toolTip.SetToolTip(this.rdoWindow, "Window");
-          this.rdoWindow.UseVisualStyleBackColor = true;
-          this.rdoWindow.MouseMove += new System.Windows.Forms.MouseEventHandler(this.rdoWindow_MouseMove);
-          this.rdoWindow.MouseDown += new System.Windows.Forms.MouseEventHandler(this.rdoWindow_MouseDown);
-          this.rdoWindow.MouseUp += new System.Windows.Forms.MouseEventHandler(this.rdoWindow_MouseUp);
-          // 
-          // rdoPartial
-          // 
-          this.rdoPartial.Appearance = System.Windows.Forms.Appearance.Button;
-          this.rdoPartial.AutoCheck = false;
-          this.rdoPartial.Image = global::Atf.ScreenRecorder.Properties.Resources.Partial;
-          this.rdoPartial.Location = new System.Drawing.Point(79, 0);
-          this.rdoPartial.Name = "rdoPartial";
-          this.rdoPartial.Size = new System.Drawing.Size(32, 32);
-          this.rdoPartial.TabIndex = 2;
-          this.rdoPartial.TabStop = true;
-          this.toolTip.SetToolTip(this.rdoPartial, "Fixed");
-          this.rdoPartial.UseVisualStyleBackColor = true;
-          this.rdoPartial.Click += new System.EventHandler(this.rdoFixed_Click);
-          // 
-          // rdoFull
-          // 
-          this.rdoFull.Appearance = System.Windows.Forms.Appearance.Button;
-          this.rdoFull.AutoCheck = false;
-          this.rdoFull.Image = global::Atf.ScreenRecorder.Properties.Resources.FullScreen;
-          this.rdoFull.Location = new System.Drawing.Point(3, 0);
-          this.rdoFull.Name = "rdoFull";
-          this.rdoFull.Size = new System.Drawing.Size(32, 32);
-          this.rdoFull.TabIndex = 0;
-          this.rdoFull.TabStop = true;
-          this.toolTip.SetToolTip(this.rdoFull, "Full Screen");
-          this.rdoFull.UseVisualStyleBackColor = true;
-          this.rdoFull.Click += new System.EventHandler(this.rdoFull_Click);
           // 
           // statusStrip
           // 
@@ -289,10 +231,10 @@
             this.lblDuration,
             this.lblCaptureOrigin,
             this.lblCaptureSize});
-          this.statusStrip.Location = new System.Drawing.Point(0, 82);
+          this.statusStrip.Location = new System.Drawing.Point(0, 85);
           this.statusStrip.Name = "statusStrip";
           this.statusStrip.ShowItemToolTips = true;
-          this.statusStrip.Size = new System.Drawing.Size(454, 22);
+          this.statusStrip.Size = new System.Drawing.Size(380, 22);
           this.statusStrip.SizingGrip = false;
           this.statusStrip.TabIndex = 7;
           this.statusStrip.Text = "statusStrip1";
@@ -303,9 +245,10 @@
           this.lblStatus.AutoToolTip = true;
           this.lblStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
           this.lblStatus.Name = "lblStatus";
-          this.lblStatus.Size = new System.Drawing.Size(150, 17);
+          this.lblStatus.Size = new System.Drawing.Size(100, 17);
           this.lblStatus.Text = "[Status]";
           this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+          this.lblStatus.ToolTipText = "Status";
           // 
           // lblDuration
           // 
@@ -323,11 +266,11 @@
           this.lblCaptureOrigin.AutoSize = false;
           this.lblCaptureOrigin.AutoToolTip = true;
           this.lblCaptureOrigin.Image = global::Atf.ScreenRecorder.Properties.Resources.Origin;
-          this.lblCaptureOrigin.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+          this.lblCaptureOrigin.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
           this.lblCaptureOrigin.Name = "lblCaptureOrigin";
-          this.lblCaptureOrigin.Size = new System.Drawing.Size(100, 17);
+          this.lblCaptureOrigin.Size = new System.Drawing.Size(95, 17);
           this.lblCaptureOrigin.Text = "[Origin]";
-          this.lblCaptureOrigin.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+          this.lblCaptureOrigin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
           this.lblCaptureOrigin.ToolTipText = "Origin";
           // 
           // lblCaptureSize
@@ -335,11 +278,11 @@
           this.lblCaptureSize.AutoSize = false;
           this.lblCaptureSize.AutoToolTip = true;
           this.lblCaptureSize.Image = global::Atf.ScreenRecorder.Properties.Resources.Dimensions;
-          this.lblCaptureSize.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+          this.lblCaptureSize.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
           this.lblCaptureSize.Name = "lblCaptureSize";
-          this.lblCaptureSize.Size = new System.Drawing.Size(110, 17);
-          this.lblCaptureSize.Text = "[Size]";
-          this.lblCaptureSize.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+          this.lblCaptureSize.Size = new System.Drawing.Size(85, 17);
+          this.lblCaptureSize.Text = "(Size)";
+          this.lblCaptureSize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
           this.lblCaptureSize.ToolTipText = "Dimensions";
           // 
           // picCaptureOrigin
@@ -372,7 +315,7 @@
           // btnOpenFolder
           // 
           this.btnOpenFolder.Image = global::Atf.ScreenRecorder.Properties.Resources.file_directory;
-          this.btnOpenFolder.Location = new System.Drawing.Point(202, 37);
+          this.btnOpenFolder.Location = new System.Drawing.Point(202, 40);
           this.btnOpenFolder.Name = "btnOpenFolder";
           this.btnOpenFolder.Size = new System.Drawing.Size(32, 32);
           this.btnOpenFolder.TabIndex = 5;
@@ -383,7 +326,7 @@
           // btnPlay
           // 
           this.btnPlay.Image = global::Atf.ScreenRecorder.Properties.Resources.playback_play;
-          this.btnPlay.Location = new System.Drawing.Point(164, 37);
+          this.btnPlay.Location = new System.Drawing.Point(164, 40);
           this.btnPlay.Name = "btnPlay";
           this.btnPlay.Size = new System.Drawing.Size(32, 32);
           this.btnPlay.TabIndex = 4;
@@ -394,7 +337,7 @@
           // btnCancel
           // 
           this.btnCancel.Image = global::Atf.ScreenRecorder.Properties.Resources.x;
-          this.btnCancel.Location = new System.Drawing.Point(126, 37);
+          this.btnCancel.Location = new System.Drawing.Point(126, 40);
           this.btnCancel.Name = "btnCancel";
           this.btnCancel.Size = new System.Drawing.Size(32, 32);
           this.btnCancel.TabIndex = 3;
@@ -405,7 +348,7 @@
           // btnStop
           // 
           this.btnStop.Image = global::Atf.ScreenRecorder.Properties.Resources.primitive_square;
-          this.btnStop.Location = new System.Drawing.Point(88, 37);
+          this.btnStop.Location = new System.Drawing.Point(88, 40);
           this.btnStop.Name = "btnStop";
           this.btnStop.Size = new System.Drawing.Size(32, 32);
           this.btnStop.TabIndex = 2;
@@ -416,7 +359,7 @@
           // btnPause
           // 
           this.btnPause.Image = global::Atf.ScreenRecorder.Properties.Resources.playback_pause;
-          this.btnPause.Location = new System.Drawing.Point(50, 37);
+          this.btnPause.Location = new System.Drawing.Point(50, 40);
           this.btnPause.Name = "btnPause";
           this.btnPause.Size = new System.Drawing.Size(32, 32);
           this.btnPause.TabIndex = 1;
@@ -427,7 +370,7 @@
           // btnRecord
           // 
           this.btnRecord.Image = global::Atf.ScreenRecorder.Properties.Resources.primitive_dot;
-          this.btnRecord.Location = new System.Drawing.Point(12, 37);
+          this.btnRecord.Location = new System.Drawing.Point(12, 40);
           this.btnRecord.Name = "btnRecord";
           this.btnRecord.Size = new System.Drawing.Size(32, 32);
           this.btnRecord.TabIndex = 0;
@@ -450,8 +393,10 @@
             this.ctmsiHelpTopics,
             this.ctsmiCheckForUpdates,
             this.ctsmiSendFeedback,
-            this.ctssRestore,
+            this.toolStripSeparator5,
             this.ctsmiRestore,
+            this.ctsmiOpenFolder,
+            this.ctssRestore,
             this.ctsmiRecord,
             this.ctsmiPause,
             this.ctsmiStop,
@@ -462,52 +407,56 @@
             this.toolStripSeparator2,
             this.ctsmiExit});
           this.contextMenuStrip.Name = "contextMenuStrip";
-          this.contextMenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-          this.contextMenuStrip.Size = new System.Drawing.Size(180, 320);
+          this.contextMenuStrip.Size = new System.Drawing.Size(188, 342);
           // 
           // ctsmiAbout
           // 
           this.ctsmiAbout.Name = "ctsmiAbout";
-          this.ctsmiAbout.Size = new System.Drawing.Size(179, 22);
+          this.ctsmiAbout.Size = new System.Drawing.Size(187, 22);
           this.ctsmiAbout.Text = "&About";
           this.ctsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
           // 
           // toolStripSeparator3
           // 
           this.toolStripSeparator3.Name = "toolStripSeparator3";
-          this.toolStripSeparator3.Size = new System.Drawing.Size(176, 6);
+          this.toolStripSeparator3.Size = new System.Drawing.Size(184, 6);
           // 
           // ctmsiHelpTopics
           // 
           this.ctmsiHelpTopics.Name = "ctmsiHelpTopics";
-          this.ctmsiHelpTopics.Size = new System.Drawing.Size(179, 22);
+          this.ctmsiHelpTopics.Size = new System.Drawing.Size(187, 22);
           this.ctmsiHelpTopics.Text = "&Help Topics";
           this.ctmsiHelpTopics.Click += new System.EventHandler(this.tsmiHelpTopics_Click);
           // 
           // ctsmiCheckForUpdates
           // 
           this.ctsmiCheckForUpdates.Name = "ctsmiCheckForUpdates";
-          this.ctsmiCheckForUpdates.Size = new System.Drawing.Size(179, 22);
+          this.ctsmiCheckForUpdates.Size = new System.Drawing.Size(187, 22);
           this.ctsmiCheckForUpdates.Text = "Check for &updates...";
           this.ctsmiCheckForUpdates.Click += new System.EventHandler(this.tsmiCheckForUpdates_Click);
           // 
           // ctsmiSendFeedback
           // 
           this.ctsmiSendFeedback.Name = "ctsmiSendFeedback";
-          this.ctsmiSendFeedback.Size = new System.Drawing.Size(179, 22);
+          this.ctsmiSendFeedback.Size = new System.Drawing.Size(187, 22);
           this.ctsmiSendFeedback.Text = "&Send feedback...";
           this.ctsmiSendFeedback.Click += new System.EventHandler(this.tsmiSendFeedback_Click);
+          // 
+          // toolStripSeparator5
+          // 
+          this.toolStripSeparator5.Name = "toolStripSeparator5";
+          this.toolStripSeparator5.Size = new System.Drawing.Size(184, 6);
           // 
           // ctssRestore
           // 
           this.ctssRestore.Name = "ctssRestore";
-          this.ctssRestore.Size = new System.Drawing.Size(176, 6);
+          this.ctssRestore.Size = new System.Drawing.Size(184, 6);
           // 
           // ctsmiRestore
           // 
           this.ctsmiRestore.Image = global::Atf.ScreenRecorder.Properties.Resources.restore;
           this.ctsmiRestore.Name = "ctsmiRestore";
-          this.ctsmiRestore.Size = new System.Drawing.Size(179, 22);
+          this.ctsmiRestore.Size = new System.Drawing.Size(187, 22);
           this.ctsmiRestore.Text = "Res&tore";
           this.ctsmiRestore.Click += new System.EventHandler(this.ctsmiRestore_Click);
           // 
@@ -515,7 +464,7 @@
           // 
           this.ctsmiRecord.Image = global::Atf.ScreenRecorder.Properties.Resources.primitive_dot;
           this.ctsmiRecord.Name = "ctsmiRecord";
-          this.ctsmiRecord.Size = new System.Drawing.Size(179, 22);
+          this.ctsmiRecord.Size = new System.Drawing.Size(187, 22);
           this.ctsmiRecord.Text = "&Record";
           this.ctsmiRecord.Click += new System.EventHandler(this.tsmiRecord_Click);
           // 
@@ -523,7 +472,7 @@
           // 
           this.ctsmiPause.Image = global::Atf.ScreenRecorder.Properties.Resources.playback_pause;
           this.ctsmiPause.Name = "ctsmiPause";
-          this.ctsmiPause.Size = new System.Drawing.Size(179, 22);
+          this.ctsmiPause.Size = new System.Drawing.Size(187, 22);
           this.ctsmiPause.Text = "&Pause";
           this.ctsmiPause.Click += new System.EventHandler(this.tsmiPause_Click);
           // 
@@ -531,7 +480,7 @@
           // 
           this.ctsmiStop.Image = global::Atf.ScreenRecorder.Properties.Resources.primitive_square;
           this.ctsmiStop.Name = "ctsmiStop";
-          this.ctsmiStop.Size = new System.Drawing.Size(179, 22);
+          this.ctsmiStop.Size = new System.Drawing.Size(187, 22);
           this.ctsmiStop.Text = "&Stop";
           this.ctsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
           // 
@@ -539,7 +488,7 @@
           // 
           this.ctsmiCancel.Image = global::Atf.ScreenRecorder.Properties.Resources.x;
           this.ctsmiCancel.Name = "ctsmiCancel";
-          this.ctsmiCancel.Size = new System.Drawing.Size(179, 22);
+          this.ctsmiCancel.Size = new System.Drawing.Size(187, 22);
           this.ctsmiCancel.Text = "&Cancel";
           this.ctsmiCancel.Click += new System.EventHandler(this.tsmiCancel_Click);
           // 
@@ -547,31 +496,31 @@
           // 
           this.ctsmiPlay.Image = global::Atf.ScreenRecorder.Properties.Resources.playback_play;
           this.ctsmiPlay.Name = "ctsmiPlay";
-          this.ctsmiPlay.Size = new System.Drawing.Size(179, 22);
+          this.ctsmiPlay.Size = new System.Drawing.Size(187, 22);
           this.ctsmiPlay.Text = "Play";
           this.ctsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
           // 
           // toolStripSeparator1
           // 
           this.toolStripSeparator1.Name = "toolStripSeparator1";
-          this.toolStripSeparator1.Size = new System.Drawing.Size(176, 6);
+          this.toolStripSeparator1.Size = new System.Drawing.Size(184, 6);
           // 
           // ctsmiOptions
           // 
           this.ctsmiOptions.Name = "ctsmiOptions";
-          this.ctsmiOptions.Size = new System.Drawing.Size(179, 22);
+          this.ctsmiOptions.Size = new System.Drawing.Size(187, 22);
           this.ctsmiOptions.Text = "Options";
           this.ctsmiOptions.Click += new System.EventHandler(this.tsmiOptions_Click);
           // 
           // toolStripSeparator2
           // 
           this.toolStripSeparator2.Name = "toolStripSeparator2";
-          this.toolStripSeparator2.Size = new System.Drawing.Size(176, 6);
+          this.toolStripSeparator2.Size = new System.Drawing.Size(184, 6);
           // 
           // ctsmiExit
           // 
           this.ctsmiExit.Name = "ctsmiExit";
-          this.ctsmiExit.Size = new System.Drawing.Size(179, 22);
+          this.ctsmiExit.Size = new System.Drawing.Size(187, 22);
           this.ctsmiExit.Text = "E&xit";
           this.ctsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
           // 
@@ -580,20 +529,47 @@
           this.toolStripMenuItem4.Name = "toolStripMenuItem4";
           this.toolStripMenuItem4.Size = new System.Drawing.Size(176, 6);
           // 
+          // soundDeviceSelector
+          // 
+          this.soundDeviceSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+          this.soundDeviceSelector.Location = new System.Drawing.Point(324, 40);
+          this.soundDeviceSelector.Name = "soundDeviceSelector";
+          this.soundDeviceSelector.Size = new System.Drawing.Size(48, 32);
+          this.soundDeviceSelector.TabIndex = 7;
+          this.soundDeviceSelector.SoundDeviceChanged += new System.EventHandler(this.soundDeviceSelector_SoundDeviceChanged);
+          // 
+          // trackerSelector
+          // 
+          this.trackerSelector.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+          this.trackerSelector.Location = new System.Drawing.Point(270, 40);
+          this.trackerSelector.Name = "trackerSelector";
+          this.trackerSelector.Size = new System.Drawing.Size(48, 32);
+          this.trackerSelector.TabIndex = 6;
+          this.trackerSelector.TrackerChanged += new Atf.ScreenRecorder.UI.Presentation.TrackerChangedEventHandler(this.trackerSelector_TrackerChanged);
+          // 
+          // ctsmiOpenFolder
+          // 
+          this.ctsmiOpenFolder.Image = global::Atf.ScreenRecorder.Properties.Resources.file_directory;
+          this.ctsmiOpenFolder.Name = "ctsmiOpenFolder";
+          this.ctsmiOpenFolder.Size = new System.Drawing.Size(187, 22);
+          this.ctsmiOpenFolder.Text = "Open Containing Folder";
+          this.ctsmiOpenFolder.Click += new System.EventHandler(this.ctsmiOpenFolder_Click);
+          // 
           // frmMain
           // 
           this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
           this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-          this.ClientSize = new System.Drawing.Size(454, 104);
-          this.Controls.Add(this.btnOpenFolder);
+          this.ClientSize = new System.Drawing.Size(380, 107);
           this.Controls.Add(this.statusStrip);
+          this.Controls.Add(this.soundDeviceSelector);
+          this.Controls.Add(this.trackerSelector);
+          this.Controls.Add(this.btnOpenFolder);
           this.Controls.Add(this.btnPlay);
-          this.Controls.Add(this.pnlTrackingType);
           this.Controls.Add(this.btnCancel);
+          this.Controls.Add(this.menuStrip);
           this.Controls.Add(this.btnStop);
           this.Controls.Add(this.btnPause);
           this.Controls.Add(this.btnRecord);
-          this.Controls.Add(this.menuStrip);
           this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
           this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
           this.MainMenuStrip = this.menuStrip;
@@ -604,7 +580,6 @@
           this.Resize += new System.EventHandler(this.frmMain_Resize);
           this.menuStrip.ResumeLayout(false);
           this.menuStrip.PerformLayout();
-          this.pnlTrackingType.ResumeLayout(false);
           this.statusStrip.ResumeLayout(false);
           this.statusStrip.PerformLayout();
           this.contextMenuStrip.ResumeLayout(false);
@@ -630,10 +605,6 @@
        private System.Windows.Forms.Button btnStop;
        private System.Windows.Forms.Button btnCancel;
        private System.Windows.Forms.Button btnPlay;
-       private System.Windows.Forms.Panel pnlTrackingType;
-       private System.Windows.Forms.RadioButton rdoFull;
-       private System.Windows.Forms.RadioButton rdoWindow;
-       private System.Windows.Forms.RadioButton rdoPartial;
        private System.Windows.Forms.ToolStripMenuItem tsmiPlay;
        private System.Windows.Forms.StatusStrip statusStrip;
        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
@@ -671,5 +642,9 @@
        private System.Windows.Forms.ToolStripMenuItem tsmiHelpTopics;
        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
        private System.Windows.Forms.ToolStripMenuItem ctmsiHelpTopics;
+       private TrackerSelector trackerSelector;
+       private SoundDeviceSelector soundDeviceSelector;
+       private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+       private System.Windows.Forms.ToolStripMenuItem ctsmiOpenFolder;
     }
  }

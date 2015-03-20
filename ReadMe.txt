@@ -1,16 +1,17 @@
-Screen Recorder v.1.2
-Records user specified part of Windows desktop screen as an AVI file. The project is released under the MIT License and version 1.2 is available for download.
+Screen Recorder
+
+Recorder records specific part of Windows desktop screen as an AVI file. The option of recording system playback sound or sound from input sound devices is also available.
+
 Features:
-    User-specified capture region in three ways:
-        Full Screen
-        Fixed part of the screen
-        Window region.
-    User-specified video compressor and fps (frames per second)
-    Show/Hide mouse cursor in the recorded video
-    Customizable hot keys
-    High quality video, small output file
-    Easy to use and friendly user interface
-    Help document
+Specific capture region in four ways: Full Screen, Fixed Part of Desktop, Window Region and Track Mouse Cursor (new)
+Recording system playback sound or sound from input sound devices (usually microphones), with customizable format (new)
+Including or excluding mouse cursor in the recorded video
+Mouse cursor shadow (new)
+Watermark text with customizable style (new)
+Customizable hot keys
+User-specified video compressor and fps (frames per second)
+High quality video, small output file
+Easy to use and friendly user interface
 
 System Requirements:
     Windows XP, Vista, 7, 8, 8.1 or 10

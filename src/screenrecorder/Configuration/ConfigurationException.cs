@@ -24,12 +24,9 @@ namespace Atf.ScreenRecorder.Configuration {
    using System;
    using System.Runtime.Serialization;
    [Serializable]
-   public class ConfigurationException : Exception {
+   class ConfigurationException : SRException {
       public ConfigurationException() { }
       public ConfigurationException(string message) : base(message) { }
       public ConfigurationException(string message, Exception inner) : base(message, inner) { }
-      protected ConfigurationException(SerializationInfo info, StreamingContext context)
-         : base(info, context) {
-      }
    }
 }

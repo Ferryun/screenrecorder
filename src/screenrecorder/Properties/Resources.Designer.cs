@@ -109,9 +109,37 @@ namespace Atf.ScreenRecorder.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap icon_text {
+            get {
+                object obj = ResourceManager.GetObject("icon_text", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap iconPng {
             get {
                 object obj = ResourceManager.GetObject("iconPng", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap microphone {
+            get {
+                object obj = ResourceManager.GetObject("microphone", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap mute {
+            get {
+                object obj = ResourceManager.GetObject("mute", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap nodisplay {
+            get {
+                object obj = ResourceManager.GetObject("nodisplay", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -172,9 +200,30 @@ namespace Atf.ScreenRecorder.Properties {
             }
         }
         
+        internal static System.Drawing.Icon target {
+            get {
+                object obj = ResourceManager.GetObject("target", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Timer {
             get {
                 object obj = ResourceManager.GetObject("Timer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap TrackMouse {
+            get {
+                object obj = ResourceManager.GetObject("TrackMouse", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap unmute {
+            get {
+                object obj = ResourceManager.GetObject("unmute", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

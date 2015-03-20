@@ -10,6 +10,10 @@ using System.Runtime.InteropServices;
 @"Icon set: octicons © 2012-2014 GitHub - github.com
 Xvid is copyrighted software and released under the GNU GPL License - xvid.org 
 
+Screen Recorder is released under the MIT License
+Copyright ©  2015 Mehrzad Chehraz
+Contact: chehraz.ir, mehrzady@gmail.com
+
 The MIT License (MIT)
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the ""Software""), to deal
@@ -30,7 +34,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mehrzad Chehraz (mehrzady@gmail.com)")]
-[assembly: AssemblyProduct("Screen Recorder 1.2")]
+[assembly: AssemblyProduct("Screen Recorder")]
 [assembly: AssemblyCopyright("Copyright ©  2015 Mehrzad Chehraz")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -52,6 +56,6 @@ SOFTWARE.")]
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.*")]
-[assembly: AssemblyFileVersion("1.2.*")]
+[assembly: AssemblyVersion("1.3.*")]
+[assembly: AssemblyFileVersion("1.3.*")]
+[assembly: AssemblyInformationalVersion("1.3 beta")]

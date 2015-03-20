@@ -22,12 +22,13 @@
  */
 namespace Atf.ScreenRecorder.UI.Presentation {
    using Atf.ScreenRecorder.Recording;
+   using Atf.ScreenRecorder.Sound;
    using Atf.ScreenRecorder.Screen;
    using System;
    using System.ComponentModel;
    using System.Drawing;
    using System.Windows.Forms;
-   public interface IMainView : IView {
+   interface IMainView : IView {
       event EventHandler Cancel;
       event EventHandler CheckForUpdates;
       event EventHandler HelpTopics;
@@ -37,10 +38,14 @@ namespace Atf.ScreenRecorder.UI.Presentation {
       event EventHandler Play;
       event EventHandler Record;
       event EventHandler Stop;
+      event EventHandler SoundDeviceChanged;
       event TrackerChangedEventHandler TrackerChanged;
       event EventHandler Update;
       event CancelEventHandler ViewClosing;
       bool AllowCancel {
+         set;
+      }
+      bool AllowChangeSoundDevice {
          set;
       }
       bool AllowChangeTrackingType {
@@ -71,6 +76,10 @@ namespace Atf.ScreenRecorder.UI.Presentation {
          get;
          set;
       }
+      bool HideFromTaskbar {
+         get;
+         set;
+      }
       Keys RecordHotKey {
          set;
       }
@@ -83,19 +92,25 @@ namespace Atf.ScreenRecorder.UI.Presentation {
       RecordingState RecordingState {
          set;
       }
+      SoundDevice[] SoundDevices {
+         get;
+         set;
+      }
+      SoundDevice SoundDevice {
+         get;
+         set;
+      }
       Keys StopHotKey {
          set;
       }
-      Rectangle TrackingBounds {
-         set;
-      }
-      TrackingType TrackingType {
+      TrackingSettings TrackingSettings {
          set;
       }
       bool ShowCancelMessage();
       void ShowError(string message);
       void ShowHotKeyRegisterWarning();
-      void ShowNoUpdate();
+      void ShowNoUpdateMessage();
+      void ShowNothingToRecordMessage();
       bool ShowStopMessage();
       void ShowUpdateCheckError();
       bool ShowUpdateMessage(string p);

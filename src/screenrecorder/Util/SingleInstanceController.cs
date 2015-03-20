@@ -53,11 +53,11 @@ namespace Atf.ScreenRecorder.Util {
          catch (WaitHandleCannotBeOpenedException) {
          }
          if (notifyInstanceMessage == 0) {
-            notifyInstanceMessage = SingleInstanceInterop.RegisterWindowMessage(notifyMessageName);
+            notifyInstanceMessage = User32Interop.RegisterWindowMessage(notifyMessageName);
          }
          if (mutex != null) {
             if (notifyInstanceMessage != 0) {
-               SingleInstanceInterop.PostMessage((IntPtr)SingleInstanceInterop.HWND_BROADCAST, notifyInstanceMessage,
+               User32Interop.PostMessage((IntPtr)User32Interop.HWND_BROADCAST, notifyInstanceMessage,
                                                  0, 0);
             }
             mutex.Close();

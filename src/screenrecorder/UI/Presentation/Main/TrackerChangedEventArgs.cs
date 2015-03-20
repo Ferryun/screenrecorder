@@ -23,14 +23,14 @@
 namespace Atf.ScreenRecorder.UI.Presentation {
    using Atf.ScreenRecorder.Screen;
    using System;
-   public class TrackerChangedEventArgs : EventArgs {
-      private BoundsTracker boundsTracker;
-      public TrackerChangedEventArgs(BoundsTracker boundsTracker) {
-         this.boundsTracker = boundsTracker;
+   class TrackerChangedEventArgs : EventArgs {
+      private TrackingSettings trackerSettings;
+      public TrackerChangedEventArgs(TrackingSettings trackerSettings) {
+         this.trackerSettings = trackerSettings;
       }
-      public BoundsTracker BoundsTracker {
+      public TrackingSettings TrackingSettings {
          get {
-            return this.boundsTracker;
+            return this.trackerSettings;
          }
       }
    }

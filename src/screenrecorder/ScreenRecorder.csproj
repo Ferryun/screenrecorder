@@ -16,23 +16,6 @@
     </StartupObject>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
@@ -40,6 +23,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -59,10 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Avi\AviException.cs" />
-    <Compile Include="Avi\AviCompressor.cs" />
-    <Compile Include="Avi\Avi32Interop.cs" />
-    <Compile Include="Avi\AviFile.cs" />
+    <Compile Include="Atf.UI\ControlHostDropDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Atf.UI\DropDownButton\DropDownButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Atf.UI\DropDownButton\DropDownButtonImageSizeMode.cs" />
+    <Compile Include="Atf.UI\DropDownButton\DropDownButtonStyle.cs" />
+    <Compile Include="Atf.UI\HotKeyInput.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Configuration\ConfigurationException.cs" />
     <Compile Include="Program.cs" />
@@ -70,6 +61,10 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\View\Options\CursorHighlightOptions.resx">
+      <DependentUpon>CursorHighlightOptions.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\View\frmAboutBox.resx">
@@ -84,12 +79,28 @@
       <DependentUpon>frmMain.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\View\frmOptions.resx">
+    <EmbeddedResource Include="UI\View\Options\frmOptions.resx">
       <DependentUpon>frmOptions.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\View\frmSelectBounds.resx">
-      <DependentUpon>frmSelectBounds.cs</DependentUpon>
+    <EmbeddedResource Include="UI\View\Options\WatermarkOptions.resx">
+      <DependentUpon>WatermarkOptions.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\View\SoundDeviceSelector.resx">
+      <DependentUpon>SoundDeviceSelector.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\View\TrackerSelection\frmCustomTrackBounds.resx">
+      <DependentUpon>frmCustomTrackBounds.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\View\TrackerSelection\frmTrackBounds.resx">
+      <DependentUpon>frmTrackBounds.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\View\TrackerSelection\TrackerSelector.resx">
+      <DependentUpon>TrackerSelector.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -107,25 +118,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Recording\RecordErrorEventArgs.cs" />
-    <Compile Include="Recording\RecordErrorEventHandler.cs" />
-    <Compile Include="Recording\RecordingState.cs" />
-    <Compile Include="Recording\Recorder.cs" />
-    <Compile Include="Screen\BoundsTracking\BoundsTracker.cs" />
-    <Compile Include="Screen\BoundsTracking\IBoundsTracker.cs" />
-    <Compile Include="Screen\BoundsTracking\TrackingException.cs" />
-    <Compile Include="Screen\BoundsTracking\TrackingType.cs" />
-    <Compile Include="Screen\BoundsTracking\WindowFinder.cs" />
-    <Compile Include="Screen\BoundsTracking\WindowInterop.cs" />
-    <Compile Include="Screen\Screenshot\Screenshot.cs" />
-    <Compile Include="Screen\Screenshot\ScreenshotException.cs" />
-    <Compile Include="Screen\Screenshot\ScreenshotInterop.cs" />
     <Compile Include="UI\Presentation\Feedback\FeedbackPresenter.cs" />
     <Compile Include="UI\Presentation\Feedback\IFeedbackView.cs" />
+    <Compile Include="UI\Presentation\Options\GeneralSettings.cs" />
+    <Compile Include="UI\Presentation\Options\HotKeySettings.cs" />
+    <Compile Include="UI\View\Options\CursorHighlightOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\View\Options\CursorHighlightOptions.Designer.cs">
+      <DependentUpon>CursorHighlightOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Presentation\Options\OptionsPresenter.cs" />
-    <Compile Include="UI\Presentation\IAboutView.cs" />
     <Compile Include="UI\Presentation\Options\IOptionsView.cs" />
-    <Compile Include="UI\Presentation\ISelectBoundsView.cs" />
     <Compile Include="UI\Presentation\IView.cs" />
     <Compile Include="UI\Presentation\Main\TrackerChangedEventArgs.cs" />
     <Compile Include="UI\Presentation\Main\TrackerChangedEventHandler.cs" />
@@ -142,10 +146,10 @@
     <Compile Include="UI\View\frmFeedback.Designer.cs">
       <DependentUpon>frmFeedback.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\View\frmOptions.cs">
+    <Compile Include="UI\View\Options\frmOptions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\View\frmOptions.Designer.cs">
+    <Compile Include="UI\View\Options\frmOptions.Designer.cs">
       <DependentUpon>frmOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\View\frmMain.cs">
@@ -156,23 +160,45 @@
     </Compile>
     <Compile Include="UI\Presentation\Main\IMainView.cs" />
     <Compile Include="UI\Presentation\Main\MainPresenter.cs" />
-    <Compile Include="UI\View\frmSelectBounds.cs">
+    <Compile Include="UI\View\Options\WatermarkOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\View\Options\WatermarkOptions.Designer.cs">
+      <DependentUpon>WatermarkOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\View\SoundDeviceSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\View\SoundDeviceSelector.Designer.cs">
+      <DependentUpon>SoundDeviceSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\View\TrackerSelection\frmCustomTrackBounds.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\View\frmSelectBounds.Designer.cs">
-      <DependentUpon>frmSelectBounds.cs</DependentUpon>
+    <Compile Include="UI\View\TrackerSelection\frmCustomTrackBounds.Designer.cs">
+      <DependentUpon>frmCustomTrackBounds.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\View\HotKeyInput.cs">
-      <SubType>Component</SubType>
+    <Compile Include="UI\View\TrackerSelection\frmTrackBounds.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\View\TrackerSelection\frmTrackBounds.Designer.cs">
+      <DependentUpon>frmTrackBounds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\View\TrackerSelection\TrackerSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\View\TrackerSelection\TrackerSelector.Designer.cs">
+      <DependentUpon>TrackerSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="Util\Feedback.cs" />
+    <Compile Include="Util\HelpUtil.cs" />
     <Compile Include="Util\IOUtil.cs" />
     <Compile Include="Util\HotKeyManager.cs" />
-    <Compile Include="Util\HotKeyInterop.cs" />
     <Compile Include="Util\SingleInstanceController.cs" />
-    <Compile Include="Util\SingleInstanceInterop.cs" />
     <Compile Include="Util\UpdateCheck.cs" />
     <Compile Include="Util\Window.cs" />
+    <Compile Include="Util\WindowFinder.cs" />
+    <Compile Include="Util\User32Interop.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Dimensions.png" />
@@ -189,6 +215,10 @@
     <Content Include="Resources\icon-rec.ico" />
     <Content Include="Resources\icon.ico" />
     <Content Include="Resources\icon.png" />
+    <None Include="Resources\icon_text.png" />
+    <Content Include="Resources\microphone.png" />
+    <Content Include="Resources\mute.png" />
+    <Content Include="Resources\nodisplay.png" />
     <Content Include="Resources\Partial.png" />
     <Content Include="Resources\playback-pause.png" />
     <Content Include="Resources\playback-play.png" />
@@ -196,9 +226,21 @@
     <Content Include="Resources\primitive-dot.png" />
     <Content Include="Resources\primitive-square.png" />
     <Content Include="Resources\restore.png" />
+    <Content Include="Resources\target.ico" />
     <Content Include="Resources\Timer.png" />
+    <None Include="Resources\TrackMouse.png" />
+    <Content Include="Resources\unmute.png" />
     <Content Include="Resources\Window.png" />
     <Content Include="Resources\x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\screenrecorderlib\screenrecorderlib.csproj">
+      <Project>{89E794F8-44B6-4ECF-9CE0-DE96A55F07D0}</Project>
+      <Name>screenrecorderlib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

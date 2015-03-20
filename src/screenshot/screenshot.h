@@ -30,7 +30,13 @@
 #define BPP_24			24
 #define BPP_32			32
 #define PITCH_FACTOR	4
+#define OUTOFCLIPCLR 0x00FF00FF
+#define OUTOFCLIPCLR16 0x7C1F
+#define OUTOFCLIPCLR_R 0xFF
+#define OUTOFCLIPCLR_G 0x00
+#define OUTOFCLIPCLR_B 0xFF
 
+#define IsPointInRect(rect, x, y) (y  < rect.bottom && y >= rect.top && x < rect.right && x >= rect.left)
 struct SCREENSHOT {
 	LPDIRECTDRAW			lpddraw;		
 	LPDIRECTDRAWSURFACE	lpPrimarySurface;
@@ -41,15 +47,15 @@ struct SCREENSHOT {
 	long						pitch;
 };
 
+
 HRESULT CreateDDSurfaces(SCREENSHOT *ps);
 HRESULT CreateDirectDraw(SCREENSHOT *ps);
-BOOL DrawCursor(BYTE* ppBitmapBits, INT x, INT y, INT width, INT height, INT bpp);
 BOOL FormatDDError(LONG error, PWSTR pMessage);
 BOOL FormatSSError(LONG error, PWSTR pMessage);
-LONG GetOutputBitsPerPixel(SCREENSHOT *ps);
 HRESULT ReleaseDirectDraw(SCREENSHOT *ps);
 HRESULT ReleaseDDSurfaces(SCREENSHOT *ps);
-void Surface32ToBitmap24(DWORD *pSource, BYTE *pDest, INT pitch, INT width, INT height);
-void Surface24ToBitmap24(BYTE *pSource, BYTE *pDest, INT pitch, INT width, INT height);
-void Surface16ToBitmap16(WORD *pSource, WORD *pDest, INT pitch, INT width, INT height);
+LONG SetOutputBitsPerPixel(SCREENSHOT *ps, int bpp);
+void Surface32ToBitmap24(DWORD *pSource, BYTE *pDest, INT pitch, INT width, INT height, RECT rect);
+void Surface24ToBitmap24(BYTE *pSource, BYTE *pDest, INT pitch, INT width, INT height, RECT rect);
+void Surface16ToBitmap16(WORD *pSource, WORD *pDest, INT pitch, INT width, INT height, RECT rect);
 #endif

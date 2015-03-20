@@ -5,7 +5,7 @@
     <Setting Name="General_OutputDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="General_RecordCursor" Type="System.Boolean" Scope="User">
+    <Setting Name="General_HideFromTaskbarIfMinimized" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="General_MinimizeOnRecord" Type="System.Boolean" Scope="User">
@@ -26,6 +26,24 @@
     <Setting Name="HotKeys_Stop" Type="System.Windows.Forms.Keys" Scope="User">
       <Value Profile="(Default)">Ctrl+Alt+S</Value>
     </Setting>
+    <Setting Name="Mouse_RecordCursor" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Mouse_HighlightCursor" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Mouse_HighlightCursorColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">255, 255, 128</Value>
+    </Setting>
+    <Setting Name="Mouse_HighlightCursorRadious" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="Sound_DeviceId" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Sound_Format" Type="Atf.ScreenRecorder.Sound.SoundFormat" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="Tracking_Bounds" Type="System.Drawing.Rectangle" Scope="User">
       <Value Profile="(Default)">0, 0, 0, 0</Value>
     </Setting>
@@ -40,6 +58,33 @@
     </Setting>
     <Setting Name="Video_Quality" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">75</Value>
+    </Setting>
+    <Setting Name="Watermark_Alignment" Type="System.Drawing.ContentAlignment" Scope="User">
+      <Value Profile="(Default)">BottomLeft</Value>
+    </Setting>
+    <Setting Name="Watermark_Color" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">DarkGreen</Value>
+    </Setting>
+    <Setting Name="Watermark_Display" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Watermark_Font" Type="System.Drawing.Font" Scope="User">
+      <Value Profile="(Default)">Microsoft Sans Serif, 10pt</Value>
+    </Setting>
+    <Setting Name="Watermark_Margin" Type="Atf.ScreenRecorder.Screen.Margins" Scope="User">
+      <Value Profile="(Default)">6, 6, 6, 6</Value>
+    </Setting>
+    <Setting Name="Watermark_Outline" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Watermark_OutlineColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Lime</Value>
+    </Setting>
+    <Setting Name="Watermark_RightToLeft" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Watermark_Text" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Recorded by Screen Recorder 1.3</Value>
     </Setting>
   </Settings>
 </SettingsFile>
