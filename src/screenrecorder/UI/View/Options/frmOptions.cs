@@ -228,6 +228,7 @@ namespace Atf.ScreenRecorder.UI.View {
          mouse.HighlightCursor = this.chkHighlighCursor.Checked;
          mouse.HighlightCursorColor = this.cursorHighlightOptions.Color;
          mouse.HighlightCursorRadious = this.cursorHighlightOptions.Radious;
+         mouse.RecordCursor = this.chkRecordCursor.Checked;
          // Sound
          SoundSettings sound = this.configuration.Sound;
          SoundDevice selectedSoundDevice = this.soundDeviceSelector.SoundDevice;

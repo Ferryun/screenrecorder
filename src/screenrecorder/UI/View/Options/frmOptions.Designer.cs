@@ -35,6 +35,8 @@
          this.chkRecordCursor = new System.Windows.Forms.CheckBox();
          this.pnlHighlightCursor = new System.Windows.Forms.Panel();
          this.chkHighlighCursor = new System.Windows.Forms.CheckBox();
+         this.btnHighlight = new Atf.UI.DropDownButton();
+         this.chdHighlight = new Atf.UI.ControlHostDropDown();
          this.txtWatermark = new System.Windows.Forms.TextBox();
          this.grpVideo = new System.Windows.Forms.GroupBox();
          this.lblQuality = new System.Windows.Forms.Label();
@@ -47,7 +49,11 @@
          this.btnAbout = new System.Windows.Forms.Button();
          this.btnConfigure = new System.Windows.Forms.Button();
          this.grpHotKeys = new System.Windows.Forms.GroupBox();
+         this.hkCancel = new Atf.UI.HotKeyInput();
          this.label10 = new System.Windows.Forms.Label();
+         this.hkStop = new Atf.UI.HotKeyInput();
+         this.hkPause = new Atf.UI.HotKeyInput();
+         this.hkRecord = new Atf.UI.HotKeyInput();
          this.label9 = new System.Windows.Forms.Label();
          this.label8 = new System.Windows.Forms.Label();
          this.label7 = new System.Windows.Forms.Label();
@@ -56,21 +62,15 @@
          this.label6 = new System.Windows.Forms.Label();
          this.cmbSoundFormatTag = new System.Windows.Forms.ComboBox();
          this.label4 = new System.Windows.Forms.Label();
+         this.soundDeviceSelector = new Atf.ScreenRecorder.UI.View.SoundDeviceSelector();
          this.cmbSoundFormat = new System.Windows.Forms.ComboBox();
          this.label17 = new System.Windows.Forms.Label();
          this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
          this.grpVisualElements = new System.Windows.Forms.GroupBox();
          this.pnlWatermark = new System.Windows.Forms.Panel();
-         this.chkWatermark = new System.Windows.Forms.CheckBox();
          this.btnWatermark = new Atf.UI.DropDownButton();
          this.chdWatermark = new Atf.UI.ControlHostDropDown();
-         this.btnHighlight = new Atf.UI.DropDownButton();
-         this.chdHighlight = new Atf.UI.ControlHostDropDown();
-         this.hkCancel = new Atf.UI.HotKeyInput();
-         this.hkStop = new Atf.UI.HotKeyInput();
-         this.hkPause = new Atf.UI.HotKeyInput();
-         this.hkRecord = new Atf.UI.HotKeyInput();
-         this.soundDeviceSelector = new Atf.ScreenRecorder.UI.View.SoundDeviceSelector();
+         this.chkWatermark = new System.Windows.Forms.CheckBox();
          this.grpGeneral.SuspendLayout();
          this.pnlHighlightCursor.SuspendLayout();
          this.grpVideo.SuspendLayout();
@@ -85,7 +85,7 @@
          // 
          this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
          this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-         this.btnCancel.Location = new System.Drawing.Point(335, 548);
+         this.btnCancel.Location = new System.Drawing.Point(335, 557);
          this.btnCancel.Name = "btnCancel";
          this.btnCancel.Size = new System.Drawing.Size(75, 26);
          this.btnCancel.TabIndex = 6;
@@ -96,7 +96,7 @@
          // btnOK
          // 
          this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-         this.btnOK.Location = new System.Drawing.Point(254, 548);
+         this.btnOK.Location = new System.Drawing.Point(254, 557);
          this.btnOK.Name = "btnOK";
          this.btnOK.Size = new System.Drawing.Size(75, 26);
          this.btnOK.TabIndex = 5;
@@ -107,9 +107,9 @@
          // label1
          // 
          this.label1.AutoSize = true;
-         this.label1.Location = new System.Drawing.Point(6, 16);
+         this.label1.Location = new System.Drawing.Point(7, 20);
          this.label1.Name = "label1";
-         this.label1.Size = new System.Drawing.Size(85, 13);
+         this.label1.Size = new System.Drawing.Size(91, 13);
          this.label1.TabIndex = 19;
          this.label1.Text = "Output directory:";
          // 
@@ -117,16 +117,16 @@
          // 
          this.txtOutputDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                      | System.Windows.Forms.AnchorStyles.Right)));
-         this.txtOutputDirectory.Location = new System.Drawing.Point(97, 13);
+         this.txtOutputDirectory.Location = new System.Drawing.Point(103, 17);
          this.txtOutputDirectory.Name = "txtOutputDirectory";
          this.txtOutputDirectory.ReadOnly = true;
-         this.txtOutputDirectory.Size = new System.Drawing.Size(216, 20);
+         this.txtOutputDirectory.Size = new System.Drawing.Size(210, 20);
          this.txtOutputDirectory.TabIndex = 0;
          // 
          // btnBrowse
          // 
          this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-         this.btnBrowse.Location = new System.Drawing.Point(321, 11);
+         this.btnBrowse.Location = new System.Drawing.Point(321, 13);
          this.btnBrowse.Name = "btnBrowse";
          this.btnBrowse.Size = new System.Drawing.Size(69, 26);
          this.btnBrowse.TabIndex = 1;
@@ -145,7 +145,7 @@
          this.grpGeneral.Controls.Add(this.txtOutputDirectory);
          this.grpGeneral.Location = new System.Drawing.Point(10, 3);
          this.grpGeneral.Name = "grpGeneral";
-         this.grpGeneral.Size = new System.Drawing.Size(401, 84);
+         this.grpGeneral.Size = new System.Drawing.Size(401, 88);
          this.grpGeneral.TabIndex = 0;
          this.grpGeneral.TabStop = false;
          this.grpGeneral.Text = "General";
@@ -153,9 +153,9 @@
          // chkHideFromTaskbar
          // 
          this.chkHideFromTaskbar.AutoSize = true;
-         this.chkHideFromTaskbar.Location = new System.Drawing.Point(7, 62);
+         this.chkHideFromTaskbar.Location = new System.Drawing.Point(10, 66);
          this.chkHideFromTaskbar.Name = "chkHideFromTaskbar";
-         this.chkHideFromTaskbar.Size = new System.Drawing.Size(109, 17);
+         this.chkHideFromTaskbar.Size = new System.Drawing.Size(111, 17);
          this.chkHideFromTaskbar.TabIndex = 3;
          this.chkHideFromTaskbar.Text = "Hide from taskbar";
          this.chkHideFromTaskbar.UseVisualStyleBackColor = true;
@@ -163,9 +163,9 @@
          // chkMinimizeOnRecord
          // 
          this.chkMinimizeOnRecord.AutoSize = true;
-         this.chkMinimizeOnRecord.Location = new System.Drawing.Point(7, 39);
+         this.chkMinimizeOnRecord.Location = new System.Drawing.Point(10, 43);
          this.chkMinimizeOnRecord.Name = "chkMinimizeOnRecord";
-         this.chkMinimizeOnRecord.Size = new System.Drawing.Size(170, 17);
+         this.chkMinimizeOnRecord.Size = new System.Drawing.Size(173, 17);
          this.chkMinimizeOnRecord.TabIndex = 2;
          this.chkMinimizeOnRecord.Text = "Minimize when recording starts";
          this.chkMinimizeOnRecord.UseVisualStyleBackColor = true;
@@ -173,7 +173,7 @@
          // chkRecordCursor
          // 
          this.chkRecordCursor.AutoSize = true;
-         this.chkRecordCursor.Location = new System.Drawing.Point(8, 22);
+         this.chkRecordCursor.Location = new System.Drawing.Point(10, 22);
          this.chkRecordCursor.Name = "chkRecordCursor";
          this.chkRecordCursor.Size = new System.Drawing.Size(90, 17);
          this.chkRecordCursor.TabIndex = 0;
@@ -188,7 +188,7 @@
          this.pnlHighlightCursor.Controls.Add(this.chkHighlighCursor);
          this.pnlHighlightCursor.Controls.Add(this.btnHighlight);
          this.pnlHighlightCursor.Enabled = false;
-         this.pnlHighlightCursor.Location = new System.Drawing.Point(8, 45);
+         this.pnlHighlightCursor.Location = new System.Drawing.Point(10, 45);
          this.pnlHighlightCursor.Name = "pnlHighlightCursor";
          this.pnlHighlightCursor.Size = new System.Drawing.Size(187, 26);
          this.pnlHighlightCursor.TabIndex = 1;
@@ -198,11 +198,31 @@
          this.chkHighlighCursor.AutoSize = true;
          this.chkHighlighCursor.Location = new System.Drawing.Point(0, 0);
          this.chkHighlighCursor.Name = "chkHighlighCursor";
-         this.chkHighlighCursor.Size = new System.Drawing.Size(132, 17);
+         this.chkHighlighCursor.Size = new System.Drawing.Size(133, 17);
          this.chkHighlighCursor.TabIndex = 0;
          this.chkHighlighCursor.Text = "Mouse cursor highlight";
          this.chkHighlighCursor.UseVisualStyleBackColor = true;
          this.chkHighlighCursor.CheckedChanged += new System.EventHandler(this.chkHighlighCursor_CheckedChanged);
+         // 
+         // btnHighlight
+         // 
+         this.btnHighlight.Enabled = false;
+         this.btnHighlight.Location = new System.Drawing.Point(139, 0);
+         this.btnHighlight.Menu = this.chdHighlight;
+         this.btnHighlight.Name = "btnHighlight";
+         this.btnHighlight.Padding = new System.Windows.Forms.Padding(2);
+         this.btnHighlight.Size = new System.Drawing.Size(45, 23);
+         this.btnHighlight.Style = Atf.UI.DropDownButtonStyle.Button;
+         this.btnHighlight.TabIndex = 1;
+         this.btnHighlight.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+         // 
+         // chdHighlight
+         // 
+         this.chdHighlight.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+         this.chdHighlight.Name = "chdHighlight";
+         this.chdHighlight.Padding = new System.Windows.Forms.Padding(0);
+         this.chdHighlight.Size = new System.Drawing.Size(0, 0);
+         this.chdHighlight.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this.chdHighlight_Closed);
          // 
          // txtWatermark
          // 
@@ -231,7 +251,7 @@
          this.grpVideo.Controls.Add(this.cmbCompressor);
          this.grpVideo.Controls.Add(this.btnAbout);
          this.grpVideo.Controls.Add(this.btnConfigure);
-         this.grpVideo.Location = new System.Drawing.Point(10, 430);
+         this.grpVideo.Location = new System.Drawing.Point(10, 442);
          this.grpVideo.Name = "grpVideo";
          this.grpVideo.Size = new System.Drawing.Size(401, 109);
          this.grpVideo.TabIndex = 4;
@@ -271,7 +291,7 @@
          this.label13.AutoSize = true;
          this.label13.Location = new System.Drawing.Point(7, 53);
          this.label13.Name = "label13";
-         this.label13.Size = new System.Drawing.Size(60, 13);
+         this.label13.Size = new System.Drawing.Size(64, 13);
          this.label13.TabIndex = 36;
          this.label13.Text = "Frame rate:";
          // 
@@ -280,7 +300,7 @@
          this.label15.AutoSize = true;
          this.label15.Location = new System.Drawing.Point(7, 22);
          this.label15.Name = "label15";
-         this.label15.Size = new System.Drawing.Size(65, 13);
+         this.label15.Size = new System.Drawing.Size(68, 13);
          this.label15.TabIndex = 34;
          this.label15.Text = "Compressor:";
          // 
@@ -289,7 +309,7 @@
          this.label16.AutoSize = true;
          this.label16.Location = new System.Drawing.Point(7, 84);
          this.label16.Name = "label16";
-         this.label16.Size = new System.Drawing.Size(42, 13);
+         this.label16.Size = new System.Drawing.Size(45, 13);
          this.label16.TabIndex = 33;
          this.label16.Text = "Quality:";
          // 
@@ -356,12 +376,19 @@
          this.grpHotKeys.Controls.Add(this.label8);
          this.grpHotKeys.Controls.Add(this.label7);
          this.grpHotKeys.Controls.Add(this.chkGlobalHotKeys);
-         this.grpHotKeys.Location = new System.Drawing.Point(10, 247);
+         this.grpHotKeys.Location = new System.Drawing.Point(9, 251);
          this.grpHotKeys.Name = "grpHotKeys";
          this.grpHotKeys.Size = new System.Drawing.Size(401, 97);
          this.grpHotKeys.TabIndex = 2;
          this.grpHotKeys.TabStop = false;
          this.grpHotKeys.Text = "Hot Keys";
+         // 
+         // hkCancel
+         // 
+         this.hkCancel.Location = new System.Drawing.Point(220, 46);
+         this.hkCancel.Name = "hkCancel";
+         this.hkCancel.Size = new System.Drawing.Size(93, 20);
+         this.hkCancel.TabIndex = 3;
          // 
          // label10
          // 
@@ -371,201 +398,6 @@
          this.label10.Size = new System.Drawing.Size(43, 13);
          this.label10.TabIndex = 30;
          this.label10.Text = "Cancel:";
-         // 
-         // label9
-         // 
-         this.label9.AutoSize = true;
-         this.label9.Location = new System.Drawing.Point(5, 49);
-         this.label9.Name = "label9";
-         this.label9.Size = new System.Drawing.Size(32, 13);
-         this.label9.TabIndex = 26;
-         this.label9.Text = "Stop:";
-         // 
-         // label8
-         // 
-         this.label8.AutoSize = true;
-         this.label8.Location = new System.Drawing.Point(171, 20);
-         this.label8.Name = "label8";
-         this.label8.Size = new System.Drawing.Size(40, 13);
-         this.label8.TabIndex = 25;
-         this.label8.Text = "Pause:";
-         // 
-         // label7
-         // 
-         this.label7.AutoSize = true;
-         this.label7.Location = new System.Drawing.Point(4, 20);
-         this.label7.Name = "label7";
-         this.label7.Size = new System.Drawing.Size(45, 13);
-         this.label7.TabIndex = 24;
-         this.label7.Text = "Record:";
-         // 
-         // chkGlobalHotKeys
-         // 
-         this.chkGlobalHotKeys.AutoSize = true;
-         this.chkGlobalHotKeys.Location = new System.Drawing.Point(10, 72);
-         this.chkGlobalHotKeys.Name = "chkGlobalHotKeys";
-         this.chkGlobalHotKeys.Size = new System.Drawing.Size(124, 17);
-         this.chkGlobalHotKeys.TabIndex = 4;
-         this.chkGlobalHotKeys.Text = "Register to Windows";
-         this.chkGlobalHotKeys.UseVisualStyleBackColor = true;
-         // 
-         // grpAudio
-         // 
-         this.grpAudio.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                     | System.Windows.Forms.AnchorStyles.Right)));
-         this.grpAudio.Controls.Add(this.label6);
-         this.grpAudio.Controls.Add(this.cmbSoundFormatTag);
-         this.grpAudio.Controls.Add(this.label4);
-         this.grpAudio.Controls.Add(this.soundDeviceSelector);
-         this.grpAudio.Controls.Add(this.cmbSoundFormat);
-         this.grpAudio.Controls.Add(this.label17);
-         this.grpAudio.Location = new System.Drawing.Point(10, 350);
-         this.grpAudio.Name = "grpAudio";
-         this.grpAudio.Size = new System.Drawing.Size(401, 74);
-         this.grpAudio.TabIndex = 3;
-         this.grpAudio.TabStop = false;
-         this.grpAudio.Text = "Audio";
-         // 
-         // label6
-         // 
-         this.label6.AutoSize = true;
-         this.label6.Location = new System.Drawing.Point(7, 49);
-         this.label6.Name = "label6";
-         this.label6.Size = new System.Drawing.Size(42, 13);
-         this.label6.TabIndex = 46;
-         this.label6.Text = "Format:";
-         // 
-         // cmbSoundFormatTag
-         // 
-         this.cmbSoundFormatTag.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-         this.cmbSoundFormatTag.DropDownWidth = 128;
-         this.cmbSoundFormatTag.Enabled = false;
-         this.cmbSoundFormatTag.FormattingEnabled = true;
-         this.cmbSoundFormatTag.Location = new System.Drawing.Point(321, 46);
-         this.cmbSoundFormatTag.Name = "cmbSoundFormatTag";
-         this.cmbSoundFormatTag.Size = new System.Drawing.Size(69, 21);
-         this.cmbSoundFormatTag.TabIndex = 1;
-         this.cmbSoundFormatTag.Visible = false;
-         this.cmbSoundFormatTag.SelectedIndexChanged += new System.EventHandler(this.cmdSoundFormatTag_SelectedIndexChanged);
-         // 
-         // label4
-         // 
-         this.label4.AutoSize = true;
-         this.label4.Location = new System.Drawing.Point(7, 20);
-         this.label4.Name = "label4";
-         this.label4.Size = new System.Drawing.Size(44, 13);
-         this.label4.TabIndex = 44;
-         this.label4.Text = "Source:";
-         // 
-         // cmbSoundFormat
-         // 
-         this.cmbSoundFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                     | System.Windows.Forms.AnchorStyles.Right)));
-         this.cmbSoundFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-         this.cmbSoundFormat.DropDownWidth = 231;
-         this.cmbSoundFormat.Enabled = false;
-         this.cmbSoundFormat.FormattingEnabled = true;
-         this.cmbSoundFormat.Location = new System.Drawing.Point(58, 46);
-         this.cmbSoundFormat.Name = "cmbSoundFormat";
-         this.cmbSoundFormat.Size = new System.Drawing.Size(255, 21);
-         this.cmbSoundFormat.TabIndex = 2;
-         this.cmbSoundFormat.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.cmbSoundFormat_Format);
-         // 
-         // label17
-         // 
-         this.label17.AutoSize = true;
-         this.label17.Location = new System.Drawing.Point(7, 80);
-         this.label17.Name = "label17";
-         this.label17.Size = new System.Drawing.Size(42, 13);
-         this.label17.TabIndex = 2;
-         this.label17.Text = "Quality:";
-         // 
-         // folderBrowserDialog
-         // 
-         this.folderBrowserDialog.Description = "Select a directory for saving output files.";
-         // 
-         // grpVisualElements
-         // 
-         this.grpVisualElements.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                     | System.Windows.Forms.AnchorStyles.Right)));
-         this.grpVisualElements.Controls.Add(this.pnlWatermark);
-         this.grpVisualElements.Controls.Add(this.chkWatermark);
-         this.grpVisualElements.Controls.Add(this.pnlHighlightCursor);
-         this.grpVisualElements.Controls.Add(this.chkRecordCursor);
-         this.grpVisualElements.Location = new System.Drawing.Point(10, 93);
-         this.grpVisualElements.Name = "grpVisualElements";
-         this.grpVisualElements.Size = new System.Drawing.Size(401, 148);
-         this.grpVisualElements.TabIndex = 1;
-         this.grpVisualElements.TabStop = false;
-         this.grpVisualElements.Text = "Visual Elements";
-         // 
-         // pnlWatermark
-         // 
-         this.pnlWatermark.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-         this.pnlWatermark.Controls.Add(this.txtWatermark);
-         this.pnlWatermark.Controls.Add(this.btnWatermark);
-         this.pnlWatermark.Enabled = false;
-         this.pnlWatermark.Location = new System.Drawing.Point(26, 91);
-         this.pnlWatermark.Name = "pnlWatermark";
-         this.pnlWatermark.Size = new System.Drawing.Size(364, 51);
-         this.pnlWatermark.TabIndex = 3;
-         // 
-         // chkWatermark
-         // 
-         this.chkWatermark.AutoSize = true;
-         this.chkWatermark.Location = new System.Drawing.Point(8, 68);
-         this.chkWatermark.Name = "chkWatermark";
-         this.chkWatermark.Size = new System.Drawing.Size(78, 17);
-         this.chkWatermark.TabIndex = 2;
-         this.chkWatermark.Text = "Watermark";
-         this.chkWatermark.UseVisualStyleBackColor = true;
-         this.chkWatermark.CheckedChanged += new System.EventHandler(this.chkWatermark_CheckedChanged);
-         // 
-         // btnWatermark
-         // 
-         this.btnWatermark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-         this.btnWatermark.Location = new System.Drawing.Point(295, 0);
-         this.btnWatermark.Menu = this.chdWatermark;
-         this.btnWatermark.Name = "btnWatermark";
-         this.btnWatermark.Padding = new System.Windows.Forms.Padding(2);
-         this.btnWatermark.Size = new System.Drawing.Size(69, 23);
-         this.btnWatermark.Style = Atf.UI.DropDownButtonStyle.Button;
-         this.btnWatermark.TabIndex = 1;
-         this.btnWatermark.Text = "Style";
-         this.btnWatermark.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-         // 
-         // chdWatermark
-         // 
-         this.chdWatermark.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-         this.chdWatermark.Name = "controlHostDropDown1";
-         this.chdWatermark.Size = new System.Drawing.Size(2, 4);
-         // 
-         // btnHighlight
-         // 
-         this.btnHighlight.Enabled = false;
-         this.btnHighlight.Location = new System.Drawing.Point(139, 0);
-         this.btnHighlight.Menu = this.chdHighlight;
-         this.btnHighlight.Name = "btnHighlight";
-         this.btnHighlight.Padding = new System.Windows.Forms.Padding(2);
-         this.btnHighlight.Size = new System.Drawing.Size(45, 23);
-         this.btnHighlight.Style = Atf.UI.DropDownButtonStyle.Button;
-         this.btnHighlight.TabIndex = 1;
-         this.btnHighlight.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-         // 
-         // chdHighlight
-         // 
-         this.chdHighlight.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-         this.chdHighlight.Name = "chdHighlight";
-         this.chdHighlight.Padding = new System.Windows.Forms.Padding(0);
-         this.chdHighlight.Size = new System.Drawing.Size(0, 0);
-         this.chdHighlight.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this.chdHighlight_Closed);
-         // 
-         // hkCancel
-         // 
-         this.hkCancel.Location = new System.Drawing.Point(220, 46);
-         this.hkCancel.Name = "hkCancel";
-         this.hkCancel.Size = new System.Drawing.Size(93, 20);
-         this.hkCancel.TabIndex = 3;
          // 
          // hkStop
          // 
@@ -588,15 +420,183 @@
          this.hkRecord.Size = new System.Drawing.Size(93, 20);
          this.hkRecord.TabIndex = 0;
          // 
+         // label9
+         // 
+         this.label9.AutoSize = true;
+         this.label9.Location = new System.Drawing.Point(7, 49);
+         this.label9.Name = "label9";
+         this.label9.Size = new System.Drawing.Size(33, 13);
+         this.label9.TabIndex = 26;
+         this.label9.Text = "Stop:";
+         // 
+         // label8
+         // 
+         this.label8.AutoSize = true;
+         this.label8.Location = new System.Drawing.Point(171, 20);
+         this.label8.Name = "label8";
+         this.label8.Size = new System.Drawing.Size(40, 13);
+         this.label8.TabIndex = 25;
+         this.label8.Text = "Pause:";
+         // 
+         // label7
+         // 
+         this.label7.AutoSize = true;
+         this.label7.Location = new System.Drawing.Point(7, 20);
+         this.label7.Name = "label7";
+         this.label7.Size = new System.Drawing.Size(45, 13);
+         this.label7.TabIndex = 24;
+         this.label7.Text = "Record:";
+         // 
+         // chkGlobalHotKeys
+         // 
+         this.chkGlobalHotKeys.AutoSize = true;
+         this.chkGlobalHotKeys.Location = new System.Drawing.Point(10, 72);
+         this.chkGlobalHotKeys.Name = "chkGlobalHotKeys";
+         this.chkGlobalHotKeys.Size = new System.Drawing.Size(125, 17);
+         this.chkGlobalHotKeys.TabIndex = 4;
+         this.chkGlobalHotKeys.Text = "Register to Windows";
+         this.chkGlobalHotKeys.UseVisualStyleBackColor = true;
+         // 
+         // grpAudio
+         // 
+         this.grpAudio.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                     | System.Windows.Forms.AnchorStyles.Right)));
+         this.grpAudio.Controls.Add(this.label6);
+         this.grpAudio.Controls.Add(this.cmbSoundFormatTag);
+         this.grpAudio.Controls.Add(this.label4);
+         this.grpAudio.Controls.Add(this.soundDeviceSelector);
+         this.grpAudio.Controls.Add(this.cmbSoundFormat);
+         this.grpAudio.Controls.Add(this.label17);
+         this.grpAudio.Location = new System.Drawing.Point(10, 354);
+         this.grpAudio.Name = "grpAudio";
+         this.grpAudio.Size = new System.Drawing.Size(401, 82);
+         this.grpAudio.TabIndex = 3;
+         this.grpAudio.TabStop = false;
+         this.grpAudio.Text = "Audio";
+         // 
+         // label6
+         // 
+         this.label6.AutoSize = true;
+         this.label6.Location = new System.Drawing.Point(7, 52);
+         this.label6.Name = "label6";
+         this.label6.Size = new System.Drawing.Size(45, 13);
+         this.label6.TabIndex = 46;
+         this.label6.Text = "Format:";
+         // 
+         // cmbSoundFormatTag
+         // 
+         this.cmbSoundFormatTag.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+         this.cmbSoundFormatTag.DropDownWidth = 128;
+         this.cmbSoundFormatTag.Enabled = false;
+         this.cmbSoundFormatTag.FormattingEnabled = true;
+         this.cmbSoundFormatTag.Location = new System.Drawing.Point(321, 49);
+         this.cmbSoundFormatTag.Name = "cmbSoundFormatTag";
+         this.cmbSoundFormatTag.Size = new System.Drawing.Size(69, 21);
+         this.cmbSoundFormatTag.TabIndex = 1;
+         this.cmbSoundFormatTag.Visible = false;
+         this.cmbSoundFormatTag.SelectedIndexChanged += new System.EventHandler(this.cmdSoundFormatTag_SelectedIndexChanged);
+         // 
+         // label4
+         // 
+         this.label4.AutoSize = true;
+         this.label4.Location = new System.Drawing.Point(7, 22);
+         this.label4.Name = "label4";
+         this.label4.Size = new System.Drawing.Size(44, 13);
+         this.label4.TabIndex = 44;
+         this.label4.Text = "Source:";
+         // 
          // soundDeviceSelector
          // 
          this.soundDeviceSelector.DisplayProperty = Atf.ScreenRecorder.UI.View.SoundDeviceDisplayProperty.Name;
          this.soundDeviceSelector.DisplayTrackingName = true;
-         this.soundDeviceSelector.Location = new System.Drawing.Point(57, 14);
+         this.soundDeviceSelector.Location = new System.Drawing.Point(57, 16);
          this.soundDeviceSelector.Name = "soundDeviceSelector";
          this.soundDeviceSelector.Size = new System.Drawing.Size(256, 23);
          this.soundDeviceSelector.TabIndex = 0;
          this.soundDeviceSelector.SoundDeviceChanged += new System.EventHandler(this.soundDeviceSelector_SoundDeviceChanged);
+         // 
+         // cmbSoundFormat
+         // 
+         this.cmbSoundFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                     | System.Windows.Forms.AnchorStyles.Right)));
+         this.cmbSoundFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+         this.cmbSoundFormat.DropDownWidth = 231;
+         this.cmbSoundFormat.Enabled = false;
+         this.cmbSoundFormat.FormattingEnabled = true;
+         this.cmbSoundFormat.Location = new System.Drawing.Point(58, 49);
+         this.cmbSoundFormat.Name = "cmbSoundFormat";
+         this.cmbSoundFormat.Size = new System.Drawing.Size(255, 21);
+         this.cmbSoundFormat.TabIndex = 2;
+         this.cmbSoundFormat.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.cmbSoundFormat_Format);
+         // 
+         // label17
+         // 
+         this.label17.AutoSize = true;
+         this.label17.Location = new System.Drawing.Point(7, 80);
+         this.label17.Name = "label17";
+         this.label17.Size = new System.Drawing.Size(45, 13);
+         this.label17.TabIndex = 2;
+         this.label17.Text = "Quality:";
+         // 
+         // folderBrowserDialog
+         // 
+         this.folderBrowserDialog.Description = "Select a directory for saving output files.";
+         // 
+         // grpVisualElements
+         // 
+         this.grpVisualElements.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                     | System.Windows.Forms.AnchorStyles.Right)));
+         this.grpVisualElements.Controls.Add(this.pnlWatermark);
+         this.grpVisualElements.Controls.Add(this.chkWatermark);
+         this.grpVisualElements.Controls.Add(this.pnlHighlightCursor);
+         this.grpVisualElements.Controls.Add(this.chkRecordCursor);
+         this.grpVisualElements.Location = new System.Drawing.Point(10, 97);
+         this.grpVisualElements.Name = "grpVisualElements";
+         this.grpVisualElements.Size = new System.Drawing.Size(401, 148);
+         this.grpVisualElements.TabIndex = 1;
+         this.grpVisualElements.TabStop = false;
+         this.grpVisualElements.Text = "Visual Elements";
+         // 
+         // pnlWatermark
+         // 
+         this.pnlWatermark.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+         this.pnlWatermark.Controls.Add(this.txtWatermark);
+         this.pnlWatermark.Controls.Add(this.btnWatermark);
+         this.pnlWatermark.Enabled = false;
+         this.pnlWatermark.Location = new System.Drawing.Point(26, 91);
+         this.pnlWatermark.Name = "pnlWatermark";
+         this.pnlWatermark.Size = new System.Drawing.Size(364, 51);
+         this.pnlWatermark.TabIndex = 3;
+         // 
+         // btnWatermark
+         // 
+         this.btnWatermark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+         this.btnWatermark.Location = new System.Drawing.Point(295, 0);
+         this.btnWatermark.Menu = this.chdWatermark;
+         this.btnWatermark.Name = "btnWatermark";
+         this.btnWatermark.Padding = new System.Windows.Forms.Padding(2);
+         this.btnWatermark.Size = new System.Drawing.Size(69, 23);
+         this.btnWatermark.Style = Atf.UI.DropDownButtonStyle.Button;
+         this.btnWatermark.TabIndex = 1;
+         this.btnWatermark.Text = "Style";
+         this.btnWatermark.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+         // 
+         // chdWatermark
+         // 
+         this.chdWatermark.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+         this.chdWatermark.Name = "controlHostDropDown1";
+         this.chdWatermark.Size = new System.Drawing.Size(2, 4);
+         // 
+         // chkWatermark
+         // 
+         this.chkWatermark.AutoSize = true;
+         this.chkWatermark.Location = new System.Drawing.Point(10, 68);
+         this.chkWatermark.Name = "chkWatermark";
+         this.chkWatermark.Size = new System.Drawing.Size(79, 17);
+         this.chkWatermark.TabIndex = 2;
+         this.chkWatermark.Text = "Watermark";
+         this.chkWatermark.UseVisualStyleBackColor = true;
+         this.chkWatermark.CheckedChanged += new System.EventHandler(this.chkWatermark_CheckedChanged);
          // 
          // frmOptions
          // 
@@ -604,7 +604,7 @@
          this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.CancelButton = this.btnCancel;
-         this.ClientSize = new System.Drawing.Size(419, 583);
+         this.ClientSize = new System.Drawing.Size(419, 592);
          this.Controls.Add(this.grpGeneral);
          this.Controls.Add(this.btnCancel);
          this.Controls.Add(this.btnOK);

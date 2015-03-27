@@ -24,11 +24,15 @@ namespace Atf.ScreenRecorder.Util {
    using System;
    using System.Threading;
    using System.Windows.Forms;
-   class SingleInstanceController {
+   using System.Reflection;
+   using System.Runtime.InteropServices;
+   class SingleInstanceController : IDisposable {
       #region Fields
       private static readonly string mutexName = "__ScreenRecorder__";
       private static readonly string notifyMessageName = "WM_NOTIFYINSTANCE";
+      private bool disposed;
       private Form mainForm;
+      private Mutex mutex = null;
       private static int notifyInstanceMessage;
       private Window siWindow;
       #endregion
@@ -46,28 +50,48 @@ namespace Atf.ScreenRecorder.Util {
 
       #region Methods
       public bool RegisterNewInstance() {
-         Mutex mutex = null;
-         try {
-            mutex = Mutex.OpenExisting(mutexName);
-         }
-         catch (WaitHandleCannotBeOpenedException) {
-         }
+         // Get guid of the executing assembly 
+         Assembly assembly = Assembly.GetExecutingAssembly();
+         GuidAttribute guidAttribute = (GuidAttribute)assembly.GetCustomAttributes(typeof(GuidAttribute), true)[0];
+         string guid = guidAttribute.Value;
+
+         // Create mutext
+         this.mutex = new Mutex(false, guid);
+
+         // Register notify message
          if (notifyInstanceMessage == 0) {
             notifyInstanceMessage = User32Interop.RegisterWindowMessage(notifyMessageName);
          }
-         if (mutex != null) {
+
+         // Wait on the mutext, false return value means that another instance is running   
+         if (!this.mutex.WaitOne(0, false)) {
             if (notifyInstanceMessage != 0) {
-               User32Interop.PostMessage((IntPtr)User32Interop.HWND_BROADCAST, notifyInstanceMessage,
-                                                 0, 0);
+               User32Interop.PostMessage((IntPtr)User32Interop.HWND_BROADCAST, notifyInstanceMessage, 0, 0);
             }
-            mutex.Close();
             return false;
          }
-         mutex = new Mutex(true, mutexName);
+
+         // Create a window to receive notifications
          if (this.siWindow == null) {
             this.siWindow = new SIWindow(this);
          }
          return true;
+      }
+      #endregion
+
+      #region IDisposable Members
+      public void Dispose() {
+         Dispose(true);
+         GC.SuppressFinalize(this);
+      }
+      protected virtual void Dispose(bool disposing) {
+         if (!this.disposed) {
+            if (this.mutex != null) {
+               this.mutex.Close();
+               this.mutex = null;
+            }
+            disposed = true;
+         }
       }
       #endregion
 
@@ -82,13 +106,12 @@ namespace Atf.ScreenRecorder.Util {
                if (mainForm != null) {
                   if (mainForm.WindowState == FormWindowState.Minimized) {
                      mainForm.Show();
-                     mainForm.WindowState = FormWindowState.Normal;                     
+                     mainForm.WindowState = FormWindowState.Normal;
                   }
                   bool oldTopMost = mainForm.TopMost;
                   mainForm.TopMost = false;
                   mainForm.TopMost = true;
                   mainForm.TopMost = oldTopMost;
-                  // SingleInstanceInterop.SetForegroundWindow(mainForm.Handle);
                }
             }
             base.WndProc(ref m);

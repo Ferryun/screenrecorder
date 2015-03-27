@@ -250,9 +250,6 @@ void Record(LPWASAPISOUND lpws) {
 	UINT frameSize = pwfx->nChannels * (pwfx->wBitsPerSample / 8);
 	UINT bufferLength = (UINT)((1000.0 * lpws->nBufferFrames) / pwfx->nSamplesPerSec);
 
-	// DWORD startTime = GetTickCount();
-	// DWORD totalFramesRead = 0;
-
 	while (lpws->state == WS_STATE_RECORDING) {
 		BYTE *pData;
 		UINT32 packetLength;

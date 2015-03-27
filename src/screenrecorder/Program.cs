@@ -38,14 +38,12 @@ namespace Atf.ScreenRecorder {
          Application.SetCompatibleTextRenderingDefault(false);
          Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
 
-         SingleInstanceController siController = new SingleInstanceController();
-         if (siController.RegisterNewInstance()) {
-            frmMain mainForm = new frmMain();
-            siController.MainForm = mainForm;
-            Application.Run(mainForm);
-         }
-         else {
-            // MessageBox.Show("Another instance of Screen Recorder is already running.", "Error");            
+         using (SingleInstanceController siController = new SingleInstanceController()) {
+            if (siController.RegisterNewInstance()) {
+               frmMain mainForm = new frmMain();
+               siController.MainForm = mainForm;
+               Application.Run(mainForm);
+            }
          }
       }
       static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {

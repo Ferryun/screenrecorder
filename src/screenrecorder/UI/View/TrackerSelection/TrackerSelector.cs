@@ -16,8 +16,12 @@
 
       #region Fields
       private static readonly string dragToSelect = "Drag over a window";
-      //private static readonly string dragToSelectMessage =
-      //   "In order to record region of a window, drag the Window menu item over that window.";
+      private static readonly Icon iconTarget = Properties.Resources.target;
+      private static readonly Image imageFixed = Properties.Resources.Partial;
+      private static readonly Image imageFullScreen = Properties.Resources.FullScreen;
+      private static readonly Image imageNoDisplay = Properties.Resources.nodisplay;
+      private static readonly Image imageTrackMouse = Properties.Resources.TrackMouse;
+      private static readonly Image imageWindow = Properties.Resources.Window;
       private static readonly int maxWindowTitleLength = 15;
       private static readonly string untitledWindow = "Untitled";
       private static readonly string trackingTypeFixed = "Fixed";
@@ -26,6 +30,7 @@
       private static readonly string trackingTypeTrackMouse = "Track Mouse Cursor";
       private static readonly string trackingTypeWindow = "Window (Drag over a window)";
       private static readonly string window = "Window";
+
       private bool displayTrackingImage = true;
       private bool displayTrackingName;
       private bool isSelectingTracker;
@@ -52,7 +57,7 @@
          }
          // Load target cursor from .ico file in resources
          System.IO.MemoryStream targetCursorMs = new System.IO.MemoryStream();
-         Properties.Resources.target.Save(targetCursorMs);
+         iconTarget.Save(targetCursorMs);
          targetCursorMs.Position = 0;
          this.targetCursor = new Cursor(targetCursorMs);
       }
@@ -166,15 +171,15 @@
       private static Image GetTrackingImage(TrackingSettings trackingSettings) {
          switch (trackingSettings.Type) {
             case TrackingType.None:
-               return Properties.Resources.nodisplay;
+               return imageNoDisplay;
             case TrackingType.Fixed:
-               return Properties.Resources.Partial;
+               return imageFixed;
             case TrackingType.Full:
-               return Properties.Resources.FullScreen;               
+               return imageFullScreen;            
             case TrackingType.MouseCursor:
-               return Properties.Resources.TrackMouse;               
+               return imageTrackMouse;           
             case TrackingType.Window:
-               return Properties.Resources.Window;               
+               return imageWindow;            
             default:
                throw new InvalidOperationException();
          }

@@ -48,7 +48,7 @@ extern "C" {
 			return E_FAIL;
 		}
 		if (ci.flags != CURSOR_SHOWING) {
-			return E_FAIL;
+			return S_OK;
 		}
 		HCURSOR hCursor = ci.hCursor;
 		if (hCursor == NULL) {
@@ -123,7 +123,9 @@ extern "C" {
 			RECT intesectRect;
 			BOOL intesectResult = IntersectRect(&intesectRect, &bitmapRect, &cursorRect);
 			if (!intesectResult) {
-				return E_FAIL;
+				delete[] pColorBits;
+				DeleteObject(iconInfo.hbmColor);
+				return S_OK;
 			}
 
 			// Offset intersect rect to cursor origin
@@ -218,7 +220,9 @@ extern "C" {
 			RECT intesectRect;
 			BOOL intesectResult = IntersectRect(&intesectRect, &bitmapRect, &cursorRect);
 			if (!intesectResult) {
-				return E_FAIL;
+				delete[] pMaskBits;
+				DeleteObject(iconInfo.hbmMask);
+				return S_OK;
 			}
 
 			// Offset intersect rect to cursor origin

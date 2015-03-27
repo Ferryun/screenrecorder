@@ -38,6 +38,12 @@ namespace Atf.ScreenRecorder.UI.View {
       private static readonly string cancelMessage = "Recording is in progress. Are you sure to want to cancel it?";
       private static readonly string errorMessageTitle = "Error";
       private static readonly string hotKeyWarningMessage = "Failed to register one or more hot keys.";
+      private static readonly Icon iconPaused = Properties.Resources.icon_paused;
+      private static readonly Icon iconRecord = Properties.Resources.icon_rec;
+      private static readonly Icon iconRecord2 = Properties.Resources.icon_16;
+      private static readonly Image imagePaused = Properties.Resources.playback_pause;
+      private static readonly Image imageRecord = Properties.Resources.primitive_dot_red;
+      private static readonly Image imageRecord2 = Properties.Resources.primitive_dot;
       private static readonly int notifyErrorDelay = 20000;
       private static readonly int notifyWarningDelay = 10000;
       private static readonly string noUpdateMessage = "Current version is the lastest available version.";
@@ -356,22 +362,22 @@ namespace Atf.ScreenRecorder.UI.View {
             Icon notifyIconIcon;
             switch (value) {
                case RecordingState.Paused:
-                  notifyIconIcon = Properties.Resources.icon_paused;
-                  statusImage = Properties.Resources.playback_pause;
+                  notifyIconIcon = iconPaused;
+                  statusImage = imagePaused;
                   break;
                case RecordingState.Recording:
                   bool blink = Math.Ceiling(this.recordingDuration.TotalSeconds) % 2 == 1;
                   if (blink) {
-                     notifyIconIcon = Properties.Resources.icon_rec;
-                     statusImage = Properties.Resources.primitive_dot_red;
+                     notifyIconIcon = iconRecord;
+                     statusImage = imageRecord;
                   }
                   else {
-                     notifyIconIcon = Properties.Resources.icon_16;
-                     statusImage = Properties.Resources.primitive_dot;
+                     notifyIconIcon = iconRecord2;
+                     statusImage = imageRecord2;
                   }
                   break;
                default:
-                  notifyIconIcon = Properties.Resources.icon_16;
+                  notifyIconIcon = iconRecord2;
                   statusImage = null;
                   break;
             }
